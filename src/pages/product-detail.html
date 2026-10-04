@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0A1628">
+
+    <title>Product Details — Genera Tech Hub</title>
+    <meta name="description" content="View full details and specifications of this product at Genera Tech Hub.">
+    <meta name="robots" content="index, follow">
+
+    <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="/public/css/style.css">
+
+    <style>
+        /* ============================================================
+           PRODUCT DETAIL SPECIFIC
+           ============================================================ */
+
+        .product-detail-wrapper {
+            padding: 2rem 0 4rem;
+        }
+
+        .product-detail-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        /* Image gallery */
+        .product-gallery {
+            position: -webkit-sticky;
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+        }
+
+        .product-gallery .main-image {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: linear-gradient(135deg, #1A2D4A, #0A1628);
+            border: 1px solid rgba(255, 215, 0, 0.08);
+            position: relative;
+        }
+
+        .product-gallery .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-gallery .main-image:hover img {
+            transform: scale(1.03);
+        }
+
+        .product-gallery .main-image .badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            z-index: 2;
+        }
+
+        .product-gallery .thumbnails {
+            display: flex;
+            gap: 0.6rem;
+            margin-top: 0.85rem;
+            flex-wrap: wrap;
+        }
+
+        .product-gallery .thumbnail {
+            width: 72px;
+            height: 72px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.06);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            background: rgba(26, 45, 74, 0.4);
+        }
+
+        .product-gallery .thumbnail:hover { border-color: var(--gold-soft); }
+        .product-gallery .thumbnail.active { border-color: var(--gold); box-shadow: 0 0 12px rgba(255, 215, 0, 0.3); }
+        .product-gallery .thumbnail img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Product info */
+        .product-details { display: flex; flex-direction: column; gap: 1.25rem; }
+
+        .product-details .breadcrumb {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .product-details .breadcrumb a {
+            color: var(--text-muted);
+            transition: var(--transition-fast);
+        }
+
+        .product-details .breadcrumb a:hover { color: var(--gold); }
+        .product-details .breadcrumb .current { color: var(--gold); }
+
+        .product-details h1 {
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            line-height: 1.3;
+            margin: 0;
+        }
+
+        .product-details .category-tag {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--gold);
+            padding: 0.28rem 0.85rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: fit-content;
+        }
+
+        /* Price */
+        .product-details .price-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            padding: 1.1rem 1.25rem;
+            background: rgba(26, 45, 74, 0.4);
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(255, 215, 0, 0.12);
+        }
+
+        .product-details .current-price {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            color: var(--gold);
+            font-family: var(--font-heading);
+            line-height: 1;
+        }
+
+        .product-details .price-note {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+        }
+
+        /* Stock */
+        .product-details .stock-row {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.7rem 1rem;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.92rem;
+        }
+
+        .product-details .stock-row .stock-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+
+        .product-details .stock-row.in-stock {
+            background: rgba(0, 230, 118, 0.08);
+            border-color: rgba(0, 230, 118, 0.2);
+            color: var(--success);
+        }
+        .product-details .stock-row.in-stock .stock-dot { background: var(--success); box-shadow: 0 0 10px var(--success); }
+
+        .product-details .stock-row.out-of-stock {
+            background: rgba(255, 23, 68, 0.08);
+            border-color: rgba(255, 23, 68, 0.2);
+            color: var(--danger);
+        }
+        .product-details .stock-row.out-of-stock .stock-dot { background: var(--danger); }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Description */
+        .product-details .description {
+            color: var(--text-light);
+            line-height: 1.75;
+            font-size: 0.95rem;
+        }
+
+        /* Specs */
+        .specs-section {
+            background: rgba(26, 45, 74, 0.4);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            border: 1px solid rgba(255, 215, 0, 0.05);
+        }
+
+        .specs-section h3 {
+            color: var(--gold);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .specs-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.65rem;
+        }
+
+        .spec-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+            padding: 0.65rem 0.75rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .spec-item .spec-label {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .spec-item .spec-value {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Quantity */
+        .quantity-row {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            flex-wrap: wrap;
+        }
+
+        .quantity-row label {
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 0.92rem;
+        }
+
+        .qty-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        .qty-control button {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border: none;
+            color: var(--text-light);
+            font-size: 1.15rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .qty-control button:hover { background: rgba(255, 215, 0, 0.1); color: var(--gold); }
+
+        .qty-control input {
+            width: 56px;
+            height: 40px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            color: var(--white);
+            font-size: 16px;
+            font-weight: 600;
+            font-family: inherit;
+        }
+        .qty-control input:focus { outline: none; }
+
+        /* Actions */
+        .actions-row {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .actions-row .btn {
+            flex: 1;
+            min-width: 160px;
+            justify-content: center;
+            padding: 0.9rem 1.25rem;
+            font-size: 0.98rem;
+        }
+
+        .actions-row .btn-whatsapp { flex: 1.5; }
+
+        /* Trust badges */
+        .trust-badges {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.6rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 0.75rem;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            padding: 0.4rem;
+        }
+        .trust-badge i { color: var(--gold); font-size: 1rem; }
+
+        /* Related products */
+        .related-section {
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .related-section h3 {
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Loading / Error */
+        .state-container {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .state-container .state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .state-container h2 { margin-bottom: 0.5rem; }
+        .state-container p { color: var(--text-muted); max-width: 440px; margin: 0 auto 1.5rem; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .product-detail-layout {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .product-gallery { position: static; }
+        }
+
+        @media (max-width: 768px) {
+            .product-gallery .thumbnail { width: 60px; height: 60px; }
+            .actions-row { flex-direction: column; }
+            .actions-row .btn { width: 100%; min-width: auto; }
+        }
+    </style>
+</head>
+<body id="main-content">
+
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <div id="header-placeholder"></div>
+
+    <!-- Product Detail -->
+    <section class="container product-detail-wrapper" id="main">
+        <div id="productContent">
+            <div class="state-container">
+                <div class="loading"></div>
+                <p class="text-muted mt-2">Loading product...</p>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <!-- Load header/footer -->
+    <script>
+        fetch('/src/components/header.html')
+            .then(r => r.text())
+            .then(d => { document.getElementById('header-placeholder').innerHTML = d; })
+            .catch(() => console.warn('Header not loaded'));
+
+        fetch('/src/components/footer.html')
+            .then(r => r.text())
+            .then(d => { document.getElementById('footer-placeholder').innerHTML = d; })
+            .catch(() => console.warn('Footer not loaded'));
+    </script>
+
+    <!-- Load app scripts -->
+    <script>
+        (function () {
+            function loadScript(src) {
+                return new Promise((resolve, reject) => {
+                    if (document.querySelector(`script[src="${src}"]`)) return resolve();
+                    const s = document.createElement('script');
+                    s.src = src;
+                    s.async = false;
+                    s.onload = resolve;
+                    s.onerror = () => reject(new Error(`Could not load ${src}`));
+                    document.head.appendChild(s);
+                });
+            }
+
+            (async function () {
+                try {
+                    await loadScript('/public/js/supabase.js');
+                    await loadScript('/public/js/auth.js');
+                    await loadScript('/public/js/main.js');
+                    console.log('✅ Product detail scripts loaded');
+                    initProductDetailPage();
+                } catch (err) {
+                    console.error('❌ Script load error:', err);
+                }
+            })();
+        })();
+    </script>
+
+    <!-- Product detail logic -->
+    <script>
+        let currentProduct = null;
+        let currentQuantity = 1;
+        let currentImageIndex = 0;
+        let productImages = [];
+
+        async function initProductDetailPage() {
+            const params = new URLSearchParams(window.location.search);
+            const productId = params.get('id');
+
+            if (!productId) {
+                showState('error', '😕', 'No Product Selected', 'Please select a product from our catalog.', '/src/pages/products.html', 'Browse Products');
+                return;
+            }
+
+            await loadProduct(productId);
+        }
+
+        async function loadProduct(productId) {
+            const container = document.getElementById('productContent');
+
+            try {
+                if (typeof getProductById === 'undefined') {
+                    throw new Error('Product service not ready');
+                }
+
+                const result = await getProductById(productId);
+
+                if (!result.success || !result.product) {
+                    showState('error', '😕', 'Product Not Found', 'This product may have been removed.', '/src/pages/products.html', 'Browse Products');
+                    return;
+                }
+
+                currentProduct = result.product;
+                productImages = (currentProduct.image_urls && currentProduct.image_urls.length > 0)
+                    ? currentProduct.image_urls
+                    : ['https://placehold.co/800x600/1A2D4A/FFD700?text=Genera+Tech'];
+                currentImageIndex = 0;
+                currentQuantity = 1;
+
+                renderProduct();
+                loadRelatedProducts(currentProduct.category);
+
+                // Update title
+                document.title = `${currentProduct.name} — Genera Tech Hub`;
+
+                // Track view
+                if (typeof trackProductView === 'function') {
+                    trackProductView(currentProduct.id, currentProduct.name).catch(() => {});
+                }
+            } catch (error) {
+                console.error('Load product error:', error);
+                showState('error', '⚠️', 'Could Not Load Product', error.message, '/src/pages/products.html', 'Browse Products');
+            }
+        }
+
+        function renderProduct() {
+            const p = currentProduct;
+            const container = document.getElementById('productContent');
+
+            const price = new Intl.NumberFormat('en-NG', {
+                style: 'currency', currency: 'NGN', minimumFractionDigits: 0
+            }).format(p.price);
+
+            const inStock = (p.stock_quantity || 0) > 0;
+            const stockClass = inStock ? 'in-stock' : 'out-of-stock';
+            const stockText = inStock
+                ? `In Stock — ${p.stock_quantity} available`
+                : 'Currently Out of Stock';
+
+            // Badges
+            const badges = [];
+            if (p.is_featured) badges.push('<span class="badge badge-featured">⭐ Featured</span>');
+            else if (p.condition === 'New') badges.push('<span class="badge badge-new">✨ New</span>');
+            else if (p.condition === 'Refurbished') badges.push('<span class="badge badge-refurbished">🔄 Refurbished</span>');
+            else if (p.condition === 'Used') badges.push('<span class="badge badge-used">📱 Used</span>');
+
+            // Specs
+            const specs = [
+                { label: 'Brand', value: p.brand },
+                { label: 'Model', value: p.model },
+                { label: 'Condition', value: p.condition },
+                { label: 'Storage', value: p.storage },
+                { label: 'Color', value: p.color },
+                { label: 'Category', value: p.category }
+            ].filter(s => s.value);
+
+            const specsHtml = specs.map(s => `
+                <div class="spec-item">
+                    <div class="spec-label">${escapeHtml(s.label)}</div>
+                    <div class="spec-value">${escapeHtml(s.value)}</div>
+                </div>
+            `).join('');
+
+            // Thumbnails
+            const thumbsHtml = productImages.length > 1
+                ? productImages.map((img, i) => `
+                    <div class="thumbnail ${i === 0 ? 'active' : ''}" onclick="changeImage(${i})" role="button" tabindex="0" aria-label="View image ${i + 1}">
+                        <img src="${img}" alt="" onerror="this.src='https://placehold.co/80x80/1A2D4A/FFD700?text=?'">
+                    </div>
+                `).join('')
+                : '';
+
+            const waMsg = encodeURIComponent(
+                `Hi Genera Tech Hub! I'm interested in *${p.name}* - ${price}.\n\nQuantity: ${currentQuantity}\n\nPlease confirm availability.`
+            );
+
+            container.innerHTML = `
+                <div class="product-detail-layout">
+                    <!-- Gallery -->
+                    <div class="product-gallery">
+                        <div class="main-image">
+                            ${badges.length ? badges[0] : ''}
+                            <img id="mainImage" src="${productImages[0]}" alt="${escapeHtml(p.name)}"
+                                 onerror="this.src='https://placehold.co/800x600/1A2D4A/FFD700?text=Genera+Tech'">
+                        </div>
+                        ${thumbsHtml ? `<div class="thumbnails">${thumbsHtml}</div>` : ''}
+                    </div>
+
+                    <!-- Details -->
+                    <div class="product-details">
+                        <div class="breadcrumb">
+                            <a href="/src/pages/index.html">Home</a>
+                            <span>›</span>
+                            <a href="/src/pages/products.html">Products</a>
+                            <span>›</span>
+                            <span class="current">${escapeHtml(p.name)}</span>
+                        </div>
+
+                        ${p.category ? `<span class="category-tag">${escapeHtml(p.category)}</span>` : ''}
+
+                        <h1>${escapeHtml(p.name)}</h1>
+
+                        <div class="price-section">
+                            <div class="current-price">${price}</div>
+                            <div class="price-note">Contact us for the best deal</div>
+                        </div>
+
+                        <div class="stock-row ${stockClass}">
+                            <span class="stock-dot"></span>
+                            <span>${stockText}</span>
+                        </div>
+
+                        ${p.description ? `<div class="description">${escapeHtml(p.description)}</div>` : ''}
+
+                        ${specs.length ? `
+                            <div class="specs-section">
+                                <h3><i class="fas fa-list-ul"></i> Specifications</h3>
+                                <div class="specs-table">${specsHtml}</div>
+                            </div>
+                        ` : ''}
+
+                        ${inStock ? `
+                            <div class="quantity-row">
+                                <label for="quantityInput">Quantity:</label>
+                                <div class="qty-control">
+                                    <button onclick="updateQuantity(-1)" aria-label="Decrease">−</button>
+                                    <input type="number" id="quantityInput" value="1" min="1" max="${p.stock_quantity}" onchange="updateQuantityFromInput(this)" aria-label="Quantity">
+                                    <button onclick="updateQuantity(1)" aria-label="Increase">+</button>
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        <div class="actions-row">
+                            <a href="https://wa.me/2348081302228?text=${waMsg}" target="_blank" rel="noopener noreferrer"
+                               class="btn btn-whatsapp" ${!inStock ? 'style="opacity:0.5;pointer-events:none;"' : ''}>
+                                <i class="fab fa-whatsapp"></i> ${inStock ? 'Buy on WhatsApp' : 'Out of Stock'}
+                            </a>
+                            <a href="/src/pages/products.html" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </a>
+                        </div>
+
+                        <div class="trust-badges">
+                            <div class="trust-badge"><i class="fas fa-check-circle"></i> Verified Product</div>
+                            <div class="trust-badge"><i class="fas fa-shield-alt"></i> Warranty Available</div>
+                            <div class="trust-badge"><i class="fas fa-truck"></i> Delivery Available</div>
+                            <div class="trust-badge"><i class="fas fa-headset"></i> WhatsApp Support</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="related-section" id="relatedSection">
+                    <h3>🔄 You May Also Like</h3>
+                    <div class="products-grid" id="relatedGrid">
+                        <p class="text-muted" style="grid-column: 1/-1; text-align: center; padding: 2rem;">Loading...</p>
+                    </div>
+                </div>
+            `;
+
+            // Expose functions globally
+            window.changeImage = changeImage;
+            window.updateQuantity = updateQuantity;
+            window.updateQuantityFromInput = updateQuantityFromInput;
+        }
+
+        function changeImage(index) {
+            if (index < 0 || index >= productImages.length) return;
+            currentImageIndex = index;
+
+            const mainImg = document.getElementById('mainImage');
+            if (mainImg) mainImg.src = productImages[index];
+
+            document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+        }
+
+        function updateQuantity(change) {
+            const input = document.getElementById('quantityInput');
+            if (!input) return;
+
+            let newValue = parseInt(input.value) + change;
+            const max = parseInt(input.max) || 999;
+            if (newValue < 1) newValue = 1;
+            if (newValue > max) newValue = max;
+
+            input.value = newValue;
+            currentQuantity = newValue;
+            updateWhatsAppLink();
+        }
+
+        function updateQuantityFromInput(input) {
+            let value = parseInt(input.value) || 1;
+            const max = parseInt(input.max) || 999;
+            if (value < 1) value = 1;
+            if (value > max) value = max;
+
+            input.value = value;
+            currentQuantity = value;
+            updateWhatsAppLink();
+        }
+
+        function updateWhatsAppLink() {
+            if (!currentProduct) return;
+
+            const price = new Intl.NumberFormat('en-NG', {
+                style: 'currency', currency: 'NGN', minimumFractionDigits: 0
+            }).format(currentProduct.price);
+
+            const btn = document.querySelector('.actions-row .btn-whatsapp');
+            if (btn) {
+                const msg = encodeURIComponent(
+                    `Hi Genera Tech Hub! I'm interested in *${currentProduct.name}* - ${price}.\n\nQuantity: ${currentQuantity}\n\nPlease confirm availability.`
+                );
+                btn.href = `https://wa.me/2348081302228?text=${msg}`;
+            }
+        }
+
+        async function loadRelatedProducts(category) {
+            const grid = document.getElementById('relatedGrid');
+            if (!grid || !category) {
+                if (grid) grid.innerHTML = '';
+                return;
+            }
+
+            try {
+                const result = await getProducts({ category });
+                if (!result.success || !result.products) {
+                    grid.innerHTML = '';
+                    return;
+                }
+
+                const related = result.products
+                    .filter(p => p.id !== currentProduct?.id)
+                    .slice(0, 4);
+
+                if (related.length === 0) {
+                    document.getElementById('relatedSection').style.display = 'none';
+                    return;
+                }
+
+                grid.innerHTML = related.map(p => {
+                    const price = new Intl.NumberFormat('en-NG', {
+                        style: 'currency', currency: 'NGN', minimumFractionDigits: 0
+                    }).format(p.price);
+
+                    const img = p.image_urls && p.image_urls.length > 0
+                        ? p.image_urls[0]
+                        : 'https://placehold.co/400x300/1A2D4A/FFD700?text=Genera+Tech';
+
+                    return `
+                        <a href="/src/pages/product-detail.html?id=${p.id}" class="product-card">
+                            <div class="product-image">
+                                <img src="${img}" alt="${escapeHtml(p.name)}" loading="lazy"
+                                     onerror="this.src='https://placehold.co/400x300/1A2D4A/FFD700?text=Genera+Tech'">
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-name">${escapeHtml(p.name)}</h3>
+                                <div class="product-price">${price}</div>
+                            </div>
+                        </a>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.warn('Related products error:', error);
+                const section = document.getElementById('relatedSection');
+                if (section) section.style.display = 'none';
+            }
+        }
+
+        function showState(type, icon, title, message, actionLink, actionText) {
+            const container = document.getElementById('productContent');
+            container.innerHTML = `
+                <div class="state-container">
+                    <div class="state-icon">${icon}</div>
+                    <h2>${title}</h2>
+                    <p>${message}</p>
+                    ${actionLink ? `<a href="${actionLink}" class="btn btn-primary"><i class="fas fa-arrow-left"></i> ${actionText}</a>` : ''}
+                </div>
+            `;
+        }
+    </script>
+
+</body>
+</html>

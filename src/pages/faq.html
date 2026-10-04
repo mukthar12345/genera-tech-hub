@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0A1628">
+
+    <title>FAQ — Genera Tech Hub | Frequently Asked Questions</title>
+    <meta name="description" content="Find answers to common questions about Genera Tech Hub — products, repairs, trade-ins, delivery, and support.">
+    <meta name="keywords" content="Genera Tech Hub FAQ, tech services questions, phone repair FAQ">
+    <meta name="robots" content="index, follow">
+
+    <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+
+    <style>
+        /* ============================================================
+           FAQ PAGE SPECIFIC
+           ============================================================ */
+
+        .faq-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 0 4rem;
+        }
+
+        /* Category filter buttons */
+        .faq-categories {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .faq-category-btn {
+            padding: 0.55rem 1.15rem;
+            border-radius: var(--radius-pill);
+            border: 1.5px solid rgba(255, 215, 0, 0.2);
+            background: transparent;
+            color: var(--text-light);
+            font-size: 0.88rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .faq-category-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .faq-category-btn.active {
+            background: var(--gradient-gold);
+            color: var(--navy-dark);
+            border-color: var(--gold);
+        }
+
+        /* FAQ list */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .faq-item {
+            background: rgba(26, 45, 74, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: var(--transition-fast);
+        }
+
+        .faq-item:hover {
+            border-color: rgba(255, 215, 0, 0.15);
+        }
+
+        .faq-item.open {
+            border-color: var(--gold);
+            background: rgba(26, 45, 74, 0.6);
+        }
+
+        .faq-question {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1.15rem 1.35rem;
+            cursor: pointer;
+            user-select: none;
+            list-style: none;
+        }
+
+        .faq-question .q-text {
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 0.98rem;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            flex: 1;
+            line-height: 1.4;
+        }
+
+        .faq-question .q-icon {
+            color: var(--gold);
+            font-size: 1.05rem;
+            flex-shrink: 0;
+        }
+
+        .faq-question .toggle-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            transition: var(--transition-fast);
+        }
+
+        .faq-item.open .toggle-icon {
+            background: var(--gold);
+            color: var(--navy-dark);
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 1000px;
+        }
+
+        .faq-answer-content {
+            padding: 0 1.35rem 1.35rem 1.35rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            line-height: 1.75;
+            font-size: 0.93rem;
+        }
+
+        .faq-answer-content ul {
+            margin: 0.65rem 0;
+            padding-left: 1.5rem;
+            list-style: none;
+        }
+
+        .faq-answer-content ul li {
+            padding: 0.3rem 0;
+            padding-left: 1.15rem;
+            position: relative;
+        }
+
+        .faq-answer-content ul li::before {
+            content: '•';
+            color: var(--gold);
+            font-weight: 700;
+            position: absolute;
+            left: 0;
+            font-size: 1.1rem;
+        }
+
+        .faq-answer-content strong { color: var(--gold); }
+
+        .faq-answer-content a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+        .faq-answer-content a:hover { text-decoration: underline; }
+
+        /* CTA */
+        .faq-cta {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.08), rgba(26, 45, 74, 0.5));
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            border-radius: var(--radius-md);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .faq-cta h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .faq-cta p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .faq-cta .btn {
+            padding: 0.85rem 1.75rem;
+        }
+
+        /* Empty state */
+        .faq-empty {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+        }
+        .faq-empty .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+
+        @media (max-width: 640px) {
+            .faq-question { padding: 1rem 1.15rem; }
+            .faq-question .q-text { font-size: 0.92rem; }
+            .faq-answer-content { padding: 0 1.15rem 1.15rem; padding-top: 0.75rem; }
+            .faq-category-btn { font-size: 0.82rem; padding: 0.5rem 0.95rem; }
+            .faq-cta { padding: 1.75rem 1.25rem; }
+        }
+    </style>
+</head>
+<body id="main-content">
+
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <div id="header-placeholder"></div>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>❓ Frequently Asked <span class="text-gold">Questions</span></h1>
+            <p>Everything you need to know about Genera Tech Hub. Can't find an answer? Chat with us on WhatsApp.</p>
+        </div>
+    </section>
+
+    <main class="container faq-content" id="main">
+
+        <!-- Categories -->
+        <div class="faq-categories" role="tablist">
+            <button class="faq-category-btn active" data-category="all">
+                <i class="fas fa-th"></i> All
+            </button>
+            <button class="faq-category-btn" data-category="products">
+                <i class="fas fa-box"></i> Products
+            </button>
+            <button class="faq-category-btn" data-category="repairs">
+                <i class="fas fa-tools"></i> Repairs
+            </button>
+            <button class="faq-category-btn" data-category="trade">
+                <i class="fas fa-exchange-alt"></i> Trade-in
+            </button>
+            <button class="faq-category-btn" data-category="delivery">
+                <i class="fas fa-truck"></i> Delivery &amp; Support
+            </button>
+        </div>
+
+        <!-- FAQ List -->
+        <div class="faq-list" id="faqList">
+
+            <!-- ===== PRODUCTS ===== -->
+            <div class="faq-item" data-category="products">
+                <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                    <div class="q-text">
+                        <span class="q-icon">🛍️</span>
+                        What kind of products do you sell?
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        We sell a range of technology products:
+                        <ul>
+                            <li><strong>Phones</strong> — Various brands including Apple, Samsung, Tecno, Infinix, Google, Xiaomi</li>
+                            <li><strong>Laptops</strong> — Including HP, Dell, Lenovo, Apple, Asus</li>
+                            <li><strong>Tablets</strong> — Various brands</li>
+                            <li><strong>Accessories</strong> — Cases, chargers, earphones, power banks, and more</li>
+                        </ul>
+                        Check our <a href="/src/pages/products.html">Products page</a> to see current stock.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item" data-category="products">
+                <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                    <div class="q-text">
+                        <span class="q-icon">✅</span>
+                        Are your products genuine?
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Yes. Every device we sell is either brand new, certified refurbished, or verified used. We inspect all items before sale and describe them accurately. If you have specific questions about any product, just ask us on WhatsApp.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item" data-category="products">
+                <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                    <div class="q-text">
+                        <span class="q-icon">💰</span>
+                        How do I know the price?
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Prices are shown on each product page. For personalised deals or bulk purchases, message us on WhatsApp — we're happy to discuss options.
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== REPAIRS ===== -->
+            <div class="faq-item" data-category="repairs">
+                <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                    <div class="q-text">
+                        <span class="q-icon">🔧</span>
+                        What devices can you repair?
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        We repair phones, laptops, tablets, and some accessories. Common repairs include:
+                        <ul>
+                            <li>Screen replacement</li>
+                            <li>Battery replacement</li>
+                            <li>Charging port repair</li>
+                            <li>Software issues</li>
+                            <li>SSD and RAM upgrades</li>
+                            <li>Operating system installation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item" data-category="repairs">
+                <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                    <div class="q-text">
+                        <span class="q-icon">⏱️</span>
+                        How long does a repair take?
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Repair time depends on the issue. Simple repairs may be done the same day. More complex repairs may take a few days. We'll give you a clear estimate when we receive your device.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item" data-category="repairs">
+                <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                    <div class="q-text">
+                        <span class="q-icon">🛡️</span>
+                        Is there a warranty on repairs?
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Warranty terms depend on the specific repair. We'll let you know the warranty terms before starting any work. If an issue arises within the warranty period that's related to our repair, we'll address it.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item" data-category="repairs">
+                <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                    <div class="q-text">
+                        <span class="q-icon">💾</span>
+                        Will I lose my data during repair?
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Please <strong>back up your data before</strong> submitting your device for repair. While we take every precaution, some repairs (especially software-related) may require a data reset. We are not responsible for data loss.
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== TRADE-IN ===== -->
+            <div class="faq-item" data-category="trade">
+                <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                    <div class="q-text">
+                        <span class="q-icon">🔄</span>
+                        How does trade-in work?
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Our trade-in process is simple:
+                        <ul>
+                            <li><strong>1.</strong> Fill the form on our <a href="/src/pages/swap.html">Trade-in page</a></li>
+                            <li><strong>2.</strong> We review your device details</li>
+                            <li><strong>3.</strong> We contact you on WhatsApp with an offer</li>
+                            <li><strong>4.</strong> You accept or decline</li>
+                            <li><strong>5.</strong> Get cash or upgrade to a new device</li>
+                        </ul>
+                        No obligation until you accept the offer.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item" data-category="trade">
+                <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                    <div class="q-text">
+                        <span class="q-icon">📱</span>
+                        What devices do you accept for trade-in?
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        We accept most devices in reasonable condition:
+                        <ul>
+                            <li>Phones (all major brands)</li>
+                            <li>Laptops (all major brands)</li>
+                            <li>Tablets</li>
+                            <li>Some smart watches</li>
+                        </ul>
+                        Even damaged devices may have value. Let us know what you have.
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== DELIVERY & SUPPORT ===== -->
+            <div class="faq-item" data-category="delivery">
+                <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                    <div class="q-text">
+                        <span class="q-icon">🚗</span>
+                        Do you offer delivery?
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Yes, we offer pickup and delivery options. Availability and fees depend on your location. Chat with us on WhatsApp to arrange a delivery that works for you.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item" data-category="delivery">
+                <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                    <div class="q-text">
+                        <span class="q-icon">💬</span>
+                        How do I contact you?
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        The fastest way is WhatsApp:
+                        <ul>
+                            <li>💬 <a href="https://wa.me/2348081302228" target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></li>
+                            <li>📞 Call: <a href="tel:08081302228">08081302228</a></li>
+                            <li>✉️ Email: <a href="mailto:info@generatechub.com">info@generatechub.com</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item" data-category="delivery">
+                <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                    <div class="q-text">
+                        <span class="q-icon">🕐</span>
+                        What are your business hours?
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <ul>
+                            <li><strong>Monday – Saturday:</strong> 8:00 AM – 8:00 PM</li>
+                            <li><strong>Sunday:</strong> By appointment</li>
+                            <li><strong>WhatsApp Support:</strong> Available 24/7 for messages</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Empty state (hidden by default, shown when no FAQ matches filter) -->
+        <div class="faq-empty" id="faqEmpty" style="display: none;">
+            <div class="empty-icon">🔍</div>
+            <p>No questions in this category yet.</p>
+        </div>
+
+        <!-- CTA -->
+        <div class="faq-cta">
+            <h3>Still Have Questions?</h3>
+            <p>We're here to help. Message us on WhatsApp for a quick response.</p>
+            <a href="https://wa.me/2348081302228?text=Hi%20Genera%20Tech%20Hub!%20I%20have%20a%20question."
+               target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+                <i class="fab fa-whatsapp"></i> Chat with Us
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <!-- Load header/footer -->
+    <script>
+        fetch('/src/components/header.html')
+            .then(r => r.text())
+            .then(d => { document.getElementById('header-placeholder').innerHTML = d; })
+            .catch(() => console.warn('Header not loaded'));
+
+        fetch('/src/components/footer.html')
+            .then(r => r.text())
+            .then(d => { document.getElementById('footer-placeholder').innerHTML = d; })
+            .catch(() => console.warn('Footer not loaded'));
+    </script>
+
+    <!-- FAQ logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Toggle answers
+            document.querySelectorAll('.faq-question').forEach(q => {
+                const toggle = () => {
+                    const item = q.parentElement;
+                    const isOpen = item.classList.contains('open');
+                    item.classList.toggle('open');
+                    q.setAttribute('aria-expanded', !isOpen ? 'true' : 'false');
+                };
+
+                q.addEventListener('click', toggle);
+                q.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggle();
+                    }
+                });
+            });
+
+            // Category filter
+            document.querySelectorAll('.faq-category-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    document.querySelectorAll('.faq-category-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const category = this.dataset.category;
+                    let visibleCount = 0;
+
+                    document.querySelectorAll('.faq-item').forEach(item => {
+                        const matches = (category === 'all' || item.dataset.category === category);
+                        item.style.display = matches ? '' : 'none';
+                        if (matches) visibleCount++;
+                    });
+
+                    document.getElementById('faqEmpty').style.display = visibleCount === 0 ? 'block' : 'none';
+                });
+            });
+
+            // Open first item by default
+            const first = document.querySelector('.faq-item');
+            if (first) {
+                first.classList.add('open');
+                const q = first.querySelector('.faq-question');
+                if (q) q.setAttribute('aria-expanded', 'true');
+            }
+        });
+    </script>
+
+</body>
+</html>

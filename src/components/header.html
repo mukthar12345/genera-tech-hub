@@ -1,0 +1,47 @@
+<!-- ============================================================
+     GENERA TECH HUB — HEADER COMPONENT
+     Version: 2.0 — Production Ready
+     Loaded dynamically via fetch() on every page
+     ============================================================ -->
+
+<header>
+    <nav class="nav-container" role="navigation" aria-label="Main Navigation">
+
+        <!-- Logo -->
+        <a href="/src/pages/index.html" class="logo" aria-label="Genera Tech Hub — Home">
+            <span class="logo-mark">🔧</span>
+            <span class="logo-name">Genera<span>Tech</span> Hub</span>
+        </a>
+
+        <!-- Navigation Panel -->
+        <div class="nav-panel" id="navPanel">
+
+            <!-- Navigation Links -->
+            <ul class="nav-links">
+                <li><a href="/src/pages/index.html">Home</a></li>
+                <li><a href="/src/pages/products.html">Products</a></li>
+                <li><a href="/src/pages/repair.html">Repair</a></li>
+                <li><a href="/src/pages/swap.html">Trade-in</a></li>
+                <li><a href="/src/pages/reviews.html">Reviews</a></li>
+                <li><a href="/src/pages/about.html">About</a></li>
+                <li><a href="/src/pages/contact.html">Contact</a></li>
+                <li><a href="/src/pages/products.html" class="cta-nav">🛍️ Shop</a></li>
+            </ul>
+
+            <!-- Auth Buttons (populated by main.js based on login status) -->
+            <div class="auth-buttons">
+                <a href="/src/pages/login.html" class="btn btn-secondary btn-sm">Login</a>
+                <a href="/src/pages/login.html#signup" class="btn btn-primary btn-sm">Sign Up</a>
+            </div>
+
+        </div>
+
+        <!-- Hamburger Menu (mobile only) -->
+        <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navPanel">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+    </nav>
+</header>

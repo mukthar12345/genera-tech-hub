@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0A1628">
+
+    <title>Page Not Found — Genera Tech Hub</title>
+    <meta name="description" content="The page you're looking for could not be found.">
+    <meta name="robots" content="noindex, follow">
+
+    <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+
+    <style>
+        /* ============================================================
+           404 PAGE SPECIFIC
+           ============================================================ */
+
+        .error-page {
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: calc(var(--header-height) + 2rem) 1rem 3rem;
+            background: var(--gradient-hero);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-page::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 40%, rgba(255, 215, 0, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .error-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .error-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .error-code {
+            font-family: var(--font-heading);
+            font-size: clamp(5rem, 18vw, 10rem);
+            font-weight: 900;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            letter-spacing: -0.05em;
+            margin-bottom: 0.75rem;
+        }
+
+        .error-content h1 {
+            font-size: clamp(1.35rem, 3.5vw, 2rem);
+            margin-bottom: 0.75rem;
+        }
+
+        .error-content > p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .error-buttons {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2.5rem;
+        }
+
+        .error-buttons .btn {
+            padding: 0.85rem 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .help-section {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .help-section p {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            margin-bottom: 1rem;
+        }
+
+        .help-links {
+            display: flex;
+            gap: 0.75rem 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .help-links a {
+            color: var(--gold);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: var(--transition-fast);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .help-links a:hover {
+            color: var(--gold-light);
+            text-decoration: underline;
+        }
+
+        .trust-tag {
+            margin-top: 2.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gold);
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            opacity: 0.85;
+        }
+
+        @media (max-width: 480px) {
+            .error-buttons { flex-direction: column; }
+            .error-buttons .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body id="main-content">
+
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <div id="header-placeholder"></div>
+
+    <section class="error-page" id="main">
+        <div class="error-content">
+
+            <div class="error-icon">🔍</div>
+
+            <div class="error-code">404</div>
+
+            <h1>Page Not Found</h1>
+
+            <p>
+                Sorry — the page you're looking for doesn't exist or has been moved. Let's get you back on track.
+            </p>
+
+            <div class="error-buttons">
+                <a href="/src/pages/index.html" class="btn btn-primary">
+                    <i class="fas fa-home"></i> Go Home
+                </a>
+                <a href="/src/pages/products.html" class="btn btn-secondary">
+                    <i class="fas fa-shopping-bag"></i> Browse Products
+                </a>
+                <a href="https://wa.me/2348081302228" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+                    <i class="fab fa-whatsapp"></i> Get Help
+                </a>
+            </div>
+
+            <div class="help-section">
+                <p>Popular pages you may be looking for:</p>
+                <div class="help-links">
+                    <a href="/src/pages/repair.html">🔧 Repair Services</a>
+                    <a href="/src/pages/swap.html">🔄 Trade-in</a>
+                    <a href="/src/pages/reviews.html">⭐ Reviews</a>
+                    <a href="/src/pages/contact.html">📞 Contact</a>
+                    <a href="/src/pages/about.html">🏢 About Us</a>
+                </div>
+            </div>
+
+            <div class="trust-tag">
+                <i class="fas fa-crown"></i>
+                Genera Tech Hub — Technology You Can Trust
+            </div>
+
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        fetch('/src/components/header.html')
+            .then(r => r.text())
+            .then(d => { document.getElementById('header-placeholder').innerHTML = d; })
+            .catch(() => console.warn('Header not loaded'));
+
+        fetch('/src/components/footer.html')
+            .then(r => r.text())
+            .then(d => { document.getElementById('footer-placeholder').innerHTML = d; })
+            .catch(() => console.warn('Footer not loaded'));
+    </script>
+
+</body>
+</html>

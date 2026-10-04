@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0A1628">
+
+    <title>Trade-In &amp; Swap — Genera Tech Hub | Upgrade Your Device</title>
+    <meta name="description" content="Trade in your old phone or laptop at Genera Tech Hub. Get cash or upgrade to a new device. Fast, fair, and hassle-free.">
+    <meta name="keywords" content="trade-in phone, swap laptop, sell old device, upgrade phone, Genera Tech Hub">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Trade-In &amp; Swap — Genera Tech Hub">
+    <meta property="og:description" content="Get value for your old device — cash or upgrade.">
+
+    <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="/public/css/style.css">
+
+    <style>
+        /* ============================================================
+           SWAP / TRADE-IN PAGE SPECIFIC
+           ============================================================ */
+
+        .swap-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 2.5rem;
+            padding: 2rem 0 4rem;
+        }
+
+        .swap-form-card {
+            background: rgba(26, 45, 74, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+        }
+
+        /* Form sections */
+        .form-section {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .form-section:last-of-type { border-bottom: none; padding-bottom: 0; }
+
+        .form-section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            color: var(--gold);
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-section-title .step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--gradient-gold);
+            color: var(--navy-dark);
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Device type grid */
+        .device-type-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+
+        .device-type-card {
+            padding: 1rem 0.5rem;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .device-type-card:hover { border-color: var(--gold-soft); background: rgba(255, 215, 0, 0.04); }
+        .device-type-card.selected { border-color: var(--gold); background: rgba(255, 215, 0, 0.08); }
+
+        .device-type-card .dt-icon { font-size: 1.75rem; display: block; margin-bottom: 0.35rem; }
+        .device-type-card .dt-label { font-size: 0.82rem; color: var(--text-light); font-weight: 500; }
+
+        /* Condition radio cards */
+        .condition-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .condition-card {
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            text-align: center;
+        }
+
+        .condition-card:hover { border-color: var(--gold-soft); }
+        .condition-card.selected { border-color: var(--gold); background: rgba(255, 215, 0, 0.08); }
+
+        .condition-card .c-icon { font-size: 1.75rem; display: block; margin-bottom: 0.35rem; }
+        .condition-card .c-label { font-size: 0.88rem; color: var(--text-light); font-weight: 600; }
+        .condition-card .c-desc { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem; display: block; }
+
+        /* Radio cards (preference) */
+        .radio-cards { display: grid; gap: 0.75rem; margin-top: 0.5rem; }
+
+        .radio-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            padding: 1rem 1.15rem;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .radio-card:hover { border-color: var(--gold-soft); background: rgba(255, 215, 0, 0.04); }
+        .radio-card.selected { border-color: var(--gold); background: rgba(255, 215, 0, 0.06); }
+        .radio-card input[type="radio"] { display: none; }
+
+        .radio-card .radio-icon { font-size: 1.5rem; flex-shrink: 0; }
+        .radio-card .radio-content { flex: 1; }
+        .radio-card .radio-title {
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 0.92rem;
+            margin-bottom: 0.15rem;
+        }
+        .radio-card .radio-desc {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            line-height: 1.5;
+        }
+
+        .radio-card .radio-check {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-fast);
+        }
+        .radio-card.selected .radio-check {
+            background: var(--gold);
+            border-color: var(--gold);
+        }
+        .radio-card.selected .radio-check::after {
+            content: '✓';
+            color: var(--navy-dark);
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        /* Info box */
+        .info-box {
+            background: rgba(0, 188, 212, 0.08);
+            border-left: 3px solid var(--info);
+            padding: 1rem 1.15rem;
+            border-radius: var(--radius-sm);
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        .info-box strong { color: var(--info); }
+
+        /* Sidebar */
+        .swap-sidebar { display: flex; flex-direction: column; gap: 1.25rem; }
+
+        .sidebar-card {
+            background: rgba(26, 45, 74, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+        }
+
+        .sidebar-card h4 {
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .sidebar-card ul { padding: 0; }
+        .sidebar-card ul li {
+            color: var(--text-light);
+            padding: 0.35rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+        .sidebar-card ul li::before {
+            content: '✓';
+            color: var(--gold);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .sidebar-card p {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        /* WhatsApp CTA */
+        .whatsapp-cta {
+            background: rgba(37, 211, 102, 0.08);
+            border: 1px solid rgba(37, 211, 102, 0.2);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .whatsapp-cta .wa-icon { font-size: 2.25rem; display: block; margin-bottom: 0.5rem; }
+        .whatsapp-cta h4 { color: #25D366; margin-bottom: 0.35rem; font-size: 0.95rem; }
+        .whatsapp-cta p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; }
+
+        /* Success */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+        .success-message.show { display: block; }
+        .success-message .success-icon { font-size: 4rem; margin-bottom: 1rem; }
+        .success-message h2 { color: var(--success); margin-bottom: 0.5rem; }
+        .success-message p { color: var(--text-muted); max-width: 500px; margin: 0 auto 1.5rem; }
+
+        .ref-box {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.1);
+            padding: 0.6rem 1.5rem;
+            border-radius: var(--radius-sm);
+            color: var(--gold);
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin: 0.5rem 0 1.5rem;
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            letter-spacing: 1px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .swap-layout { grid-template-columns: 1fr; gap: 2rem; }
+            .swap-sidebar { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+        }
+
+        @media (max-width: 768px) {
+            .swap-form-card { padding: 1.25rem; }
+            .condition-grid { grid-template-columns: 1fr; }
+            .swap-sidebar { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body id="main-content">
+
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <div id="header-placeholder"></div>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>🔄 Trade-In &amp; <span class="text-gold">Swap</span></h1>
+            <p>Turn your old device into value — cash or upgrade. Fill the form and we'll contact you.</p>
+        </div>
+    </section>
+
+    <section class="container swap-layout" id="main">
+
+        <!-- Main Form -->
+        <div class="swap-form-card" id="formContainer">
+            <form id="swapForm" novalidate>
+
+                <!-- SECTION 1: YOUR DEVICE -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <span class="step-num">1</span>
+                        Your Device
+                    </div>
+
+                    <!-- Device type -->
+                    <div class="form-group">
+                        <label>Device Type <span class="required">*</span></label>
+                        <div class="device-type-grid" id="deviceTypeOptions">
+                            <div class="device-type-card" data-value="Phone" role="button" tabindex="0">
+                                <span class="dt-icon">📱</span>
+                                <span class="dt-label">Phone</span>
+                            </div>
+                            <div class="device-type-card" data-value="Laptop" role="button" tabindex="0">
+                                <span class="dt-icon">💻</span>
+                                <span class="dt-label">Laptop</span>
+                            </div>
+                            <div class="device-type-card" data-value="Tablet" role="button" tabindex="0">
+                                <span class="dt-icon">📟</span>
+                                <span class="dt-label">Tablet</span>
+                            </div>
+                        </div>
+                        <input type="hidden" id="deviceType" name="deviceType" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="deviceBrand">Brand <span class="required">*</span></label>
+                            <select id="deviceBrand" name="deviceBrand" class="form-control" required>
+                                <option value="">Select brand</option>
+                                <option value="Apple">Apple</option>
+                                <option value="Samsung">Samsung</option>
+                                <option value="Tecno">Tecno</option>
+                                <option value="Infinix">Infinix</option>
+                                <option value="Google">Google</option>
+                                <option value="Xiaomi">Xiaomi</option>
+                                <option value="OnePlus">OnePlus</option>
+                                <option value="Oppo">Oppo</option>
+                                <option value="Vivo">Vivo</option>
+                                <option value="Nokia">Nokia</option>
+                                <option value="HP">HP</option>
+                                <option value="Dell">Dell</option>
+                                <option value="Lenovo">Lenovo</option>
+                                <option value="Asus">Asus</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="deviceModel">Model <span class="required">*</span></label>
+                            <input type="text" id="deviceModel" name="deviceModel" class="form-control"
+                                   placeholder="e.g., iPhone 13 Pro" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="deviceStorage">Storage</label>
+                            <select id="deviceStorage" name="deviceStorage" class="form-control">
+                                <option value="">Select storage</option>
+                                <option value="16GB">16GB</option>
+                                <option value="32GB">32GB</option>
+                                <option value="64GB">64GB</option>
+                                <option value="128GB">128GB</option>
+                                <option value="256GB">256GB</option>
+                                <option value="512GB">512GB</option>
+                                <option value="1TB">1TB</option>
+                                <option value="2TB+">2TB or more</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="deviceAge">Device Age</label>
+                            <select id="deviceAge" name="deviceAge" class="form-control">
+                                <option value="">Select age</option>
+                                <option value="Less than 3 months">Less than 3 months</option>
+                                <option value="3-6 months">3-6 months</option>
+                                <option value="6-12 months">6-12 months</option>
+                                <option value="1-2 years">1-2 years</option>
+                                <option value="2-3 years">2-3 years</option>
+                                <option value="More than 3 years">More than 3 years</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: CONDITION -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <span class="step-num">2</span>
+                        Device Condition
+                    </div>
+
+                    <div class="condition-grid" id="conditionOptions">
+                        <div class="condition-card" data-value="Excellent" role="button" tabindex="0">
+                            <span class="c-icon">⭐</span>
+                            <span class="c-label">Excellent</span>
+                            <span class="c-desc">Like new, no visible wear</span>
+                        </div>
+                        <div class="condition-card" data-value="Good" role="button" tabindex="0">
+                            <span class="c-icon">👍</span>
+                            <span class="c-label">Good</span>
+                            <span class="c-desc">Minor wear, works perfectly</span>
+                        </div>
+                        <div class="condition-card" data-value="Fair" role="button" tabindex="0">
+                            <span class="c-icon">😐</span>
+                            <span class="c-label">Fair</span>
+                            <span class="c-desc">Visible wear, some issues</span>
+                        </div>
+                        <div class="condition-card" data-value="Poor" role="button" tabindex="0">
+                            <span class="c-icon">⚠️</span>
+                            <span class="c-label">Poor</span>
+                            <span class="c-desc">Damaged, needs repair</span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="deviceCondition" name="deviceCondition" required>
+
+                    <div class="form-group" style="margin-top: 1.25rem; margin-bottom: 0;">
+                        <label for="deviceNotes">Additional Details (optional)</label>
+                        <textarea id="deviceNotes" name="deviceNotes" class="form-control"
+                                  placeholder="E.g., Original box included, battery health 85%, small scratch on back."></textarea>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: PREFERENCE -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <span class="step-num">3</span>
+                        What Do You Want?
+                    </div>
+
+                    <div class="radio-cards" id="preferenceOptions">
+                        <label class="radio-card" data-value="cash">
+                            <input type="radio" name="swapPreference" value="cash">
+                            <span class="radio-icon">💰</span>
+                            <div class="radio-content">
+                                <div class="radio-title">Sell for Cash</div>
+                                <div class="radio-desc">Get paid for your device.</div>
+                            </div>
+                            <span class="radio-check"></span>
+                        </label>
+
+                        <label class="radio-card" data-value="upgrade">
+                            <input type="radio" name="swapPreference" value="upgrade">
+                            <span class="radio-icon">🔄</span>
+                            <div class="radio-content">
+                                <div class="radio-title">Upgrade to a New Device</div>
+                                <div class="radio-desc">Trade for something newer.</div>
+                            </div>
+                            <span class="radio-check"></span>
+                        </label>
+
+                        <label class="radio-card" data-value="decide-later">
+                            <input type="radio" name="swapPreference" value="decide-later">
+                            <span class="radio-icon">🤔</span>
+                            <div class="radio-content">
+                                <div class="radio-title">Let Me See Options First</div>
+                                <div class="radio-desc">Get an offer before deciding.</div>
+                            </div>
+                            <span class="radio-check"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1.25rem; margin-bottom: 0;">
+                        <label for="targetDevice">If Upgrading, Which Device?</label>
+                        <input type="text" id="targetDevice" name="targetDevice" class="form-control"
+                               placeholder="e.g., iPhone 15 Pro, MacBook Air M2">
+                    </div>
+                </div>
+
+                <!-- SECTION 4: CONTACT -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <span class="step-num">4</span>
+                        Your Contact Details
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customerName">Full Name <span class="required">*</span></label>
+                        <input type="text" id="customerName" name="customerName" class="form-control"
+                               placeholder="Your full name" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customerPhone">Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="customerPhone" name="customerPhone" class="form-control"
+                                   placeholder="e.g., 08012345678" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerWhatsApp">WhatsApp (if different)</label>
+                            <input type="tel" id="customerWhatsApp" name="customerWhatsApp" class="form-control"
+                                   placeholder="Optional">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="customerEmail">Email (optional)</label>
+                        <input type="email" id="customerEmail" name="customerEmail" class="form-control"
+                               placeholder="you@email.com">
+                    </div>
+                </div>
+
+                <!-- Info -->
+                <div class="info-box">
+                    <strong>💬 What Happens Next?</strong><br>
+                    Your details will open in WhatsApp. We'll review and contact you with an offer.
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 0.5rem;">
+                    <i class="fas fa-exchange-alt"></i> Submit Trade-In Request
+                </button>
+
+                <p class="text-center text-muted" style="font-size: 0.82rem; margin-top: 0.75rem;">
+                    <i class="fas fa-lock"></i> Your information will be sent via WhatsApp
+                </p>
+            </form>
+        </div>
+
+        <!-- Success -->
+        <div class="success-message" id="successMessage" style="display: none;">
+            <div class="success-icon">✅</div>
+            <h2>Trade-In Request Submitted!</h2>
+            <p>Your request has been sent. We'll contact you on WhatsApp shortly with an offer.</p>
+            <div class="ref-box" id="refNumberBox">GTH-SWP-2026-0000</div>
+            <p style="font-size: 0.85rem;"><strong>Save your reference number</strong> for tracking.</p>
+            <div style="margin-top: 1.5rem;">
+                <a href="/src/pages/index.html" class="btn btn-primary">
+                    <i class="fas fa-home"></i> Return Home
+                </a>
+                <a href="/src/pages/swap.html" class="btn btn-secondary" style="margin-left: 0.5rem;">
+                    <i class="fas fa-redo"></i> New Request
+                </a>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="swap-sidebar">
+            <div class="sidebar-card">
+                <h4>⭐ Why Trade With Us</h4>
+                <ul>
+                    <li>Fair valuation</li>
+                    <li>Cash or upgrade options</li>
+                    <li>Fast response on WhatsApp</li>
+                    <li>Same-day upgrade available</li>
+                    <li>Professional evaluation</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-card">
+                <h4>📋 How It Works</h4>
+                <p>
+                    <strong style="color: var(--gold);">1.</strong> Fill this form<br>
+                    <strong style="color: var(--gold);">2.</strong> We review your device<br>
+                    <strong style="color: var(--gold);">3.</strong> We send an offer on WhatsApp<br>
+                    <strong style="color: var(--gold);">4.</strong> You accept or decline<br>
+                    <strong style="color: var(--gold);">5.</strong> Cash or upgrade!
+                </p>
+            </div>
+
+            <div class="sidebar-card">
+                <h4>✅ What We Accept</h4>
+                <ul>
+                    <li>Phones (all brands)</li>
+                    <li>Laptops (all brands)</li>
+                    <li>Tablets</li>
+                    <li>Smart watches</li>
+                </ul>
+            </div>
+
+            <div class="whatsapp-cta">
+                <span class="wa-icon">💬</span>
+                <h4>Have Questions?</h4>
+                <p>Message us directly on WhatsApp.</p>
+                <a href="https://wa.me/2348081302228?text=Hi%20Genera%20Tech%20Hub!%20I%20want%20to%20trade%20in%20a%20device."
+                   target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-block">
+                    <i class="fab fa-whatsapp"></i> Chat Now
+                </a>
+            </div>
+        </aside>
+
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <!-- Load header/footer -->
+    <script>
+        fetch('/src/components/header.html')
+            .then(r => r.text())
+            .then(d => { document.getElementById('header-placeholder').innerHTML = d; })
+            .catch(() => console.warn('Header not loaded'));
+
+        fetch('/src/components/footer.html')
+            .then(r => r.text())
+            .then(d => { document.getElementById('footer-placeholder').innerHTML = d; })
+            .catch(() => console.warn('Footer not loaded'));
+    </script>
+
+    <!-- Load app scripts -->
+    <script>
+        (function () {
+            function loadScript(src) {
+                return new Promise((resolve, reject) => {
+                    if (document.querySelector(`script[src="${src}"]`)) return resolve();
+                    const s = document.createElement('script');
+                    s.src = src;
+                    s.async = false;
+                    s.onload = resolve;
+                    s.onerror = () => reject(new Error(`Could not load ${src}`));
+                    document.head.appendChild(s);
+                });
+            }
+
+            (async function () {
+                try {
+                    await loadScript('/public/js/supabase.js');
+                    await loadScript('/public/js/auth.js');
+                    await loadScript('/public/js/main.js');
+                    console.log('✅ Swap page scripts loaded');
+                    initSwapPage();
+                } catch (err) {
+                    console.error('❌ Script load error:', err);
+                }
+            })();
+        })();
+    </script>
+
+    <!-- Swap page logic -->
+    <script>
+        function initSwapPage() {
+            console.log('🔄 Swap page initializing...');
+
+            setupDeviceType();
+            setupCondition();
+            setupPreference();
+        }
+
+        function setupDeviceType() {
+            const cards = document.querySelectorAll('#deviceTypeOptions .device-type-card');
+            const hidden = document.getElementById('deviceType');
+
+            cards.forEach(card => {
+                const select = () => {
+                    cards.forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    hidden.value = card.dataset.value;
+                    hidden.classList.remove('error');
+                };
+                card.addEventListener('click', select);
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        select();
+                    }
+                });
+            });
+        }
+
+        function setupCondition() {
+            const cards = document.querySelectorAll('#conditionOptions .condition-card');
+            const hidden = document.getElementById('deviceCondition');
+
+            cards.forEach(card => {
+                const select = () => {
+                    cards.forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    hidden.value = card.dataset.value;
+                    hidden.classList.remove('error');
+                };
+                card.addEventListener('click', select);
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        select();
+                    }
+                });
+            });
+        }
+
+        function setupPreference() {
+            const options = document.querySelectorAll('#preferenceOptions .radio-card');
+
+            options.forEach(option => {
+                option.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    options.forEach(o => {
+                        o.classList.remove('selected');
+                        const r = o.querySelector('input[type="radio"]');
+                        if (r) r.checked = false;
+                    });
+                    this.classList.add('selected');
+                    const radio = this.querySelector('input[type="radio"]');
+                    if (radio) radio.checked = true;
+                });
+            });
+        }
+    </script>
+
+</body>
+</html>

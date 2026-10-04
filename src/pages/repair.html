@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0A1628">
+
+    <title>Book a Repair — Genera Tech Hub</title>
+    <meta name="description" content="Book professional phone or laptop repairs at Genera Tech Hub. Screens, batteries, software, upgrades — with pickup and delivery options.">
+    <meta name="keywords" content="phone repair, laptop repair, book repair, screen replacement">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Book a Repair — Genera Tech Hub">
+    <meta property="og:description" content="Professional phone and laptop repair services.">
+
+    <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="/public/css/style.css">
+
+    <style>
+        .repair-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 2.5rem;
+            padding: 2rem 0 4rem;
+        }
+
+        .repair-form-card {
+            background: rgba(26, 45, 74, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .form-section:last-of-type { border-bottom: none; padding-bottom: 0; }
+
+        .form-section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            color: var(--gold);
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-section-title .step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--gradient-gold);
+            color: var(--navy-dark);
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .device-type-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+
+        .device-type-card {
+            padding: 1rem 0.5rem;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .device-type-card:hover { border-color: var(--gold-soft); background: rgba(255, 215, 0, 0.04); }
+        .device-type-card.selected { border-color: var(--gold); background: rgba(255, 215, 0, 0.08); }
+
+        .device-type-card .dt-icon { font-size: 1.75rem; display: block; margin-bottom: 0.35rem; }
+        .device-type-card .dt-label { font-size: 0.82rem; color: var(--text-light); font-weight: 500; }
+
+        .radio-cards { display: grid; gap: 0.75rem; margin-top: 0.5rem; }
+
+        .radio-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            padding: 1rem 1.15rem;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .radio-card:hover { border-color: var(--gold-soft); background: rgba(255, 215, 0, 0.04); }
+        .radio-card.selected { border-color: var(--gold); background: rgba(255, 215, 0, 0.06); }
+        .radio-card input[type="radio"] { display: none; }
+
+        .radio-card .radio-icon { font-size: 1.5rem; flex-shrink: 0; }
+        .radio-card .radio-content { flex: 1; }
+        .radio-card .radio-title {
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 0.92rem;
+            margin-bottom: 0.15rem;
+        }
+        .radio-card .radio-desc {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            line-height: 1.5;
+        }
+
+        .radio-card .radio-check {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-fast);
+        }
+        .radio-card.selected .radio-check {
+            background: var(--gold);
+            border-color: var(--gold);
+        }
+        .radio-card.selected .radio-check::after {
+            content: '✓';
+            color: var(--navy-dark);
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        .conditional-fields {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.15rem;
+            background: rgba(255, 215, 0, 0.03);
+            border-radius: var(--radius-sm);
+            border: 1px dashed rgba(255, 215, 0, 0.2);
+        }
+
+        .conditional-fields.visible {
+            display: block;
+            animation: fadeSlideIn 0.3s ease;
+        }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .info-box {
+            background: rgba(0, 188, 212, 0.08);
+            border-left: 3px solid var(--info);
+            padding: 1rem 1.15rem;
+            border-radius: var(--radius-sm);
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        .info-box strong { color: var(--info); }
+
+        .repair-sidebar { display: flex; flex-direction: column; gap: 1.25rem; }
+
+        .sidebar-card {
+            background: rgba(26, 45, 74, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+        }
+
+        .sidebar-card h4 {
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .sidebar-card ul { padding: 0; }
+        .sidebar-card ul li {
+            color: var(--text-light);
+            padding: 0.35rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+        .sidebar-card ul li::before {
+            content: '✓';
+            color: var(--gold);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .sidebar-card p {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        .whatsapp-cta {
+            background: rgba(37, 211, 102, 0.08);
+            border: 1px solid rgba(37, 211, 102, 0.2);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .whatsapp-cta .wa-icon { font-size: 2.25rem; display: block; margin-bottom: 0.5rem; }
+        .whatsapp-cta h4 { color: #25D366; margin-bottom: 0.35rem; font-size: 0.95rem; }
+        .whatsapp-cta p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; }
+
+        @media (max-width: 1024px) {
+            .repair-layout { grid-template-columns: 1fr; gap: 2rem; }
+            .repair-sidebar { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+        }
+
+        @media (max-width: 768px) {
+            .repair-form-card { padding: 1.25rem; }
+            .device-type-grid { grid-template-columns: repeat(2, 1fr); }
+            .repair-sidebar { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body id="main-content">
+
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <div id="header-placeholder"></div>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>🔧 Book a <span class="text-gold">Repair</span></h1>
+            <p>Fill in the form below and we'll contact you to confirm pickup or drop-off.</p>
+        </div>
+    </section>
+
+    <section class="container repair-layout" id="main">
+
+        <div class="repair-form-card">
+            <form id="repairForm" novalidate>
+
+                <!-- SECTION 1: DEVICE -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <span class="step-num">1</span>
+                        Your Device
+                    </div>
+
+                    <div class="form-group">
+                        <label>Device Type <span class="required">*</span></label>
+                        <div class="device-type-grid" id="deviceTypeOptions">
+                            <div class="device-type-card" data-value="Phone" role="button" tabindex="0">
+                                <span class="dt-icon">📱</span>
+                                <span class="dt-label">Phone</span>
+                            </div>
+                            <div class="device-type-card" data-value="Laptop" role="button" tabindex="0">
+                                <span class="dt-icon">💻</span>
+                                <span class="dt-label">Laptop</span>
+                            </div>
+                            <div class="device-type-card" data-value="Tablet" role="button" tabindex="0">
+                                <span class="dt-icon">📟</span>
+                                <span class="dt-label">Tablet</span>
+                            </div>
+                            <div class="device-type-card" data-value="Accessory" role="button" tabindex="0">
+                                <span class="dt-icon">⌚</span>
+                                <span class="dt-label">Accessory</span>
+                            </div>
+                        </div>
+                        <input type="hidden" id="deviceType" name="deviceType" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="deviceBrand">Brand <span class="required">*</span></label>
+                            <select id="deviceBrand" name="deviceBrand" class="form-control" required>
+                                <option value="">Select brand</option>
+                                <option value="Apple">Apple</option>
+                                <option value="Samsung">Samsung</option>
+                                <option value="Tecno">Tecno</option>
+                                <option value="Infinix">Infinix</option>
+                                <option value="Google">Google</option>
+                                <option value="Xiaomi">Xiaomi</option>
+                                <option value="OnePlus">OnePlus</option>
+                                <option value="Oppo">Oppo</option>
+                                <option value="Vivo">Vivo</option>
+                                <option value="Nokia">Nokia</option>
+                                <option value="HP">HP</option>
+                                <option value="Dell">Dell</option>
+                                <option value="Lenovo">Lenovo</option>
+                                <option value="Acer">Acer</option>
+                                <option value="Asus">Asus</option>
+                                <option value="Microsoft">Microsoft</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="deviceModel">Model <span class="required">*</span></label>
+                            <input type="text" id="deviceModel" name="deviceModel" class="form-control"
+                                   placeholder="e.g., iPhone 14 Pro" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="issueDescription">Describe the Issue <span class="required">*</span></label>
+                        <textarea id="issueDescription" name="issueDescription" class="form-control"
+                                  placeholder="E.g., Screen is cracked, touch works but display has black spots."
+                                  required></textarea>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: COLLECTION -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <span class="step-num">2</span>
+                        How Should We Get Your Device?
+                    </div>
+
+                    <div class="radio-cards" id="collectionOptions">
+                        <label class="radio-card" data-value="walk-in">
+                            <input type="radio" name="collectionMethod" value="walk-in">
+                            <span class="radio-icon">🏢</span>
+                            <div class="radio-content">
+                                <div class="radio-title">I'll Walk In</div>
+                                <div class="radio-desc">Bring your device to our store.</div>
+                            </div>
+                            <span class="radio-check"></span>
+                        </label>
+
+                        <label class="radio-card" data-value="pickup">
+                            <input type="radio" name="collectionMethod" value="pickup">
+                            <span class="radio-icon">🚗</span>
+                            <div class="radio-content">
+                                <div class="radio-title">Pick It Up From Me</div>
+                                <div class="radio-desc">We'll come to your location.</div>
+                            </div>
+                            <span class="radio-check"></span>
+                        </label>
+
+                        <label class="radio-card" data-value="dropoff-courier">
+                            <input type="radio" name="collectionMethod" value="dropoff-courier">
+                            <span class="radio-icon">📦</span>
+                            <div class="radio-content">
+                                <div class="radio-title">I'll Send via Courier</div>
+                                <div class="radio-desc">You arrange the courier.</div>
+                            </div>
+                            <span class="radio-check"></span>
+                        </label>
+                    </div>
+
+                    <div class="conditional-fields" id="pickupFields">
+                        <div class="info-box">
+                            <strong>📍 Pickup Address</strong><br>
+                            Where should we pick up your device?
+                        </div>
+                        <div class="form-group">
+                            <label for="pickupAddress">Address <span class="required">*</span></label>
+                            <input type="text" id="pickupAddress" name="pickupAddress" class="form-control"
+                                   placeholder="Full address">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="pickupLandmark">Landmark (optional)</label>
+                            <input type="text" id="pickupLandmark" name="pickupLandmark" class="form-control"
+                                   placeholder="e.g., Near Shoprite">
+                        </div>
+                    </div>
+
+                    <div class="form-row" style="margin-top: 1.25rem;">
+                        <div class="form-group">
+                            <label for="preferredDate">Preferred Date</label>
+                            <input type="date" id="preferredDate" name="preferredDate" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="preferredTime">Preferred Time</label>
+                            <select id="preferredTime" name="preferredTime" class="form-control">
+                                <option value="">Select time</option>
+                                <option value="Morning (8AM - 12PM)">🌅 Morning (8AM - 12PM)</option>
+                                <option value="Afternoon (12PM - 4PM)">☀️ Afternoon (12PM - 4PM)</option>
+                                <option value="Evening (4PM - 8PM)">🌆 Evening (4PM - 8PM)</option>
+                                <option value="Flexible">🕐 Flexible</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: DELIVERY -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <span class="step-num">3</span>
+                        How Do You Want It Back?
+                    </div>
+
+                    <div class="radio-cards" id="deliveryOptions">
+                        <label class="radio-card" data-value="pickup-in-person">
+                            <input type="radio" name="deliveryMethod" value="pickup-in-person">
+                            <span class="radio-icon">🏢</span>
+                            <div class="radio-content">
+                                <div class="radio-title">I'll Pick It Up</div>
+                                <div class="radio-desc">Collect from our store.</div>
+                            </div>
+                            <span class="radio-check"></span>
+                        </label>
+
+                        <label class="radio-card" data-value="delivered-to-me">
+                            <input type="radio" name="deliveryMethod" value="delivered-to-me">
+                            <span class="radio-icon">🚚</span>
+                            <div class="radio-content">
+                                <div class="radio-title">Deliver to My Address</div>
+                                <div class="radio-desc">We'll bring it back to you.</div>
+                            </div>
+                            <span class="radio-check"></span>
+                        </label>
+
+                        <label class="radio-card" data-value="dispatched">
+                            <input type="radio" name="deliveryMethod" value="dispatched">
+                            <span class="radio-icon">📦</span>
+                            <div class="radio-content">
+                                <div class="radio-title">Dispatch via Courier</div>
+                                <div class="radio-desc">We'll send it via courier.</div>
+                            </div>
+                            <span class="radio-check"></span>
+                        </label>
+                    </div>
+
+                    <div class="conditional-fields" id="deliveryFields">
+                        <div class="info-box">
+                            <strong>📦 Delivery Address</strong><br>
+                            Where should we deliver your repaired device?
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="deliveryAddress">Address <span class="required">*</span></label>
+                            <input type="text" id="deliveryAddress" name="deliveryAddress" class="form-control"
+                                   placeholder="Full delivery address">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 4: CONTACT -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <span class="step-num">4</span>
+                        Your Contact Details
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customerName">Full Name <span class="required">*</span></label>
+                        <input type="text" id="customerName" name="customerName" class="form-control"
+                               placeholder="Your full name" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customerPhone">Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="customerPhone" name="customerPhone" class="form-control"
+                                   placeholder="e.g., 08012345678" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerWhatsApp">WhatsApp (if different)</label>
+                            <input type="tel" id="customerWhatsApp" name="customerWhatsApp" class="form-control"
+                                   placeholder="Optional">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="customerEmail">Email (optional)</label>
+                        <input type="email" id="customerEmail" name="customerEmail" class="form-control"
+                               placeholder="you@email.com">
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <strong>💬 What Happens Next?</strong><br>
+                    When you click "Submit", your details will open in WhatsApp for us to confirm. You'll receive a reference number for tracking.
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 0.5rem;">
+                    <i class="fas fa-paper-plane"></i> Submit Repair Request
+                </button>
+
+                <p class="text-center text-muted" style="font-size: 0.82rem; margin-top: 0.75rem;">
+                    <i class="fas fa-lock"></i> Your information will be sent via WhatsApp
+                </p>
+            </form>
+        </div>
+
+        <aside class="repair-sidebar">
+            <div class="sidebar-card">
+                <h4>⭐ Why Choose Us</h4>
+                <ul>
+                    <li>Experienced technicians</li>
+                    <li>Quality replacement parts</li>
+                    <li>Clear pricing upfront</li>
+                    <li>Fast turnaround</li>
+                    <li>WhatsApp support</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-card">
+                <h4>📋 How It Works</h4>
+                <p>
+                    <strong style="color: var(--gold);">1.</strong> Fill this form<br>
+                    <strong style="color: var(--gold);">2.</strong> We contact you on WhatsApp<br>
+                    <strong style="color: var(--gold);">3.</strong> We diagnose your device<br>
+                    <strong style="color: var(--gold);">4.</strong> You approve the repair<br>
+                    <strong style="color: var(--gold);">5.</strong> We repair and return it
+                </p>
+            </div>
+
+            <div class="sidebar-card">
+                <h4>🔧 Common Repairs</h4>
+                <ul>
+                    <li>Screen replacement</li>
+                    <li>Battery replacement</li>
+                    <li>Charging port repair</li>
+                    <li>Software issues</li>
+                    <li>SSD &amp; RAM upgrades</li>
+                    <li>Windows installation</li>
+                </ul>
+            </div>
+
+            <div class="whatsapp-cta">
+                <span class="wa-icon">💬</span>
+                <h4>Prefer to Chat?</h4>
+                <p>Skip the form — message us directly on WhatsApp.</p>
+                <a href="https://wa.me/2348081302228?text=Hi%20Genera%20Tech%20Hub!%20I%20need%20a%20repair."
+                   target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-block">
+                    <i class="fab fa-whatsapp"></i> Chat Now
+                </a>
+            </div>
+        </aside>
+
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        fetch('/src/components/header.html')
+            .then(r => r.text())
+            .then(d => { document.getElementById('header-placeholder').innerHTML = d; })
+            .catch(() => console.warn('Header not loaded'));
+
+        fetch('/src/components/footer.html')
+            .then(r => r.text())
+            .then(d => { document.getElementById('footer-placeholder').innerHTML = d; })
+            .catch(() => console.warn('Footer not loaded'));
+    </script>
+
+    <script>
+        (function () {
+            function loadScript(src) {
+                return new Promise((resolve, reject) => {
+                    if (document.querySelector(`script[src="${src}"]`)) return resolve();
+                    const s = document.createElement('script');
+                    s.src = src;
+                    s.async = false;
+                    s.onload = resolve;
+                    s.onerror = () => reject(new Error(`Could not load ${src}`));
+                    document.head.appendChild(s);
+                });
+            }
+
+            (async function () {
+                try {
+                    await loadScript('/public/js/supabase.js');
+                    await loadScript('/public/js/auth.js');
+                    await loadScript('/public/js/main.js');
+                    console.log('✅ Repair page scripts loaded');
+                    initRepairPage();
+                } catch (err) {
+                    console.error('❌ Script load error:', err);
+                }
+            })();
+        })();
+    </script>
+
+    <script>
+        function initRepairPage() {
+            console.log('🔧 Repair page initializing...');
+            setupDeviceType();
+            setupCollectionMethod();
+            setupDeliveryMethod();
+            setMinDate();
+        }
+
+        function setupDeviceType() {
+            const cards = document.querySelectorAll('#deviceTypeOptions .device-type-card');
+            const hidden = document.getElementById('deviceType');
+
+            cards.forEach(card => {
+                const select = () => {
+                    cards.forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    hidden.value = card.dataset.value;
+                    hidden.classList.remove('error');
+                };
+                card.addEventListener('click', select);
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        select();
+                    }
+                });
+            });
+        }
+
+        function setupCollectionMethod() {
+            const options = document.querySelectorAll('#collectionOptions .radio-card');
+            const pickupFields = document.getElementById('pickupFields');
+            const pickupAddress = document.getElementById('pickupAddress');
+
+            options.forEach(option => {
+                option.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    options.forEach(o => {
+                        o.classList.remove('selected');
+                        const r = o.querySelector('input[type="radio"]');
+                        if (r) r.checked = false;
+                    });
+                    this.classList.add('selected');
+                    const radio = this.querySelector('input[type="radio"]');
+                    if (radio) radio.checked = true;
+
+                    const value = this.dataset.value;
+                    if (value === 'pickup') {
+                        pickupFields.classList.add('visible');
+                        pickupAddress.setAttribute('required', 'required');
+                    } else {
+                        pickupFields.classList.remove('visible');
+                        pickupAddress.removeAttribute('required');
+                    }
+                });
+            });
+        }
+
+        function setupDeliveryMethod() {
+            const options = document.querySelectorAll('#deliveryOptions .radio-card');
+            const deliveryFields = document.getElementById('deliveryFields');
+            const deliveryAddress = document.getElementById('deliveryAddress');
+
+            options.forEach(option => {
+                option.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    options.forEach(o => {
+                        o.classList.remove('selected');
+                        const r = o.querySelector('input[type="radio"]');
+                        if (r) r.checked = false;
+                    });
+                    this.classList.add('selected');
+                    const radio = this.querySelector('input[type="radio"]');
+                    if (radio) radio.checked = true;
+
+                    const value = this.dataset.value;
+                    if (value === 'delivered-to-me' || value === 'dispatched') {
+                        deliveryFields.classList.add('visible');
+                        deliveryAddress.setAttribute('required', 'required');
+                    } else {
+                        deliveryFields.classList.remove('visible');
+                        deliveryAddress.removeAttribute('required');
+                    }
+                });
+            });
+        }
+
+        function setMinDate() {
+            const dateInput = document.getElementById('preferredDate');
+            if (!dateInput) return;
+
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            dateInput.min = `${yyyy}-${mm}-${dd}`;
+        }
+    </script>
+
+</body>
+</html>

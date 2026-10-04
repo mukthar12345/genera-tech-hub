@@ -1,0 +1,30 @@
+# Environment variables (SECRETS - never upload!)
+.env
+.env.local
+.env.*.local
+
+# Node modules
+node_modules/
+npm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temp files
+*.tmp
+*.bak

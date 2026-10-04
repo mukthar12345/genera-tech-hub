@@ -1,0 +1,22 @@
+# ============================================================
+# GENERA TECH HUB — NETLIFY REDIRECTS
+# ============================================================
+
+# Redirect root to homepage
+/  /src/pages/index.html  200
+
+# Clean URLs
+/products  /src/pages/products.html  200
+/repair    /src/pages/repair.html    200
+/swap      /src/pages/swap.html      200
+/reviews   /src/pages/reviews.html   200
+/about     /src/pages/about.html     200
+/contact   /src/pages/contact.html   200
+/faq       /src/pages/faq.html       200
+/privacy   /src/pages/privacy.html   200
+/terms     /src/pages/terms.html     200
+/admin     /src/pages/admin.html     200
+/login     /src/pages/login.html     200
+
+# 404 fallback
+/*  /src/pages/404.html  404

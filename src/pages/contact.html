@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0A1628">
+
+    <title>Contact Us — Genera Tech Hub</title>
+    <meta name="description" content="Contact Genera Tech Hub for product inquiries, repairs, trade-ins, or support. Reach us on WhatsApp for fast response.">
+    <meta name="keywords" content="contact Genera Tech Hub, tech support, phone repair contact">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Contact Us — Genera Tech Hub">
+    <meta property="og:description" content="Reach us on WhatsApp for fast response.">
+
+    <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="/public/css/style.css">
+
+    <style>
+        /* ============================================================
+           CONTACT PAGE SPECIFIC
+           ============================================================ */
+
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            padding: 2rem 0 4rem;
+        }
+
+        /* Contact info cards */
+        .contact-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info-card {
+            background: rgba(26, 45, 74, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            transition: var(--transition-fast);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .contact-info-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .contact-info-card .ci-icon {
+            font-size: 1.85rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .contact-info-card .ci-label {
+            color: var(--gold);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .contact-info-card .ci-value {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        .contact-info-card .ci-note {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-top: 0.15rem;
+        }
+
+        /* Business hours card */
+        .hours-card {
+            background: rgba(26, 45, 74, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hours-card h4 {
+            color: var(--gold);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hours-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 0.9rem;
+        }
+        .hours-row:last-child { border-bottom: none; }
+        .hours-row .day { color: var(--text-light); }
+        .hours-row .time { color: var(--text-muted); }
+
+        /* Quick action buttons */
+        .quick-actions-contact {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .quick-actions-contact .btn {
+            justify-content: center;
+            padding: 0.85rem;
+            font-size: 0.92rem;
+        }
+
+        /* Form card */
+        .contact-form-card {
+            background: rgba(26, 45, 74, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            height: fit-content;
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+        }
+
+        .contact-form-card h2 {
+            margin-bottom: 0.35rem;
+        }
+
+        .contact-form-card .subtitle {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Success state */
+        .success-state {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .success-state.show { display: block; }
+        .success-state .ss-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+        .success-state h3 { color: var(--success); margin-bottom: 0.5rem; }
+        .success-state p { color: var(--text-muted); margin-bottom: 1.5rem; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .contact-layout { grid-template-columns: 1fr; gap: 2rem; }
+            .contact-form-card { position: static; }
+        }
+
+        @media (max-width: 640px) {
+            .contact-info-grid { grid-template-columns: 1fr 1fr; }
+            .quick-actions-contact { grid-template-columns: 1fr; }
+            .contact-form-card { padding: 1.25rem; }
+        }
+    </style>
+</head>
+<body id="main-content">
+
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <div id="header-placeholder"></div>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>📞 Contact <span class="text-gold">Us</span></h1>
+            <p>Questions? We're here to help. Reach us on WhatsApp for the fastest response.</p>
+        </div>
+    </section>
+
+    <section class="container contact-layout" id="main">
+
+        <!-- LEFT: Contact info -->
+        <div>
+            <h2 style="margin-bottom: 1.25rem;">Get in Touch</h2>
+
+            <div class="contact-info-grid">
+                <a href="https://wa.me/2348081302228" target="_blank" rel="noopener noreferrer" class="contact-info-card">
+                    <span class="ci-icon">💬</span>
+                    <span class="ci-label">WhatsApp</span>
+                    <span class="ci-value">08081302228</span>
+                    <span class="ci-note">Fastest response</span>
+                </a>
+
+                <a href="tel:08081302228" class="contact-info-card">
+                    <span class="ci-icon">📱</span>
+                    <span class="ci-label">Phone</span>
+                    <span class="ci-value">08081302228</span>
+                    <span class="ci-note">Call or text</span>
+                </a>
+
+                <a href="mailto:info@generatechub.com" class="contact-info-card">
+                    <span class="ci-icon">✉️</span>
+                    <span class="ci-label">Email</span>
+                    <span class="ci-value">info@generatechub.com</span>
+                    <span class="ci-note">We reply within 24h</span>
+                </a>
+
+                <div class="contact-info-card" style="cursor: default;">
+                    <span class="ci-icon">📍</span>
+                    <span class="ci-label">Location</span>
+                    <span class="ci-value">Nigeria</span>
+                    <span class="ci-note">Ask for directions</span>
+                </div>
+            </div>
+
+            <!-- Business Hours -->
+            <div class="hours-card">
+                <h4><i class="fas fa-clock"></i> Business Hours</h4>
+                <div class="hours-row">
+                    <span class="day">Monday – Friday</span>
+                    <span class="time">8:00 AM – 8:00 PM</span>
+                </div>
+                <div class="hours-row">
+                    <span class="day">Saturday</span>
+                    <span class="time">8:00 AM – 8:00 PM</span>
+                </div>
+                <div class="hours-row">
+                    <span class="day">Sunday</span>
+                    <span class="time">By appointment</span>
+                </div>
+                <div class="hours-row">
+                    <span class="day">WhatsApp Support</span>
+                    <span class="time">Available 24/7</span>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions-contact">
+                <a href="https://wa.me/2348081302228" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+                    <i class="fab fa-whatsapp"></i> Chat Now
+                </a>
+                <a href="tel:08081302228" class="btn btn-primary">
+                    <i class="fas fa-phone"></i> Call Now
+                </a>
+            </div>
+        </div>
+
+        <!-- RIGHT: Contact form -->
+        <div class="contact-form-card">
+            <h2>📝 Send Us a Message</h2>
+            <p class="subtitle">Fill the form below — your message will open in WhatsApp.</p>
+
+            <form id="contactForm" novalidate>
+                <div id="contactFormContent">
+                    <div class="form-group">
+                        <label for="contactName">Full Name <span class="required">*</span></label>
+                        <input type="text" id="contactName" name="name" class="form-control"
+                               placeholder="Your full name" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contactPhone">Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="contactPhone" name="phone" class="form-control"
+                                   placeholder="e.g., 08012345678" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Email (optional)</label>
+                            <input type="email" id="contactEmail" name="email" class="form-control"
+                                   placeholder="you@email.com">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactSubject">Subject</label>
+                        <select id="contactSubject" name="subject" class="form-control">
+                            <option value="General Inquiry">General Inquiry</option>
+                            <option value="Product Inquiry">Product Inquiry</option>
+                            <option value="Repair Request">Repair Request</option>
+                            <option value="Trade-in Inquiry">Trade-in Inquiry</option>
+                            <option value="Partnership">Partnership</option>
+                            <option value="Feedback">Feedback</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactMessage">Message <span class="required">*</span></label>
+                        <textarea id="contactMessage" name="message" class="form-control"
+                                  placeholder="How can we help you?" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+
+                    <p class="text-center text-muted" style="font-size: 0.82rem; margin-top: 0.75rem;">
+                        <i class="fas fa-lock"></i> Your message will open in WhatsApp
+                    </p>
+                </div>
+
+                <!-- Success -->
+                <div class="success-state" id="contactSuccess">
+                    <div class="ss-icon">✅</div>
+                    <h3>Message Sent!</h3>
+                    <p>Your message has been opened in WhatsApp. We'll reply shortly.</p>
+                    <button type="button" class="btn btn-primary" onclick="resetContactForm()">
+                        <i class="fas fa-redo"></i> Send Another
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <!-- Load header/footer -->
+    <script>
+        fetch('/src/components/header.html')
+            .then(r => r.text())
+            .then(d => { document.getElementById('header-placeholder').innerHTML = d; })
+            .catch(() => console.warn('Header not loaded'));
+
+        fetch('/src/components/footer.html')
+            .then(r => r.text())
+            .then(d => { document.getElementById('footer-placeholder').innerHTML = d; })
+            .catch(() => console.warn('Footer not loaded'));
+    </script>
+
+    <!-- Load app scripts -->
+    <script>
+        (function () {
+            function loadScript(src) {
+                return new Promise((resolve, reject) => {
+                    if (document.querySelector(`script[src="${src}"]`)) return resolve();
+                    const s = document.createElement('script');
+                    s.src = src;
+                    s.async = false;
+                    s.onload = resolve;
+                    s.onerror = () => reject(new Error(`Could not load ${src}`));
+                    document.head.appendChild(s);
+                });
+            }
+
+            (async function () {
+                try {
+                    await loadScript('/public/js/supabase.js');
+                    await loadScript('/public/js/auth.js');
+                    await loadScript('/public/js/main.js');
+                    console.log('✅ Contact page scripts loaded');
+
+                    // Success handler
+                    window.resetContactForm = function () {
+                        document.getElementById('contactFormContent').style.display = 'block';
+                        document.getElementById('contactSuccess').classList.remove('show');
+                        document.getElementById('contactForm').reset();
+                    };
+                } catch (err) {
+                    console.error('❌ Script load error:', err);
+                }
+            })();
+        })();
+    </script>
+
+</body>
+</html>

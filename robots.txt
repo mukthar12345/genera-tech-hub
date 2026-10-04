@@ -1,0 +1,15 @@
+# ============================================================
+# GENERA TECH HUB — ROBOTS.TXT
+# ============================================================
+
+User-agent: *
+Allow: /
+
+# Block admin and login pages from being indexed
+Disallow: /src/pages/admin.html
+Disallow: /src/pages/login.html
+
+# Sitemap location
+Sitemap: https://genera-tech-hub.netlify.app/sitemap.xml
+
+# ============================================================

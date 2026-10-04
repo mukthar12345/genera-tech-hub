@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0A1628">
+
+    <title>Customer Reviews — Genera Tech Hub</title>
+    <meta name="description" content="Read reviews from Genera Tech Hub customers. Share your own experience with our products and services.">
+    <meta name="keywords" content="Genera Tech Hub reviews, customer testimonials, tech services reviews">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Customer Reviews — Genera Tech Hub">
+    <meta property="og:description" content="Read real customer reviews.">
+
+    <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="/public/css/style.css">
+
+    <style>
+        /* ============================================================
+           REVIEWS PAGE SPECIFIC
+           ============================================================ */
+
+        .reviews-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 2.5rem;
+            padding: 2rem 0 4rem;
+        }
+
+        /* Rating summary */
+        .rating-summary {
+            background: rgba(26, 45, 74, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .rating-summary .big-rating {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--gold);
+            font-family: var(--font-heading);
+            line-height: 1;
+        }
+
+        .rating-summary .big-stars {
+            font-size: 1.5rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            margin: 0.5rem 0;
+        }
+
+        .rating-summary .total-text {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+        }
+
+        .rating-bars {
+            margin-top: 1.5rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .rating-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.4rem;
+            font-size: 0.85rem;
+        }
+
+        .rating-bar-row .stars-label {
+            color: var(--gold);
+            width: 50px;
+            text-align: right;
+            font-size: 0.8rem;
+        }
+
+        .rating-bar-row .bar-track {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .rating-bar-row .bar-fill {
+            height: 100%;
+            background: var(--gradient-gold);
+            border-radius: 3px;
+            transition: width 1s ease;
+        }
+
+        .rating-bar-row .count {
+            color: var(--text-muted);
+            width: 30px;
+            text-align: left;
+            font-size: 0.8rem;
+        }
+
+        /* Review cards */
+        .review-card {
+            background: rgba(26, 45, 74, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-bottom: 1.25rem;
+            transition: var(--transition-fast);
+        }
+
+        .review-card:hover {
+            border-color: rgba(255, 215, 0, 0.2);
+        }
+
+        .review-card .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .review-card .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .review-card .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--gradient-gold);
+            color: var(--navy-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.05rem;
+            flex-shrink: 0;
+        }
+
+        .review-card .name {
+            font-weight: 600;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .review-card .device {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            display: block;
+            margin-top: 0.1rem;
+        }
+
+        .review-card .rating {
+            color: var(--gold);
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .review-card .review-text {
+            color: var(--text-light);
+            line-height: 1.7;
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .review-card .review-footer {
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* No reviews */
+        .no-reviews {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+        }
+        .no-reviews .nr-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+        .no-reviews h3 { color: var(--text-light); margin-bottom: 0.5rem; }
+
+        /* Submit review form */
+        .submit-review-card {
+            background: rgba(26, 45, 74, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .submit-review-card h3 {
+            margin-bottom: 0.35rem;
+        }
+
+        .submit-review-card .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Star selector */
+        .star-selector {
+            display: flex;
+            gap: 0.4rem;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            margin-bottom: 0.5rem;
+        }
+
+        .star-selector input { display: none; }
+
+        .star-selector label {
+            font-size: 2rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            opacity: 0.4;
+        }
+
+        .star-selector label:hover,
+        .star-selector label:hover ~ label,
+        .star-selector input:checked ~ label {
+            color: var(--gold);
+            opacity: 1;
+        }
+
+        /* Sidebar */
+        .reviews-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .sidebar-card {
+            background: rgba(26, 45, 74, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+        }
+
+        .sidebar-card h4 {
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-card ul { padding: 0; }
+        .sidebar-card ul li {
+            color: var(--text-light);
+            padding: 0.35rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+        .sidebar-card ul li::before {
+            content: '✓';
+            color: var(--gold);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .sidebar-card p {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        /* Success state */
+        .success-state {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        .success-state.show { display: block; }
+        .success-state .ss-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .success-state h3 { color: var(--success); margin-bottom: 0.5rem; }
+        .success-state p { color: var(--text-muted); margin-bottom: 1.5rem; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .reviews-layout { grid-template-columns: 1fr; gap: 2rem; }
+            .reviews-sidebar { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.25rem; }
+        }
+
+        @media (max-width: 640px) {
+            .submit-review-card { padding: 1.25rem; }
+            .reviews-sidebar { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body id="main-content">
+
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <div id="header-placeholder"></div>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>⭐ Customer <span class="text-gold">Reviews</span></h1>
+            <p>See what customers say about Genera Tech Hub — or leave your own.</p>
+        </div>
+    </section>
+
+    <section class="container reviews-layout" id="main">
+
+        <!-- Main Content -->
+        <div>
+            <!-- Rating Summary -->
+            <div class="rating-summary">
+                <div class="big-rating" id="avgRating">—</div>
+                <div class="big-stars" id="avgStars">☆☆☆☆☆</div>
+                <div class="total-text" id="totalReviews">Loading reviews...</div>
+                <div class="rating-bars" id="ratingBars"></div>
+            </div>
+
+            <!-- Reviews List -->
+            <div id="reviewsContainer">
+                <div class="text-center" style="padding: 3rem;">
+                    <div class="loading"></div>
+                    <p class="text-muted mt-2">Loading reviews...</p>
+                </div>
+            </div>
+
+            <!-- Submit Review Form -->
+            <div class="submit-review-card">
+                <h3>📝 Write a Review</h3>
+                <p class="subtitle">Share your experience to help other customers.</p>
+
+                <form id="reviewForm" novalidate>
+                    <div id="reviewFormContent">
+                        <div class="form-group">
+                            <label>Your Rating <span class="required">*</span></label>
+                            <div class="star-selector">
+                                <input type="radio" name="rating" id="star5" value="5" checked>
+                                <label for="star5" title="5 stars">⭐</label>
+                                <input type="radio" name="rating" id="star4" value="4">
+                                <label for="star4" title="4 stars">⭐</label>
+                                <input type="radio" name="rating" id="star3" value="3">
+                                <label for="star3" title="3 stars">⭐</label>
+                                <input type="radio" name="rating" id="star2" value="2">
+                                <label for="star2" title="2 stars">⭐</label>
+                                <input type="radio" name="rating" id="star1" value="1">
+                                <label for="star1" title="1 star">⭐</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reviewText">Your Review <span class="required">*</span></label>
+                            <textarea id="reviewText" name="reviewText" class="form-control"
+                                      placeholder="Tell us about your experience with Genera Tech Hub..."
+                                      required minlength="10" maxlength="1000"></textarea>
+                            <div class="form-helper">Minimum 10 characters</div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="reviewDevice">Device / Service</label>
+                                <input type="text" id="reviewDevice" name="deviceService" class="form-control"
+                                       placeholder="e.g., iPhone 13 — screen repair">
+                            </div>
+                            <div class="form-group">
+                                <label for="reviewName">Your Name (optional)</label>
+                                <input type="text" id="reviewName" name="customerName" class="form-control"
+                                       placeholder="Anonymous">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block btn-lg">
+                            <i class="fas fa-paper-plane"></i> Submit Review
+                        </button>
+
+                        <p class="text-center text-muted" style="font-size: 0.82rem; margin-top: 0.75rem;">
+                            <i class="fas fa-lock"></i> Your review will be sent to us via WhatsApp for approval
+                        </p>
+                    </div>
+
+                    <!-- Success -->
+                    <div class="success-state" id="reviewSuccess">
+                        <div class="ss-icon">✅</div>
+                        <h3>Thank You!</h3>
+                        <p>Your review has been submitted. It will appear after approval.</p>
+                        <button type="button" class="btn btn-primary" onclick="resetReviewForm()">
+                            <i class="fas fa-redo"></i> Write Another
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="reviews-sidebar">
+            <div class="sidebar-card">
+                <h4>💡 Why Reviews Matter</h4>
+                <ul>
+                    <li>Help others make informed choices</li>
+                    <li>Help us improve our services</li>
+                    <li>Build trust in our community</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-card" style="background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(26,45,74,0.5)); border-color: rgba(255,215,0,0.2);">
+                <h4>👑 Our Promise</h4>
+                <p><strong style="color: var(--gold);">Technology You Can Trust.</strong><br>Every review helps us serve you better.</p>
+            </div>
+
+            <div class="sidebar-card" style="background: rgba(37,211,102,0.06); border-color: rgba(37,211,102,0.2);">
+                <h4 style="color: #25D366;">💬 Chat With Us</h4>
+                <p style="margin-bottom: 1rem;">Have feedback? Message us directly.</p>
+                <a href="https://wa.me/2348081302228" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-block">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+            </div>
+        </aside>
+
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <!-- Load header/footer -->
+    <script>
+        fetch('/src/components/header.html')
+            .then(r => r.text())
+            .then(d => { document.getElementById('header-placeholder').innerHTML = d; })
+            .catch(() => console.warn('Header not loaded'));
+
+        fetch('/src/components/footer.html')
+            .then(r => r.text())
+            .then(d => { document.getElementById('footer-placeholder').innerHTML = d; })
+            .catch(() => console.warn('Footer not loaded'));
+    </script>
+
+    <!-- Load app scripts -->
+    <script>
+        (function () {
+            function loadScript(src) {
+                return new Promise((resolve, reject) => {
+                    if (document.querySelector(`script[src="${src}"]`)) return resolve();
+                    const s = document.createElement('script');
+                    s.src = src;
+                    s.async = false;
+                    s.onload = resolve;
+                    s.onerror = () => reject(new Error(`Could not load ${src}`));
+                    document.head.appendChild(s);
+                });
+            }
+
+            (async function () {
+                try {
+                    await loadScript('/public/js/supabase.js');
+                    await loadScript('/public/js/auth.js');
+                    await loadScript('/public/js/main.js');
+                    console.log('✅ Reviews page scripts loaded');
+                    initReviewsPage();
+                } catch (err) {
+                    console.error('❌ Script load error:', err);
+                }
+            })();
+        })();
+    </script>
+
+    <!-- Reviews page logic -->
+    <script>
+        async function initReviewsPage() {
+            console.log('⭐ Reviews page initializing...');
+            await loadReviews();
+
+            // Expose reset for success button
+            window.resetReviewForm = function () {
+                document.getElementById('reviewFormContent').style.display = 'block';
+                document.getElementById('reviewSuccess').classList.remove('show');
+                document.getElementById('reviewForm').reset();
+                document.getElementById('star5').checked = true;
+            };
+        }
+
+        async function loadReviews() {
+            const container = document.getElementById('reviewsContainer');
+
+            try {
+                if (typeof getApprovedReviews === 'undefined') {
+                    throw new Error('Supabase not ready');
+                }
+
+                const result = await getApprovedReviews(50);
+
+                if (!result.success) throw new Error(result.error || 'Failed to load');
+
+                const reviews = result.reviews || [];
+
+                if (reviews.length === 0) {
+                    showNoReviews();
+                    return;
+                }
+
+                renderReviews(reviews);
+                updateRatingSummary(reviews);
+            } catch (error) {
+                console.error('Load reviews error:', error);
+                container.innerHTML = `
+                    <div class="no-reviews">
+                        <div class="nr-icon">📭</div>
+                        <h3>No Reviews Yet</h3>
+                        <p>Be the first to leave a review!</p>
+                    </div>
+                `;
+                document.getElementById('avgRating').textContent = '—';
+                document.getElementById('avgStars').textContent = '☆☆☆☆☆';
+                document.getElementById('totalReviews').textContent = 'No reviews yet';
+            }
+        }
+
+        function showNoReviews() {
+            document.getElementById('reviewsContainer').innerHTML = `
+                <div class="no-reviews">
+                    <div class="nr-icon">📭</div>
+                    <h3>No Reviews Yet</h3>
+                    <p>Be the first to share your experience!</p>
+                </div>
+            `;
+            document.getElementById('avgRating').textContent = '—';
+            document.getElementById('avgStars').textContent = '☆☆☆☆☆';
+            document.getElementById('totalReviews').textContent = 'No reviews yet';
+        }
+
+        function renderReviews(reviews) {
+            const container = document.getElementById('reviewsContainer');
+
+            container.innerHTML = reviews.map(r => {
+                const stars = '⭐'.repeat(Math.min(r.rating || 5, 5));
+                const name = r.customer_name || 'Anonymous';
+                const initial = name.charAt(0).toUpperCase();
+                const device = r.device_service || 'Genera Tech Hub Customer';
+                const date = r.created_at ? new Date(r.created_at).toLocaleDateString('en-NG', {
+                    year: 'numeric', month: 'short', day: 'numeric'
+                }) : 'Recently';
+
+                return `
+                    <div class="review-card fade-in">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="avatar">${escapeHtml(initial)}</div>
+                                <div>
+                                    <div class="name">${escapeHtml(name)}</div>
+                                    <span class="device">📱 ${escapeHtml(device)}</span>
+                                </div>
+                            </div>
+                            <div class="rating">${stars}</div>
+                        </div>
+                        <p class="review-text">${escapeHtml(r.review_text || '')}</p>
+                        <div class="review-footer">
+                            <span>📅 ${date}</span>
+                            <span>✅ Verified Customer</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            if (typeof initAnimations === 'function') {
+                setTimeout(initAnimations, 50);
+            }
+        }
+
+        function updateRatingSummary(reviews) {
+            if (!reviews || reviews.length === 0) return;
+
+            const total = reviews.reduce((sum, r) => sum + (r.rating || 5), 0);
+            const avg = total / reviews.length;
+
+            document.getElementById('avgRating').textContent = avg.toFixed(1);
+            document.getElementById('avgStars').textContent = '⭐'.repeat(Math.round(avg));
+            document.getElementById('totalReviews').textContent = `Based on ${reviews.length} review${reviews.length > 1 ? 's' : ''}`;
+
+            // Distribution
+            const dist = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+            reviews.forEach(r => {
+                const rating = Math.round(r.rating || 5);
+                if (dist[rating] !== undefined) dist[rating]++;
+            });
+
+            let barsHtml = '';
+            for (let i = 5; i >= 1; i--) {
+                const count = dist[i];
+                const percent = (count / reviews.length) * 100;
+                barsHtml += `
+                    <div class="rating-bar-row">
+                        <span class="stars-label">${i}⭐</span>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width: ${percent}%;"></div>
+                        </div>
+                        <span class="count">${count}</span>
+                    </div>
+                `;
+            }
+            document.getElementById('ratingBars').innerHTML = barsHtml;
+        }
+    </script>
+
+</body>
+</html>
