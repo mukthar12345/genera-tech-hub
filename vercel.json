@@ -1,0 +1,58 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/src/pages/index.html"
+    },
+    {
+      "source": "/products",
+      "destination": "/src/pages/products.html"
+    },
+    {
+      "source": "/product-detail",
+      "destination": "/src/pages/product-detail.html"
+    },
+    {
+      "source": "/repair",
+      "destination": "/src/pages/repair.html"
+    },
+    {
+      "source": "/swap",
+      "destination": "/src/pages/swap.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/src/pages/contact.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/src/pages/about.html"
+    },
+    {
+      "source": "/reviews",
+      "destination": "/src/pages/reviews.html"
+    },
+    {
+      "source": "/login",
+      "destination": "/src/pages/login.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/src/pages/privacy.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/src/pages/terms.html"
+    },
+    {
+      "source": "/faq",
+      "destination": "/src/pages/faq.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/src/pages/admin.html"
+    }
+  ]
+}
