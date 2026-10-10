@@ -330,12 +330,12 @@
 
     <!-- Load header/footer -->
     <script>
-        fetch('/src/components/header.html')
+        fetch('header.html')
             .then(r => r.text())
             .then(d => { document.getElementById('header-placeholder').innerHTML = d; })
             .catch(() => console.warn('Header not loaded'));
 
-        fetch('/src/components/footer.html')
+        fetch('footer.html')
             .then(r => r.text())
             .then(d => { document.getElementById('footer-placeholder').innerHTML = d; })
             .catch(() => console.warn('Footer not loaded'));
@@ -358,8 +358,8 @@
 
             (async function () {
                 try {
-                    await loadScript('/public/js/supabase.js');
-                    await loadScript('/public/js/auth.js');
+                    await loadScript('public/js/supabase.js');
+                    await loadScript('public/js/auth.js');
                     await loadScript('public/js/main.js');
                     console.log('✅ Contact page scripts loaded');
 
