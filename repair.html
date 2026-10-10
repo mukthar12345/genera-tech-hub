@@ -5,43 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0A1628">
 
-    <title>Trade-In &amp; Swap — Genera Tech Hub | Upgrade Your Device</title>
-    <meta name="description" content="Trade in your old phone or laptop at Genera Tech Hub. Get cash or upgrade to a new device. Fast, fair, and hassle-free.">
-    <meta name="keywords" content="trade-in phone, swap laptop, sell old device, upgrade phone, Genera Tech Hub">
+    <title>Book a Repair — Genera Tech Hub</title>
+    <meta name="description" content="Book professional phone or laptop repairs at Genera Tech Hub. Screens, batteries, software, upgrades — with pickup and delivery options.">
+    <meta name="keywords" content="phone repair, laptop repair, book repair, screen replacement">
     <meta name="robots" content="index, follow">
 
-    <meta property="og:title" content="Trade-In &amp; Swap — Genera Tech Hub">
-    <meta property="og:description" content="Get value for your old device — cash or upgrade.">
+    <meta property="og:title" content="Book a Repair — Genera Tech Hub">
+    <meta property="og:description" content="Professional phone and laptop repair services.">
 
-    <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="public/images/favicon.ico">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="public/css/style.css">
 
     <style>
-        /* ============================================================
-           SWAP / TRADE-IN PAGE SPECIFIC
-           ============================================================ */
-
-        .swap-layout {
+        .repair-layout {
             display: grid;
             grid-template-columns: 1fr 340px;
             gap: 2.5rem;
             padding: 2rem 0 4rem;
         }
 
-        .swap-form-card {
+        .repair-form-card {
             background: rgba(26, 45, 74, 0.4);
             border: 1px solid rgba(255, 215, 0, 0.06);
             border-radius: var(--radius-md);
             padding: 2rem;
         }
 
-        /* Form sections */
         .form-section {
             margin-bottom: 2rem;
             padding-bottom: 2rem;
@@ -76,10 +71,9 @@
             flex-shrink: 0;
         }
 
-        /* Device type grid */
         .device-type-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 0.75rem;
         }
 
@@ -99,32 +93,6 @@
         .device-type-card .dt-icon { font-size: 1.75rem; display: block; margin-bottom: 0.35rem; }
         .device-type-card .dt-label { font-size: 0.82rem; color: var(--text-light); font-weight: 500; }
 
-        /* Condition radio cards */
-        .condition-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
-            margin-top: 0.5rem;
-        }
-
-        .condition-card {
-            padding: 1rem;
-            border-radius: var(--radius-sm);
-            border: 1.5px solid rgba(255, 255, 255, 0.08);
-            background: rgba(255, 255, 255, 0.03);
-            cursor: pointer;
-            transition: var(--transition-fast);
-            text-align: center;
-        }
-
-        .condition-card:hover { border-color: var(--gold-soft); }
-        .condition-card.selected { border-color: var(--gold); background: rgba(255, 215, 0, 0.08); }
-
-        .condition-card .c-icon { font-size: 1.75rem; display: block; margin-bottom: 0.35rem; }
-        .condition-card .c-label { font-size: 0.88rem; color: var(--text-light); font-weight: 600; }
-        .condition-card .c-desc { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem; display: block; }
-
-        /* Radio cards (preference) */
         .radio-cards { display: grid; gap: 0.75rem; margin-top: 0.5rem; }
 
         .radio-card {
@@ -179,7 +147,25 @@
             font-size: 0.75rem;
         }
 
-        /* Info box */
+        .conditional-fields {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.15rem;
+            background: rgba(255, 215, 0, 0.03);
+            border-radius: var(--radius-sm);
+            border: 1px dashed rgba(255, 215, 0, 0.2);
+        }
+
+        .conditional-fields.visible {
+            display: block;
+            animation: fadeSlideIn 0.3s ease;
+        }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .info-box {
             background: rgba(0, 188, 212, 0.08);
             border-left: 3px solid var(--info);
@@ -192,8 +178,7 @@
         }
         .info-box strong { color: var(--info); }
 
-        /* Sidebar */
-        .swap-sidebar { display: flex; flex-direction: column; gap: 1.25rem; }
+        .repair-sidebar { display: flex; flex-direction: column; gap: 1.25rem; }
 
         .sidebar-card {
             background: rgba(26, 45, 74, 0.4);
@@ -234,7 +219,6 @@
             line-height: 1.6;
         }
 
-        /* WhatsApp CTA */
         .whatsapp-cta {
             background: rgba(37, 211, 102, 0.08);
             border: 1px solid rgba(37, 211, 102, 0.2);
@@ -246,41 +230,15 @@
         .whatsapp-cta h4 { color: #25D366; margin-bottom: 0.35rem; font-size: 0.95rem; }
         .whatsapp-cta p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; }
 
-        /* Success */
-        .success-message {
-            display: none;
-            text-align: center;
-            padding: 3rem 2rem;
-        }
-        .success-message.show { display: block; }
-        .success-message .success-icon { font-size: 4rem; margin-bottom: 1rem; }
-        .success-message h2 { color: var(--success); margin-bottom: 0.5rem; }
-        .success-message p { color: var(--text-muted); max-width: 500px; margin: 0 auto 1.5rem; }
-
-        .ref-box {
-            display: inline-block;
-            background: rgba(255, 215, 0, 0.1);
-            padding: 0.6rem 1.5rem;
-            border-radius: var(--radius-sm);
-            color: var(--gold);
-            font-family: var(--font-heading);
-            font-weight: 700;
-            font-size: 1.05rem;
-            margin: 0.5rem 0 1.5rem;
-            border: 1px solid rgba(255, 215, 0, 0.25);
-            letter-spacing: 1px;
-        }
-
-        /* Responsive */
         @media (max-width: 1024px) {
-            .swap-layout { grid-template-columns: 1fr; gap: 2rem; }
-            .swap-sidebar { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+            .repair-layout { grid-template-columns: 1fr; gap: 2rem; }
+            .repair-sidebar { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
         }
 
         @media (max-width: 768px) {
-            .swap-form-card { padding: 1.25rem; }
-            .condition-grid { grid-template-columns: 1fr; }
-            .swap-sidebar { grid-template-columns: 1fr; }
+            .repair-form-card { padding: 1.25rem; }
+            .device-type-grid { grid-template-columns: repeat(2, 1fr); }
+            .repair-sidebar { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -292,25 +250,23 @@
 
     <section class="page-header">
         <div class="container">
-            <h1>🔄 Trade-In &amp; <span class="text-gold">Swap</span></h1>
-            <p>Turn your old device into value — cash or upgrade. Fill the form and we'll contact you.</p>
+            <h1>🔧 Book a <span class="text-gold">Repair</span></h1>
+            <p>Fill in the form below and we'll contact you to confirm pickup or drop-off.</p>
         </div>
     </section>
 
-    <section class="container swap-layout" id="main">
+    <section class="container repair-layout" id="main">
 
-        <!-- Main Form -->
-        <div class="swap-form-card" id="formContainer">
-            <form id="swapForm" novalidate>
+        <div class="repair-form-card">
+            <form id="repairForm" novalidate>
 
-                <!-- SECTION 1: YOUR DEVICE -->
+                <!-- SECTION 1: DEVICE -->
                 <div class="form-section">
                     <div class="form-section-title">
                         <span class="step-num">1</span>
                         Your Device
                     </div>
 
-                    <!-- Device type -->
                     <div class="form-group">
                         <label>Device Type <span class="required">*</span></label>
                         <div class="device-type-grid" id="deviceTypeOptions">
@@ -325,6 +281,10 @@
                             <div class="device-type-card" data-value="Tablet" role="button" tabindex="0">
                                 <span class="dt-icon">📟</span>
                                 <span class="dt-label">Tablet</span>
+                            </div>
+                            <div class="device-type-card" data-value="Accessory" role="button" tabindex="0">
+                                <span class="dt-icon">⌚</span>
+                                <span class="dt-label">Accessory</span>
                             </div>
                         </div>
                         <input type="hidden" id="deviceType" name="deviceType" required>
@@ -348,128 +308,150 @@
                                 <option value="HP">HP</option>
                                 <option value="Dell">Dell</option>
                                 <option value="Lenovo">Lenovo</option>
+                                <option value="Acer">Acer</option>
                                 <option value="Asus">Asus</option>
+                                <option value="Microsoft">Microsoft</option>
                                 <option value="Other">Other</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="deviceModel">Model <span class="required">*</span></label>
                             <input type="text" id="deviceModel" name="deviceModel" class="form-control"
-                                   placeholder="e.g., iPhone 13 Pro" required>
+                                   placeholder="e.g., iPhone 14 Pro" required>
                         </div>
                     </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="deviceStorage">Storage</label>
-                            <select id="deviceStorage" name="deviceStorage" class="form-control">
-                                <option value="">Select storage</option>
-                                <option value="16GB">16GB</option>
-                                <option value="32GB">32GB</option>
-                                <option value="64GB">64GB</option>
-                                <option value="128GB">128GB</option>
-                                <option value="256GB">256GB</option>
-                                <option value="512GB">512GB</option>
-                                <option value="1TB">1TB</option>
-                                <option value="2TB+">2TB or more</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="deviceAge">Device Age</label>
-                            <select id="deviceAge" name="deviceAge" class="form-control">
-                                <option value="">Select age</option>
-                                <option value="Less than 3 months">Less than 3 months</option>
-                                <option value="3-6 months">3-6 months</option>
-                                <option value="6-12 months">6-12 months</option>
-                                <option value="1-2 years">1-2 years</option>
-                                <option value="2-3 years">2-3 years</option>
-                                <option value="More than 3 years">More than 3 years</option>
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label for="issueDescription">Describe the Issue <span class="required">*</span></label>
+                        <textarea id="issueDescription" name="issueDescription" class="form-control"
+                                  placeholder="E.g., Screen is cracked, touch works but display has black spots."
+                                  required></textarea>
                     </div>
                 </div>
 
-                <!-- SECTION 2: CONDITION -->
+                <!-- SECTION 2: COLLECTION -->
                 <div class="form-section">
                     <div class="form-section-title">
                         <span class="step-num">2</span>
-                        Device Condition
+                        How Should We Get Your Device?
                     </div>
 
-                    <div class="condition-grid" id="conditionOptions">
-                        <div class="condition-card" data-value="Excellent" role="button" tabindex="0">
-                            <span class="c-icon">⭐</span>
-                            <span class="c-label">Excellent</span>
-                            <span class="c-desc">Like new, no visible wear</span>
+                    <div class="radio-cards" id="collectionOptions">
+                        <label class="radio-card" data-value="walk-in">
+                            <input type="radio" name="collectionMethod" value="walk-in">
+                            <span class="radio-icon">🏢</span>
+                            <div class="radio-content">
+                                <div class="radio-title">I'll Walk In</div>
+                                <div class="radio-desc">Bring your device to our store.</div>
+                            </div>
+                            <span class="radio-check"></span>
+                        </label>
+
+                        <label class="radio-card" data-value="pickup">
+                            <input type="radio" name="collectionMethod" value="pickup">
+                            <span class="radio-icon">🚗</span>
+                            <div class="radio-content">
+                                <div class="radio-title">Pick It Up From Me</div>
+                                <div class="radio-desc">We'll come to your location.</div>
+                            </div>
+                            <span class="radio-check"></span>
+                        </label>
+
+                        <label class="radio-card" data-value="dropoff-courier">
+                            <input type="radio" name="collectionMethod" value="dropoff-courier">
+                            <span class="radio-icon">📦</span>
+                            <div class="radio-content">
+                                <div class="radio-title">I'll Send via Courier</div>
+                                <div class="radio-desc">You arrange the courier.</div>
+                            </div>
+                            <span class="radio-check"></span>
+                        </label>
+                    </div>
+
+                    <div class="conditional-fields" id="pickupFields">
+                        <div class="info-box">
+                            <strong>📍 Pickup Address</strong><br>
+                            Where should we pick up your device?
                         </div>
-                        <div class="condition-card" data-value="Good" role="button" tabindex="0">
-                            <span class="c-icon">👍</span>
-                            <span class="c-label">Good</span>
-                            <span class="c-desc">Minor wear, works perfectly</span>
+                        <div class="form-group">
+                            <label for="pickupAddress">Address <span class="required">*</span></label>
+                            <input type="text" id="pickupAddress" name="pickupAddress" class="form-control"
+                                   placeholder="Full address">
                         </div>
-                        <div class="condition-card" data-value="Fair" role="button" tabindex="0">
-                            <span class="c-icon">😐</span>
-                            <span class="c-label">Fair</span>
-                            <span class="c-desc">Visible wear, some issues</span>
-                        </div>
-                        <div class="condition-card" data-value="Poor" role="button" tabindex="0">
-                            <span class="c-icon">⚠️</span>
-                            <span class="c-label">Poor</span>
-                            <span class="c-desc">Damaged, needs repair</span>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="pickupLandmark">Landmark (optional)</label>
+                            <input type="text" id="pickupLandmark" name="pickupLandmark" class="form-control"
+                                   placeholder="e.g., Near Shoprite">
                         </div>
                     </div>
-                    <input type="hidden" id="deviceCondition" name="deviceCondition" required>
 
-                    <div class="form-group" style="margin-top: 1.25rem; margin-bottom: 0;">
-                        <label for="deviceNotes">Additional Details (optional)</label>
-                        <textarea id="deviceNotes" name="deviceNotes" class="form-control"
-                                  placeholder="E.g., Original box included, battery health 85%, small scratch on back."></textarea>
+                    <div class="form-row" style="margin-top: 1.25rem;">
+                        <div class="form-group">
+                            <label for="preferredDate">Preferred Date</label>
+                            <input type="date" id="preferredDate" name="preferredDate" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="preferredTime">Preferred Time</label>
+                            <select id="preferredTime" name="preferredTime" class="form-control">
+                                <option value="">Select time</option>
+                                <option value="Morning (8AM - 12PM)">🌅 Morning (8AM - 12PM)</option>
+                                <option value="Afternoon (12PM - 4PM)">☀️ Afternoon (12PM - 4PM)</option>
+                                <option value="Evening (4PM - 8PM)">🌆 Evening (4PM - 8PM)</option>
+                                <option value="Flexible">🕐 Flexible</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                <!-- SECTION 3: PREFERENCE -->
+                <!-- SECTION 3: DELIVERY -->
                 <div class="form-section">
                     <div class="form-section-title">
                         <span class="step-num">3</span>
-                        What Do You Want?
+                        How Do You Want It Back?
                     </div>
 
-                    <div class="radio-cards" id="preferenceOptions">
-                        <label class="radio-card" data-value="cash">
-                            <input type="radio" name="swapPreference" value="cash">
-                            <span class="radio-icon">💰</span>
+                    <div class="radio-cards" id="deliveryOptions">
+                        <label class="radio-card" data-value="pickup-in-person">
+                            <input type="radio" name="deliveryMethod" value="pickup-in-person">
+                            <span class="radio-icon">🏢</span>
                             <div class="radio-content">
-                                <div class="radio-title">Sell for Cash</div>
-                                <div class="radio-desc">Get paid for your device.</div>
+                                <div class="radio-title">I'll Pick It Up</div>
+                                <div class="radio-desc">Collect from our store.</div>
                             </div>
                             <span class="radio-check"></span>
                         </label>
 
-                        <label class="radio-card" data-value="upgrade">
-                            <input type="radio" name="swapPreference" value="upgrade">
-                            <span class="radio-icon">🔄</span>
+                        <label class="radio-card" data-value="delivered-to-me">
+                            <input type="radio" name="deliveryMethod" value="delivered-to-me">
+                            <span class="radio-icon">🚚</span>
                             <div class="radio-content">
-                                <div class="radio-title">Upgrade to a New Device</div>
-                                <div class="radio-desc">Trade for something newer.</div>
+                                <div class="radio-title">Deliver to My Address</div>
+                                <div class="radio-desc">We'll bring it back to you.</div>
                             </div>
                             <span class="radio-check"></span>
                         </label>
 
-                        <label class="radio-card" data-value="decide-later">
-                            <input type="radio" name="swapPreference" value="decide-later">
-                            <span class="radio-icon">🤔</span>
+                        <label class="radio-card" data-value="dispatched">
+                            <input type="radio" name="deliveryMethod" value="dispatched">
+                            <span class="radio-icon">📦</span>
                             <div class="radio-content">
-                                <div class="radio-title">Let Me See Options First</div>
-                                <div class="radio-desc">Get an offer before deciding.</div>
+                                <div class="radio-title">Dispatch via Courier</div>
+                                <div class="radio-desc">We'll send it via courier.</div>
                             </div>
                             <span class="radio-check"></span>
                         </label>
                     </div>
 
-                    <div class="form-group" style="margin-top: 1.25rem; margin-bottom: 0;">
-                        <label for="targetDevice">If Upgrading, Which Device?</label>
-                        <input type="text" id="targetDevice" name="targetDevice" class="form-control"
-                               placeholder="e.g., iPhone 15 Pro, MacBook Air M2">
+                    <div class="conditional-fields" id="deliveryFields">
+                        <div class="info-box">
+                            <strong>📦 Delivery Address</strong><br>
+                            Where should we deliver your repaired device?
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="deliveryAddress">Address <span class="required">*</span></label>
+                            <input type="text" id="deliveryAddress" name="deliveryAddress" class="form-control"
+                                   placeholder="Full delivery address">
+                        </div>
                     </div>
                 </div>
 
@@ -506,15 +488,13 @@
                     </div>
                 </div>
 
-                <!-- Info -->
                 <div class="info-box">
                     <strong>💬 What Happens Next?</strong><br>
-                    Your details will open in WhatsApp. We'll review and contact you with an offer.
+                    When you click "Submit", your details will open in WhatsApp for us to confirm. You'll receive a reference number for tracking.
                 </div>
 
-                <!-- Submit -->
                 <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 0.5rem;">
-                    <i class="fas fa-exchange-alt"></i> Submit Trade-In Request
+                    <i class="fas fa-paper-plane"></i> Submit Repair Request
                 </button>
 
                 <p class="text-center text-muted" style="font-size: 0.82rem; margin-top: 0.75rem;">
@@ -523,33 +503,15 @@
             </form>
         </div>
 
-        <!-- Success -->
-        <div class="success-message" id="successMessage" style="display: none;">
-            <div class="success-icon">✅</div>
-            <h2>Trade-In Request Submitted!</h2>
-            <p>Your request has been sent. We'll contact you on WhatsApp shortly with an offer.</p>
-            <div class="ref-box" id="refNumberBox">GTH-SWP-2026-0000</div>
-            <p style="font-size: 0.85rem;"><strong>Save your reference number</strong> for tracking.</p>
-            <div style="margin-top: 1.5rem;">
-                <a href="/src/pages/index.html" class="btn btn-primary">
-                    <i class="fas fa-home"></i> Return Home
-                </a>
-                <a href="/src/pages/swap.html" class="btn btn-secondary" style="margin-left: 0.5rem;">
-                    <i class="fas fa-redo"></i> New Request
-                </a>
-            </div>
-        </div>
-
-        <!-- Sidebar -->
-        <aside class="swap-sidebar">
+        <aside class="repair-sidebar">
             <div class="sidebar-card">
-                <h4>⭐ Why Trade With Us</h4>
+                <h4>⭐ Why Choose Us</h4>
                 <ul>
-                    <li>Fair valuation</li>
-                    <li>Cash or upgrade options</li>
-                    <li>Fast response on WhatsApp</li>
-                    <li>Same-day upgrade available</li>
-                    <li>Professional evaluation</li>
+                    <li>Experienced technicians</li>
+                    <li>Quality replacement parts</li>
+                    <li>Clear pricing upfront</li>
+                    <li>Fast turnaround</li>
+                    <li>WhatsApp support</li>
                 </ul>
             </div>
 
@@ -557,28 +519,30 @@
                 <h4>📋 How It Works</h4>
                 <p>
                     <strong style="color: var(--gold);">1.</strong> Fill this form<br>
-                    <strong style="color: var(--gold);">2.</strong> We review your device<br>
-                    <strong style="color: var(--gold);">3.</strong> We send an offer on WhatsApp<br>
-                    <strong style="color: var(--gold);">4.</strong> You accept or decline<br>
-                    <strong style="color: var(--gold);">5.</strong> Cash or upgrade!
+                    <strong style="color: var(--gold);">2.</strong> We contact you on WhatsApp<br>
+                    <strong style="color: var(--gold);">3.</strong> We diagnose your device<br>
+                    <strong style="color: var(--gold);">4.</strong> You approve the repair<br>
+                    <strong style="color: var(--gold);">5.</strong> We repair and return it
                 </p>
             </div>
 
             <div class="sidebar-card">
-                <h4>✅ What We Accept</h4>
+                <h4>🔧 Common Repairs</h4>
                 <ul>
-                    <li>Phones (all brands)</li>
-                    <li>Laptops (all brands)</li>
-                    <li>Tablets</li>
-                    <li>Smart watches</li>
+                    <li>Screen replacement</li>
+                    <li>Battery replacement</li>
+                    <li>Charging port repair</li>
+                    <li>Software issues</li>
+                    <li>SSD &amp; RAM upgrades</li>
+                    <li>Windows installation</li>
                 </ul>
             </div>
 
             <div class="whatsapp-cta">
                 <span class="wa-icon">💬</span>
-                <h4>Have Questions?</h4>
-                <p>Message us directly on WhatsApp.</p>
-                <a href="https://wa.me/2348081302228?text=Hi%20Genera%20Tech%20Hub!%20I%20want%20to%20trade%20in%20a%20device."
+                <h4>Prefer to Chat?</h4>
+                <p>Skip the form — message us directly on WhatsApp.</p>
+                <a href="https://wa.me/2348081302228?text=Hi%20Genera%20Tech%20Hub!%20I%20need%20a%20repair."
                    target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-block">
                     <i class="fab fa-whatsapp"></i> Chat Now
                 </a>
@@ -589,7 +553,6 @@
 
     <div id="footer-placeholder"></div>
 
-    <!-- Load header/footer -->
     <script>
         fetch('/src/components/header.html')
             .then(r => r.text())
@@ -602,7 +565,6 @@
             .catch(() => console.warn('Footer not loaded'));
     </script>
 
-    <!-- Load app scripts -->
     <script>
         (function () {
             function loadScript(src) {
@@ -621,9 +583,9 @@
                 try {
                     await loadScript('/public/js/supabase.js');
                     await loadScript('/public/js/auth.js');
-                    await loadScript('/public/js/main.js');
-                    console.log('✅ Swap page scripts loaded');
-                    initSwapPage();
+                    await loadScript('public/js/main.js');
+                    console.log('✅ Repair page scripts loaded');
+                    initRepairPage();
                 } catch (err) {
                     console.error('❌ Script load error:', err);
                 }
@@ -631,14 +593,13 @@
         })();
     </script>
 
-    <!-- Swap page logic -->
     <script>
-        function initSwapPage() {
-            console.log('🔄 Swap page initializing...');
-
+        function initRepairPage() {
+            console.log('🔧 Repair page initializing...');
             setupDeviceType();
-            setupCondition();
-            setupPreference();
+            setupCollectionMethod();
+            setupDeliveryMethod();
+            setMinDate();
         }
 
         function setupDeviceType() {
@@ -662,29 +623,10 @@
             });
         }
 
-        function setupCondition() {
-            const cards = document.querySelectorAll('#conditionOptions .condition-card');
-            const hidden = document.getElementById('deviceCondition');
-
-            cards.forEach(card => {
-                const select = () => {
-                    cards.forEach(c => c.classList.remove('selected'));
-                    card.classList.add('selected');
-                    hidden.value = card.dataset.value;
-                    hidden.classList.remove('error');
-                };
-                card.addEventListener('click', select);
-                card.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        select();
-                    }
-                });
-            });
-        }
-
-        function setupPreference() {
-            const options = document.querySelectorAll('#preferenceOptions .radio-card');
+        function setupCollectionMethod() {
+            const options = document.querySelectorAll('#collectionOptions .radio-card');
+            const pickupFields = document.getElementById('pickupFields');
+            const pickupAddress = document.getElementById('pickupAddress');
 
             options.forEach(option => {
                 option.addEventListener('click', function (e) {
@@ -697,8 +639,57 @@
                     this.classList.add('selected');
                     const radio = this.querySelector('input[type="radio"]');
                     if (radio) radio.checked = true;
+
+                    const value = this.dataset.value;
+                    if (value === 'pickup') {
+                        pickupFields.classList.add('visible');
+                        pickupAddress.setAttribute('required', 'required');
+                    } else {
+                        pickupFields.classList.remove('visible');
+                        pickupAddress.removeAttribute('required');
+                    }
                 });
             });
+        }
+
+        function setupDeliveryMethod() {
+            const options = document.querySelectorAll('#deliveryOptions .radio-card');
+            const deliveryFields = document.getElementById('deliveryFields');
+            const deliveryAddress = document.getElementById('deliveryAddress');
+
+            options.forEach(option => {
+                option.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    options.forEach(o => {
+                        o.classList.remove('selected');
+                        const r = o.querySelector('input[type="radio"]');
+                        if (r) r.checked = false;
+                    });
+                    this.classList.add('selected');
+                    const radio = this.querySelector('input[type="radio"]');
+                    if (radio) radio.checked = true;
+
+                    const value = this.dataset.value;
+                    if (value === 'delivered-to-me' || value === 'dispatched') {
+                        deliveryFields.classList.add('visible');
+                        deliveryAddress.setAttribute('required', 'required');
+                    } else {
+                        deliveryFields.classList.remove('visible');
+                        deliveryAddress.removeAttribute('required');
+                    }
+                });
+            });
+        }
+
+        function setMinDate() {
+            const dateInput = document.getElementById('preferredDate');
+            if (!dateInput) return;
+
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            dateInput.min = `${yyyy}-${mm}-${dd}`;
         }
     </script>
 

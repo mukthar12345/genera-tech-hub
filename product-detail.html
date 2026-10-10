@@ -9,14 +9,14 @@
     <meta name="description" content="View full details and specifications of this product at Genera Tech Hub.">
     <meta name="robots" content="index, follow">
 
-    <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="public/images/favicon.ico">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="public/css/style.css">
 
     <style>
         /* ============================================================
@@ -428,7 +428,7 @@
                 try {
                     await loadScript('/public/js/supabase.js');
                     await loadScript('/public/js/auth.js');
-                    await loadScript('/public/js/main.js');
+                    await loadScript('public/js/main.js');
                     console.log('✅ Product detail scripts loaded');
                     initProductDetailPage();
                 } catch (err) {
@@ -450,7 +450,7 @@
             const productId = params.get('id');
 
             if (!productId) {
-                showState('error', '😕', 'No Product Selected', 'Please select a product from our catalog.', '/src/pages/products.html', 'Browse Products');
+                showState('error', '😕', 'No Product Selected', 'Please select a product from our catalog.', '/src/pagesproducts.html', 'Browse Products');
                 return;
             }
 
@@ -468,7 +468,7 @@
                 const result = await getProductById(productId);
 
                 if (!result.success || !result.product) {
-                    showState('error', '😕', 'Product Not Found', 'This product may have been removed.', '/src/pages/products.html', 'Browse Products');
+                    showState('error', '😕', 'Product Not Found', 'This product may have been removed.', '/src/pagesproducts.html', 'Browse Products');
                     return;
                 }
 
@@ -491,7 +491,7 @@
                 }
             } catch (error) {
                 console.error('Load product error:', error);
-                showState('error', '⚠️', 'Could Not Load Product', error.message, '/src/pages/products.html', 'Browse Products');
+                showState('error', '⚠️', 'Could Not Load Product', error.message, '/src/pagesproducts.html', 'Browse Products');
             }
         }
 
@@ -561,9 +561,9 @@
                     <!-- Details -->
                     <div class="product-details">
                         <div class="breadcrumb">
-                            <a href="/src/pages/index.html">Home</a>
+                            <a href="/src/pagesindex.html">Home</a>
                             <span>›</span>
-                            <a href="/src/pages/products.html">Products</a>
+                            <a href="/src/pagesproducts.html">Products</a>
                             <span>›</span>
                             <span class="current">${escapeHtml(p.name)}</span>
                         </div>
@@ -607,7 +607,7 @@
                                class="btn btn-whatsapp" ${!inStock ? 'style="opacity:0.5;pointer-events:none;"' : ''}>
                                 <i class="fab fa-whatsapp"></i> ${inStock ? 'Buy on WhatsApp' : 'Out of Stock'}
                             </a>
-                            <a href="/src/pages/products.html" class="btn btn-secondary">
+                            <a href="/src/pagesproducts.html" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left"></i> Back
                             </a>
                         </div>
@@ -721,7 +721,7 @@
                         : 'https://placehold.co/400x300/1A2D4A/FFD700?text=Genera+Tech';
 
                     return `
-                        <a href="/src/pages/product-detail.html?id=${p.id}" class="product-card">
+                        <a href="/src/pagesproduct-detail.html?id=${p.id}" class="product-card">
                             <div class="product-image">
                                 <img src="${img}" alt="${escapeHtml(p.name)}" loading="lazy"
                                      onerror="this.src='https://placehold.co/400x300/1A2D4A/FFD700?text=Genera+Tech'">

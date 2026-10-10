@@ -179,7 +179,7 @@
                     if (isCeo) {
                         window.location.href = '/src/pages/admin.html';
                     } else {
-                        window.location.href = '/src/pages/index.html';
+                        window.location.href = '/src/pagesindex.html';
                     }
                 }, 900);
             } else {
@@ -326,7 +326,7 @@
 
         try {
             const { error } = await window.supabaseClient.auth.resetPasswordForEmail(email, {
-                redirectTo: `${window.location.origin}/src/pages/login.html`
+                redirectTo: `${window.location.origin}/src/pageslogin.html`
             });
 
             if (error) throw error;
@@ -367,7 +367,7 @@
                     if (isCeo) {
                         window.location.href = '/src/pages/admin.html';
                     } else {
-                        window.location.href = '/src/pages/index.html';
+                        window.location.href = '/src/pagesindex.html';
                     }
                 }, 1200);
             }

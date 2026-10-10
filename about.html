@@ -13,13 +13,13 @@
     <meta property="og:title" content="About Us — Genera Tech Hub">
     <meta property="og:description" content="Your trusted technology partner.">
 
-    <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="public/images/favicon.ico">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="public/css/style.css">
 
     <style>
         /* ============================================================
@@ -538,10 +538,10 @@
                         Buy, repair, upgrade, or trade — we're here for you.
                     </p>
                     <div class="buttons">
-                        <a href="/src/pages/products.html" class="btn btn-primary">
+                        <a href="/src/pagesproducts.html" class="btn btn-primary">
                             <i class="fas fa-shopping-bag"></i> Shop Products
                         </a>
-                        <a href="/src/pages/repair.html" class="btn btn-secondary">
+                        <a href="/src/pagesrepair.html" class="btn btn-secondary">
                             <i class="fas fa-tools"></i> Book Repair
                         </a>
                         <a href="https://wa.me/2348081302228" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
@@ -588,7 +588,7 @@
                 try {
                     await loadScript('/public/js/supabase.js');
                     await loadScript('/public/js/auth.js');
-                    await loadScript('/public/js/main.js');
+                    await loadScript('public/js/main.js');
                     console.log('✅ About page scripts loaded');
                 } catch (err) {
                     console.error('❌ Script load error:', err);

@@ -9,7 +9,7 @@
     <meta name="description" content="Genera Tech Hub — CEO Admin Dashboard.">
     <meta name="robots" content="noindex, nofollow">
 
-    <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="public/images/favicon.ico">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="public/css/style.css">
 
     <style>
         /* ============================================================
@@ -610,10 +610,10 @@
                 <h2>Access Denied</h2>
                 <p id="accessDeniedMessage">Only the CEO can access this dashboard.</p>
                 <div id="diagnosticOutput" class="diagnostic" style="display: none;"></div>
-                <a href="/src/pages/login.html" class="btn btn-primary">
+                <a href="/src/pageslogin.html" class="btn btn-primary">
                     <i class="fas fa-sign-in-alt"></i> Login as CEO
                 </a>
-                <a href="/src/pages/index.html" class="btn btn-secondary" style="margin-left: 0.5rem;">
+                <a href="/src/pagesindex.html" class="btn btn-secondary" style="margin-left: 0.5rem;">
                     <i class="fas fa-home"></i> Home
                 </a>
             </div>
@@ -636,7 +636,7 @@
                         <button class="btn btn-secondary btn-sm" onclick="refreshAllData()">
                             <i class="fas fa-sync"></i> Refresh
                         </button>
-                        <a href="/src/pages/index.html" class="btn btn-secondary btn-sm">
+                        <a href="/src/pagesindex.html" class="btn btn-secondary btn-sm">
                             <i class="fas fa-external-link-alt"></i> View Site
                         </a>
                         <button class="btn btn-secondary btn-sm" onclick="handleLogout(event)">
@@ -990,7 +990,7 @@
                 try {
                     await loadScript('/public/js/supabase.js');
                     await loadScript('/public/js/auth.js');
-                    await loadScript('/public/js/main.js');
+                    await loadScript('public/js/main.js');
                     console.log('✅ Admin page scripts loaded');
                     initAdminPage();
                 } catch (err) {
@@ -1720,7 +1720,7 @@
                     await signOutUser();
                 }
             } catch (_) {}
-            window.location.href = '/src/pages/login.html';
+            window.location.href = '/src/pageslogin.html';
         }
 
         // ============================================================

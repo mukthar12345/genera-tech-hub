@@ -7,7 +7,7 @@ Allow: /
 
 # Block admin and login pages from being indexed
 Disallow: /src/pages/admin.html
-Disallow: /src/pages/login.html
+Disallow: /src/pageslogin.html
 
 # Sitemap location
 Sitemap: https://genera-tech-hub.netlify.app/sitemap.xml

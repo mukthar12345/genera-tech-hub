@@ -126,7 +126,7 @@ async function signUpUser(email, password, fullName, phone) {
             email: normalizedEmail,
             password: password,
             options: {
-                emailRedirectTo: `${window.location.origin}/src/pages/login.html`,
+                emailRedirectTo: `${window.location.origin}/src/pageslogin.html`,
                 data: {
                     full_name: fullName,
                     phone: phone.trim(),

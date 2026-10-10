@@ -178,15 +178,12 @@ async function initCeoButton() {
     if (typeof getCurrentUser === 'undefined') return;
 
     try {
-        const result = await getCurrentUser();
-        if (!result.success || !result.user) return;
+      const email = String(result.user.email || '').toLowerCase();
+const isCeo = typeof isCeoEmail === 'function'
+    ? isCeoEmail(email)
+    : email === 'mudasirumukthar@gmail.com';
 
-        const email = String(result.user.email || '').toLowerCase();
-        const isCeo = typeof isCeoEmail === 'function'
-            ? isCeoEmail(email)
-            : email === 'mudasirumukthar@gmail.com';
-
-        if (!isCeo) return;
+if (!isCeo) return;  // ← This should exit if not CEO
 
         document.querySelector('.ceo-float')?.remove();
 
@@ -350,11 +347,11 @@ ${match.storage ? `💾 ${match.storage}<br>` : ''}
 
     if (q.includes('product') || q.includes('what do you sell') || q.includes('catalog')) {
         if (window.chatbotProducts.length === 0) {
-            return `🛍️ We sell phones, laptops, tablets, and accessories.<br><br>Visit our <a href="/src/pages/products.html" style="color:#FFD700;">Products page</a> to see what's available!`;
+            return `🛍️ We sell phones, laptops, tablets, and accessories.<br><br>Visit our <a href="/src/pagesproducts.html" style="color:#FFD700;">Products page</a> to see what's available!`;
         }
         const phones = window.chatbotProducts.filter(p => p.category === 'Phones').length;
         const laptops = window.chatbotProducts.filter(p => p.category === 'Laptops').length;
-        return `🛍️ <strong>Our Products</strong> (${window.chatbotProducts.length} total)<br><br>📱 Phones: ${phones}<br>💻 Laptops: ${laptops}<br>🎧 Accessories<br><br><a href="/src/pages/products.html" style="color:#FFD700;">Browse all products →</a>`;
+        return `🛍️ <strong>Our Products</strong> (${window.chatbotProducts.length} total)<br><br>📱 Phones: ${phones}<br>💻 Laptops: ${laptops}<br>🎧 Accessories<br><br><a href="/src/pagesproducts.html" style="color:#FFD700;">Browse all products →</a>`;
     }
 
     if (q.includes('price') || q.includes('cost') || q.includes('how much')) {
@@ -368,23 +365,23 @@ ${match.storage ? `💾 ${match.storage}<br>` : ''}
     }
 
     if (q.includes('iphone')) {
-        return `📱 Yes, we sell iPhones! Models depend on current stock.<br><br><a href="/src/pages/products.html" style="color:#FFD700;">Check products page</a> or <a href="https://wa.me/2348081302228" target="_blank" style="color:#25D366;">chat on WhatsApp</a>.`;
+        return `📱 Yes, we sell iPhones! Models depend on current stock.<br><br><a href="/src/pagesproducts.html" style="color:#FFD700;">Check products page</a> or <a href="https://wa.me/2348081302228" target="_blank" style="color:#25D366;">chat on WhatsApp</a>.`;
     }
 
     if (q.includes('samsung')) {
-        return `📱 Yes, we sell Samsung phones!<br><br><a href="/src/pages/products.html" style="color:#FFD700;">Check products page</a> or <a href="https://wa.me/2348081302228" target="_blank" style="color:#25D366;">chat on WhatsApp</a>.`;
+        return `📱 Yes, we sell Samsung phones!<br><br><a href="/src/pagesproducts.html" style="color:#FFD700;">Check products page</a> or <a href="https://wa.me/2348081302228" target="_blank" style="color:#25D366;">chat on WhatsApp</a>.`;
     }
 
     if (q.includes('laptop') || q.includes('macbook')) {
-        return `💻 Yes, we sell laptops! Brands include HP, Dell, Lenovo, Apple, and more.<br><br><a href="/src/pages/products.html" style="color:#FFD700;">Browse laptops →</a>`;
+        return `💻 Yes, we sell laptops! Brands include HP, Dell, Lenovo, Apple, and more.<br><br><a href="/src/pagesproducts.html" style="color:#FFD700;">Browse laptops →</a>`;
     }
 
     if (q.includes('repair') || q.includes('fix') || q.includes('broken')) {
-        return `🔧 We repair phones, laptops, and tablets.<br><br>Services include:<br>• Screen replacement<br>• Battery replacement<br>• Water damage<br>• Software issues<br><br><a href="/src/pages/repair.html" style="color:#FFD700;">Book a repair →</a>`;
+        return `🔧 We repair phones, laptops, and tablets.<br><br>Services include:<br>• Screen replacement<br>• Battery replacement<br>• Water damage<br>• Software issues<br><br><a href="/src/pagesrepair.html" style="color:#FFD700;">Book a repair →</a>`;
     }
 
     if (q.includes('trade') || q.includes('swap') || q.includes('sell')) {
-        return `🔄 Yes, we offer trade-ins!<br><br>We buy used phones and laptops.<br><br><a href="/src/pages/swap.html" style="color:#FFD700;">Get a trade-in quote →</a>`;
+        return `🔄 Yes, we offer trade-ins!<br><br>We buy used phones and laptops.<br><br><a href="/src/pagesswap.html" style="color:#FFD700;">Get a trade-in quote →</a>`;
     }
 
     if (q.includes('warranty') || q.includes('guarantee')) {
@@ -723,8 +720,8 @@ async function loadUserStatus() {
             `;
         } else {
             authButtons.innerHTML = `
-                <a href="/src/pages/login.html" class="btn btn-secondary btn-sm">Login</a>
-                <a href="/src/pages/login.html#signup" class="btn btn-primary btn-sm">Sign Up</a>
+                <a href="/src/pageslogin.html" class="btn btn-secondary btn-sm">Login</a>
+                <a href="/src/pageslogin.html#signup" class="btn btn-primary btn-sm">Sign Up</a>
             `;
         }
     } catch (error) {

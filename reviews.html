@@ -13,14 +13,14 @@
     <meta property="og:title" content="Customer Reviews — Genera Tech Hub">
     <meta property="og:description" content="Read real customer reviews.">
 
-    <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="public/images/favicon.ico">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="public/css/style.css">
 
     <style>
         /* ============================================================
@@ -470,7 +470,7 @@
                 try {
                     await loadScript('/public/js/supabase.js');
                     await loadScript('/public/js/auth.js');
-                    await loadScript('/public/js/main.js');
+                    await loadScript('public/js/main.js');
                     console.log('✅ Reviews page scripts loaded');
                     initReviewsPage();
                 } catch (err) {

@@ -9,14 +9,14 @@
     <meta name="description" content="Login or create your Genera Tech Hub account.">
     <meta name="robots" content="noindex, follow">
 
-    <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="public/images/favicon.ico">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="public/css/style.css">
 
     <style>
         .auth-page {
@@ -387,7 +387,7 @@
 
                     <label class="terms-check">
                         <input type="checkbox" id="termsCheck">
-                        <span>I agree to the <a href="/src/pages/terms.html" target="_blank">Terms</a> and <a href="/src/pages/privacy.html" target="_blank">Privacy Policy</a></span>
+                        <span>I agree to the <a href="/src/pagesterms.html" target="_blank">Terms</a> and <a href="/src/pagesprivacy.html" target="_blank">Privacy Policy</a></span>
                     </label>
 
                     <button type="button" class="btn btn-primary btn-block btn-lg" id="signupSubmitBtn">
@@ -446,7 +446,7 @@
             (async function () {
                 try {
                     await loadScript('/public/js/supabase.js');
-                    await loadScript('/public/js/main.js');
+                    await loadScript('public/js/main.js');
                     await loadScript('/public/js/auth.js');
                     console.log('✅ Login page scripts loaded');
 
@@ -642,7 +642,7 @@
                     if (isCeo) {
                         window.location.href = '/src/pages/admin.html';
                     } else {
-                        window.location.href = '/src/pages/index.html';
+                        window.location.href = '/src/pagesindex.html';
                     }
                 }, 900);
 
@@ -733,7 +733,7 @@
                     email: email,
                     password: password,
                     options: {
-                        emailRedirectTo: `${window.location.origin}/src/pages/login.html`,
+                        emailRedirectTo: `${window.location.origin}/src/pageslogin.html`,
                         data: {
                             full_name: fullName,
                             phone: phone,
@@ -794,7 +794,7 @@
 
             try {
                 const { error } = await window.supabaseClient.auth.resetPasswordForEmail(email, {
-                    redirectTo: `${window.location.origin}/src/pages/login.html`
+                    redirectTo: `${window.location.origin}/src/pageslogin.html`
                 });
 
                 if (error) throw error;

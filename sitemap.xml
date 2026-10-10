@@ -3,70 +3,70 @@
 
     <!-- Homepage -->
     <url>
-        <loc>https://genera-tech-hub.netlify.app/src/pages/index.html</loc>
+        <loc>https://genera-tech-hub.netlify.app/src/pagesindex.html</loc>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
 
     <!-- Products -->
     <url>
-        <loc>https://genera-tech-hub.netlify.app/src/pages/products.html</loc>
+        <loc>https://genera-tech-hub.netlify.app/src/pagesproducts.html</loc>
         <changefreq>daily</changefreq>
         <priority>0.9</priority>
     </url>
 
     <!-- Repair -->
     <url>
-        <loc>https://genera-tech-hub.netlify.app/src/pages/repair.html</loc>
+        <loc>https://genera-tech-hub.netlify.app/src/pagesrepair.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
 
     <!-- Trade-in / Swap -->
     <url>
-        <loc>https://genera-tech-hub.netlify.app/src/pages/swap.html</loc>
+        <loc>https://genera-tech-hub.netlify.app/src/pagesswap.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
 
     <!-- Reviews -->
     <url>
-        <loc>https://genera-tech-hub.netlify.app/src/pages/reviews.html</loc>
+        <loc>https://genera-tech-hub.netlify.app/src/pagesreviews.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
 
     <!-- About -->
     <url>
-        <loc>https://genera-tech-hub.netlify.app/src/pages/about.html</loc>
+        <loc>https://genera-tech-hub.netlify.app/src/pagesabout.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
 
     <!-- Contact -->
     <url>
-        <loc>https://genera-tech-hub.netlify.app/src/pages/contact.html</loc>
+        <loc>https://genera-tech-hub.netlify.app/src/pagescontact.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
 
     <!-- FAQ -->
     <url>
-        <loc>https://genera-tech-hub.netlify.app/src/pages/faq.html</loc>
+        <loc>https://genera-tech-hub.netlify.app/src/pagesfaq.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
 
     <!-- Privacy -->
     <url>
-        <loc>https://genera-tech-hub.netlify.app/src/pages/privacy.html</loc>
+        <loc>https://genera-tech-hub.netlify.app/src/pagesprivacy.html</loc>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
     </url>
 
     <!-- Terms -->
     <url>
-        <loc>https://genera-tech-hub.netlify.app/src/pages/terms.html</loc>
+        <loc>https://genera-tech-hub.netlify.app/src/pagesterms.html</loc>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
     </url>
