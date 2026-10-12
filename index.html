@@ -364,28 +364,28 @@
             </div>
 
             <div class="services-grid-home">
-                <a href="/src/pagesproducts.html" class="service-card-home fade-in">
+                <a href="products.html" class="service-card-home fade-in">
                     <div class="icon-box">🛍️</div>
                     <h3>Buy Devices</h3>
                     <p>Quality phones, laptops, tablets, and accessories at competitive prices.</p>
                     <span class="link">Browse Products <i class="fas fa-arrow-right"></i></span>
                 </a>
 
-                <a href="/src/pagesrepair.html" class="service-card-home fade-in">
+                <a href="repair.html" class="service-card-home fade-in">
                     <div class="icon-box">🔧</div>
                     <h3>Repair Services</h3>
                     <p>Expert repairs for phones and laptops — screens, batteries, software, and more.</p>
                     <span class="link">Book Repair <i class="fas fa-arrow-right"></i></span>
                 </a>
 
-                <a href="/src/pagesswap.html" class="service-card-home fade-in">
+                <a href="swap.html" class="service-card-home fade-in">
                     <div class="icon-box">🔄</div>
                     <h3>Trade-in &amp; Swap</h3>
                     <p>Trade in your old device for cash, or upgrade to something new.</p>
                     <span class="link">Get a Quote <i class="fas fa-arrow-right"></i></span>
                 </a>
 
-                <a href="/src/pagescontact.html" class="service-card-home fade-in">
+                <a href="contact.html" class="service-card-home fade-in">
                     <div class="icon-box">💬</div>
                     <h3>Customer Support</h3>
                     <p>Questions? We're here to help — reach us anytime on WhatsApp.</p>
@@ -415,7 +415,7 @@
             </div>
 
             <div class="text-center mt-3">
-                <a href="/src/pagesproducts.html" class="btn btn-primary">
+                <a href="products.html" class="btn btn-primary">
                     <i class="fas fa-th-large"></i>
                     View All Products
                 </a>
@@ -485,7 +485,7 @@
                 Whether you're buying, repairing, or trading — we're here for you.
             </p>
             <div class="cta-buttons">
-                <a href="/src/pagesproducts.html" class="btn btn-primary btn-lg">
+                <a href="products.html" class="btn btn-primary btn-lg">
                     <i class="fas fa-shopping-bag"></i>
                     Shop Products
                 </a>
@@ -506,12 +506,12 @@
 
     <!-- Load header & footer -->
     <script>
-        fetch('/src/components/header.html')
+        fetch(header.html')
             .then(r => r.text())
             .then(d => { document.getElementById('header-placeholder').innerHTML = d; })
             .catch(() => console.warn('Header not loaded'));
 
-        fetch('/src/components/footer.html')
+        fetch('footer.html')
             .then(r => r.text())
             .then(d => { document.getElementById('footer-placeholder').innerHTML = d; })
             .catch(() => console.warn('Footer not loaded'));
