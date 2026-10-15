@@ -398,12 +398,12 @@
 
     <!-- Load header/footer -->
     <script>
-        fetch('/src/components/header.html')
+        fetch('header.html')
             .then(r => r.text())
             .then(d => { document.getElementById('header-placeholder').innerHTML = d; })
             .catch(() => console.warn('Header not loaded'));
 
-        fetch('/src/components/footer.html')
+        fetch('footer.html')
             .then(r => r.text())
             .then(d => { document.getElementById('footer-placeholder').innerHTML = d; })
             .catch(() => console.warn('Footer not loaded'));
@@ -426,8 +426,8 @@
 
             (async function () {
                 try {
-                    await loadScript('/public/js/supabase.js');
-                    await loadScript('/public/js/auth.js');
+                    await loadScript('public/js/supabase.js');
+                    await loadScript('public/js/auth.js');
                     await loadScript('public/js/main.js');
                     console.log('✅ Product detail scripts loaded');
                     initProductDetailPage();
@@ -561,9 +561,9 @@
                     <!-- Details -->
                     <div class="product-details">
                         <div class="breadcrumb">
-                            <a href="/src/pagesindex.html">Home</a>
+                            <a href="index.html">Home</a>
                             <span>›</span>
-                            <a href="/src/pagesproducts.html">Products</a>
+                            <a href="products.html">Products</a>
                             <span>›</span>
                             <span class="current">${escapeHtml(p.name)}</span>
                         </div>
@@ -721,7 +721,7 @@
                         : 'https://placehold.co/400x300/1A2D4A/FFD700?text=Genera+Tech';
 
                     return `
-                        <a href="/src/pagesproduct-detail.html?id=${p.id}" class="product-card">
+                        <a href="product-detail.html?id=${p.id}" class="product-card">
                             <div class="product-image">
                                 <img src="${img}" alt="${escapeHtml(p.name)}" loading="lazy"
                                      onerror="this.src='https://placehold.co/400x300/1A2D4A/FFD700?text=Genera+Tech'">
