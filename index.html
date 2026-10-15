@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,643 +6,1042 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0A1628">
 
-    <!-- SEO -->
-    <title>Genera Tech Hub — Phone & Laptop Sales, Repairs & Upgrades</title>
-    <meta name="description" content="Genera Tech Hub — Buy phones and laptops, book expert repairs, and trade in your devices. Premium technology services you can trust.">
-    <meta name="keywords" content="tech hub Nigeria, phone repair, laptop repair, buy phones, buy laptops, trade-in">
+    <title>Genera Tech Hub | Technology You Can Trust</title>
+    <meta name="description" content="Buy quality phones and laptops, book professional repairs, upgrade devices and trade in old technology at Genera Tech Hub.">
+    <meta name="keywords" content="Genera Tech Hub, laptop sales, phone sales, laptop repair, phone repair, SSD upgrades, RAM upgrades, Nigeria">
     <meta name="robots" content="index, follow">
 
-    <!-- Open Graph -->
     <meta property="og:title" content="Genera Tech Hub — Technology You Can Trust">
-    <meta property="og:description" content="Buy phones and laptops, book expert repairs, and trade in your devices.">
+    <meta property="og:description" content="Quality devices, professional repairs and reliable technology services.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://generatechhub.com/">
+    <meta property="og:url" content="https://mukthar12345.github.io/genera-tech-hub/">
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="public/images/favicon.ico">
+    <link rel="icon" href="public/images/favicon.ico" type="image/x-icon">
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <!-- Styles -->
     <link rel="stylesheet" href="public/css/style.css">
 
     <style>
-        /* ============================================================
-           HOMEPAGE SPECIFIC STYLES
-           ============================================================ */
+        /* Homepage */
+        :root {
+            --gt-navy: #0A1628;
+            --gt-blue: #1A2D4A;
+            --gt-gold: #FFD700;
+            --gt-white: #FFFFFF;
+            --gt-muted: #B9C4D3;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 90px;
+        }
+
+        body {
+            margin: 0;
+            background: var(--gt-navy);
+            color: var(--gt-white);
+            font-family: "Inter", Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        a {
+            transition: color 0.2s ease, background 0.2s ease;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 12px;
+            z-index: 99999;
+            padding: 12px;
+            background: white;
+            color: black;
+        }
+
+        .skip-link:focus {
+            top: 12px;
+        }
+
+        /* Header and footer wrappers */
+        #header-placeholder {
+            position: relative;
+            z-index: 1000;
+        }
+
+        #footer-placeholder {
+            position: relative;
+            z-index: 1;
+        }
 
         /* Hero */
         .hero {
-            min-height: 100vh;
-            min-height: 100dvh;
+            position: relative;
             display: flex;
             align-items: center;
-            position: relative;
-            background: var(--gradient-hero);
+            min-height: 720px;
+            min-height: 100svh;
+            padding: 130px 20px 70px;
             overflow: hidden;
-            padding-top: calc(var(--header-height) + 2rem);
-            padding-bottom: 4rem;
+            background: linear-gradient(135deg, #0A1628 0%, #142743 65%, #0A1628 100%);
         }
 
         .hero-bg {
             position: absolute;
             inset: 0;
             z-index: 0;
+            pointer-events: none;
         }
 
         .hero-bg img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.12;
+            opacity: 0.13;
         }
 
         .hero-bg::after {
-            content: '';
+            content: "";
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 30% 40%, rgba(255, 215, 0, 0.08) 0%, transparent 60%);
+            background: linear-gradient(
+                90deg,
+                rgba(10, 22, 40, 0.97),
+                rgba(10, 22, 40, 0.75)
+            );
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .hero-content {
-            position: relative;
-            z-index: 1;
+            width: 100%;
             max-width: 800px;
         }
 
         .hero-badge {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.25);
-            padding: 0.45rem 1rem;
-            border-radius: var(--radius-pill);
-            color: var(--gold);
-            font-size: 0.82rem;
-            font-weight: 500;
-            margin-bottom: 1.25rem;
+            gap: 10px;
+            padding: 10px 15px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 30px;
+            background: rgba(255, 215, 0, 0.08);
+            color: var(--gt-gold);
+            font-size: 13px;
+            font-weight: 600;
         }
 
         .hero h1 {
-            font-size: clamp(2rem, 5vw, 3.75rem);
-            line-height: 1.1;
-            margin-bottom: 1rem;
+            margin: 0 0 22px;
+            font-family: "Orbitron", Arial, sans-serif;
+            font-size: clamp(32px, 5vw, 64px);
+            line-height: 1.2;
+            overflow-wrap: anywhere;
         }
 
         .hero h1 .highlight {
-            background: var(--gradient-gold);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--gt-gold);
         }
 
-        .hero p {
-            font-size: clamp(1rem, 2vw, 1.15rem);
-            color: var(--text-light);
-            margin-bottom: 2rem;
-            max-width: 620px;
-            opacity: 0.9;
+        .hero-description {
+            max-width: 640px;
+            margin: 0 0 30px;
+            color: #E0E7F0;
+            font-size: clamp(15px, 2vw, 18px);
+            line-height: 1.8;
         }
 
         .hero-buttons {
             display: flex;
-            gap: 0.75rem;
             flex-wrap: wrap;
-            margin-bottom: 3rem;
+            gap: 12px;
+            margin-bottom: 48px;
         }
 
+        .hero-buttons .btn,
+        .cta-buttons .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 48px;
+            padding: 13px 20px;
+            border: 1px solid transparent;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--gt-gold);
+            color: var(--gt-navy);
+        }
+
+        .btn-primary:hover {
+            background: #F0C800;
+            color: var(--gt-navy);
+        }
+
+        .btn-secondary {
+            border-color: #64748B !important;
+            background: transparent;
+            color: var(--gt-white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gt-blue);
+        }
+
+        .btn-whatsapp {
+            background: #168B55;
+            color: white;
+        }
+
+        .btn-whatsapp:hover {
+            background: #117344;
+            color: white;
+        }
+
+        /* Statistics */
         .hero-stats {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            max-width: 640px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 24px;
+            max-width: 760px;
         }
 
-        .hero-stats .stat .number {
-            font-size: clamp(1.5rem, 3vw, 2rem);
+        .hero-stats .stat {
+            min-width: 0;
+        }
+
+        .hero-stats .number {
+            margin-bottom: 8px;
+            color: var(--gt-gold);
+            font-family: "Orbitron", Arial, sans-serif;
+            font-size: clamp(22px, 3vw, 32px);
             font-weight: 700;
-            color: var(--gold);
-            font-family: var(--font-heading);
-            line-height: 1;
         }
 
-        .hero-stats .stat .label {
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            margin-top: 0.35rem;
+        .hero-stats .label {
+            color: var(--gt-muted);
+            font-size: 12px;
+            line-height: 1.6;
         }
 
-        /* Services */
+        /* General sections */
+        .section {
+            padding: 80px 20px;
+        }
+
+        .section .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-3 {
+            margin-bottom: 32px;
+        }
+
+        .mt-3 {
+            margin-top: 32px;
+        }
+
+        .mt-2 {
+            margin-top: 12px;
+        }
+
+        .text-gold {
+            color: var(--gt-gold);
+        }
+
+        .text-muted {
+            color: var(--gt-muted);
+        }
+
+        .section h2 {
+            margin: 0 0 12px;
+            font-family: "Orbitron", Arial, sans-serif;
+            font-size: clamp(23px, 3vw, 36px);
+            line-height: 1.4;
+        }
+
+        /* Service cards */
         .services-grid-home {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
         }
 
         .service-card-home {
-            background: rgba(26, 45, 74, 0.4);
-            border: 1px solid rgba(255, 215, 0, 0.06);
-            border-radius: var(--radius-md);
-            padding: 2rem 1.5rem;
-            transition: var(--transition-med);
             display: flex;
             flex-direction: column;
+            min-width: 0;
+            padding: 28px 24px;
+            border: 1px solid rgba(255, 215, 0, 0.12);
+            border-radius: 12px;
+            background: rgba(26, 45, 74, 0.65);
+            color: var(--gt-white);
             text-decoration: none;
-            color: inherit;
         }
 
         .service-card-home:hover {
-            transform: translateY(-6px);
-            border-color: var(--gold);
-            box-shadow: var(--shadow-glow);
+            border-color: var(--gt-gold);
+            background: rgba(26, 45, 74, 0.95);
+            transform: translateY(-3px);
         }
 
         .service-card-home .icon-box {
-            width: 60px;
-            height: 60px;
-            border-radius: var(--radius-md);
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(244, 196, 48, 0.05));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.75rem;
-            margin-bottom: 1rem;
-            border: 1px solid rgba(255, 215, 0, 0.12);
+            width: 56px;
+            height: 56px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 10px;
+            background: rgba(255, 215, 0, 0.08);
+            color: var(--gt-gold);
+            font-size: 24px;
         }
 
         .service-card-home h3 {
-            font-size: 1.15rem;
-            margin-bottom: 0.5rem;
+            margin: 0 0 10px;
+            font-size: 18px;
         }
 
         .service-card-home p {
-            color: var(--text-muted);
-            font-size: 0.92rem;
-            line-height: 1.6;
-            margin-bottom: 1rem;
+            margin: 0 0 18px;
+            color: var(--gt-muted);
+            font-size: 14px;
+            line-height: 1.8;
             flex-grow: 1;
         }
 
         .service-card-home .link {
-            color: var(--gold);
-            font-weight: 600;
-            font-size: 0.9rem;
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 8px;
+            color: var(--gt-gold);
+            font-size: 13px;
+            font-weight: 700;
         }
 
-        /* Featured Products */
+        /* Featured products */
         .featured-section {
-            background: rgba(26, 45, 74, 0.15);
+            background: rgba(26, 45, 74, 0.28);
         }
 
-        /* Why Choose Us */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .products-grid .product-card {
+            min-width: 0;
+            overflow: hidden;
+            border: 1px solid rgba(255, 215, 0, 0.12);
+            border-radius: 10px;
+            background: var(--gt-blue);
+        }
+
+        .product-image img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 16px;
+        }
+
+        .product-category,
+        .stock-status {
+            color: var(--gt-muted);
+            font-size: 12px;
+        }
+
+        .product-name {
+            overflow-wrap: anywhere;
+        }
+
+        .product-price {
+            margin: 12px 0;
+            color: var(--gt-gold);
+            font-weight: 700;
+        }
+
+        .stock-in {
+            color: #65D6A0;
+        }
+
+        .stock-out {
+            color: #FF9B9B;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .product-actions .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .btn-outline {
+            border: 1px solid var(--gt-gold);
+            color: var(--gt-gold);
+        }
+
+        .btn-sm {
+            font-size: 13px;
+        }
+
+        /* Why choose us */
         .why-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
         }
 
         .why-card {
-            background: rgba(26, 45, 74, 0.4);
-            border: 1px solid rgba(255, 215, 0, 0.06);
-            border-radius: var(--radius-md);
-            padding: 1.75rem 1.5rem;
+            padding: 25px 20px;
+            border: 1px solid rgba(255, 215, 0, 0.12);
+            border-radius: 10px;
+            background: rgba(26, 45, 74, 0.55);
             text-align: center;
-            transition: var(--transition-fast);
-        }
-
-        .why-card:hover {
-            border-color: var(--gold);
         }
 
         .why-card .icon {
-            font-size: 2.25rem;
-            margin-bottom: 0.75rem;
+            margin-bottom: 14px;
+            color: var(--gt-gold);
+            font-size: 28px;
         }
 
         .why-card h3 {
-            color: var(--gold);
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
+            color: var(--gt-gold);
+            font-size: 16px;
         }
 
         .why-card p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            line-height: 1.6;
+            margin-bottom: 0;
+            color: var(--gt-muted);
+            font-size: 14px;
+            line-height: 1.7;
         }
 
-        /* CTA */
+        /* Call to action */
         .cta-section {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(26, 45, 74, 0.5));
-            border-top: 1px solid rgba(255, 215, 0, 0.15);
-            border-bottom: 1px solid rgba(255, 215, 0, 0.15);
+            border-top: 1px solid rgba(255, 215, 0, 0.18);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.18);
+            background: linear-gradient(135deg, #142743, #0A1628);
             text-align: center;
         }
 
-        .cta-section h2 {
-            margin-bottom: 1rem;
-        }
-
         .cta-section p {
-            color: var(--text-light);
-            font-size: 1.05rem;
             max-width: 620px;
-            margin: 0 auto 2rem;
+            margin: 16px auto 28px;
+            color: #E0E7F0;
+            line-height: 1.8;
         }
 
         .cta-buttons {
             display: flex;
-            gap: 1rem;
             justify-content: center;
             flex-wrap: wrap;
+            gap: 12px;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-            .hero-buttons { flex-direction: column; }
-            .hero-buttons .btn { width: 100%; }
-            .cta-buttons { flex-direction: column; }
-            .cta-buttons .btn { width: 100%; }
+        /* Floating icon-only assistant shortcut */
+        .assistant-float {
+            position: fixed;
+            right: 20px;
+            bottom: 22px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 58px;
+            height: 58px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            background: var(--gt-gold);
+            color: var(--gt-navy);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.35);
+            font-size: 24px;
+            text-decoration: none;
+        }
+
+        .assistant-float:hover {
+            transform: translateY(-3px);
+            background: #F0C800;
+            color: var(--gt-navy);
+        }
+
+        .assistant-float:focus-visible {
+            outline: 3px solid white;
+            outline-offset: 4px;
+        }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .products-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .why-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .hero-stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 22px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero {
+                min-height: auto;
+                padding: 110px 18px 55px;
+            }
+
+            .hero h1 {
+                font-size: clamp(30px, 9vw, 43px);
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                gap: 12px;
+                margin-bottom: 38px;
+            }
+
+            .hero-buttons .btn {
+                width: 100%;
+            }
+
+            .section {
+                padding: 55px 18px;
+            }
+
+            .services-grid-home,
+            .why-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            .product-info {
+                padding: 12px;
+            }
+
+            .product-actions {
+                flex-wrap: wrap;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .cta-buttons .btn {
+                width: 100%;
+            }
+
+            .assistant-float {
+                right: 14px;
+                bottom: 16px;
+                width: 54px;
+                height: 54px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
-<body id="main-content">
 
-    <!-- Skip link (accessibility) -->
+<body>
     <a href="#main" class="skip-link">Skip to main content</a>
 
-    <!-- Header (loaded via fetch) -->
+    <!-- Header file must be in the repository root -->
     <div id="header-placeholder"></div>
 
-    <!-- ============================================================
-         HERO SECTION
-         ============================================================ -->
-    <section class="hero" id="main">
-        <div class="hero-bg">
-            <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1600&q=75&auto=format"
-                 alt=""
-                 loading="eager">
-        </div>
+    <main id="main">
+        <section class="hero">
+            <div class="hero-bg" aria-hidden="true">
+                <img
+                    src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1600&q=75&auto=format"
+                    alt=""
+                    fetchpriority="high">
+            </div>
 
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <i class="fas fa-star"></i>
-                    <span>Technology You Can Trust</span>
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <i class="fas fa-star" aria-hidden="true"></i>
+                        <span>Technology You Can Trust</span>
+                    </div>
+
+                    <h1>
+                        Premium Tech.<br>
+                        <span class="highlight">Expert Service.</span>
+                    </h1>
+
+                    <p class="hero-description">
+                        Buy quality phones and laptops, book professional repairs,
+                        upgrade your devices and trade in old technology — all at
+                        Genera Tech Hub.
+                    </p>
+
+                    <div class="hero-buttons">
+                        <a href="products.html" class="btn btn-primary">
+                            <i class="fas fa-shopping-bag" aria-hidden="true"></i>
+                            Shop Now
+                        </a>
+
+                        <a href="repair.html" class="btn btn-secondary">
+                            <i class="fas fa-tools" aria-hidden="true"></i>
+                            Book Repair
+                        </a>
+
+                        <a
+                            href="https://wa.me/2348081302228"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="btn btn-whatsapp">
+                            <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                            Chat on WhatsApp
+                        </a>
+                    </div>
+
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <div class="number">100+</div>
+                            <div class="label">Devices Serviced</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="number">50+</div>
+                            <div class="label">Products Available</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="number">4.9</div>
+                            <div class="label">Customer Rating</div>
+                        </div>
+
+                        <div class="stat">
+                            <div class="number">24/7</div>
+                            <div class="label">WhatsApp Support</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services -->
+        <section class="section">
+            <div class="container">
+                <div class="text-center mb-3">
+                    <h2>Our <span class="text-gold">Services</span></h2>
+                    <p class="text-muted">
+                        Everything you need for your devices — under one roof.
+                    </p>
                 </div>
 
-                <h1>
-                    Premium Tech.<br>
-                    <span class="highlight">Expert Service.</span>
-                </h1>
+                <div class="services-grid-home">
+                    <a href="products.html" class="service-card-home">
+                        <div class="icon-box">
+                            <i class="fas fa-laptop" aria-hidden="true"></i>
+                        </div>
+                        <h3>Buy Devices</h3>
+                        <p>Explore phones, laptops and accessories to suit your needs.</p>
+                        <span class="link">Browse Products
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </span>
+                    </a>
 
+                    <a href="repair.html" class="service-card-home">
+                        <div class="icon-box">
+                            <i class="fas fa-screwdriver-wrench" aria-hidden="true"></i>
+                        </div>
+                        <h3>Repair Services</h3>
+                        <p>Get help with device faults, software issues and upgrades.</p>
+                        <span class="link">Book Repair
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </span>
+                    </a>
+
+                    <a href="swap.html" class="service-card-home">
+                        <div class="icon-box">
+                            <i class="fas fa-right-left" aria-hidden="true"></i>
+                        </div>
+                        <h3>Trade-in &amp; Swap</h3>
+                        <p>Ask about exchanging your current device for another.</p>
+                        <span class="link">Get a Quote
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </span>
+                    </a>
+
+                    <a href="contact.html" class="service-card-home">
+                        <div class="icon-box">
+                            <i class="fas fa-headset" aria-hidden="true"></i>
+                        </div>
+                        <h3>Customer Support</h3>
+                        <p>Contact us with questions about products or services.</p>
+                        <span class="link">Contact Us
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured products -->
+        <section class="section featured-section">
+            <div class="container">
+                <div class="text-center mb-3">
+                    <h2>Featured <span class="text-gold">Products</span></h2>
+                    <p class="text-muted">
+                        Explore our latest devices and accessories.
+                    </p>
+                </div>
+
+                <div class="products-grid" id="featuredProducts">
+                    <div class="text-center" style="grid-column: 1 / -1; padding: 40px 10px;">
+                        <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+                        <p class="text-muted">Loading products...</p>
+                    </div>
+                </div>
+
+                <div class="text-center mt-3">
+                    <a href="products.html" class="btn btn-primary">
+                        <i class="fas fa-th-large" aria-hidden="true"></i>
+                        View All Products
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why choose us -->
+        <section class="section">
+            <div class="container">
+                <div class="text-center mb-3">
+                    <h2>Why Choose <span class="text-gold">Genera Tech Hub</span></h2>
+                    <p class="text-muted">
+                        Professional service, quality products and honest advice.
+                    </p>
+                </div>
+
+                <div class="why-grid">
+                    <div class="why-card">
+                        <div class="icon"><i class="fas fa-circle-check" aria-hidden="true"></i></div>
+                        <h3>Quality Products</h3>
+                        <p>We aim to provide reliable devices and clear product information.</p>
+                    </div>
+
+                    <div class="why-card">
+                        <div class="icon"><i class="fas fa-screwdriver-wrench" aria-hidden="true"></i></div>
+                        <h3>Repair Services</h3>
+                        <p>Get assistance with repairs, software installation and upgrades.</p>
+                    </div>
+
+                    <div class="why-card">
+                        <div class="icon"><i class="fab fa-whatsapp" aria-hidden="true"></i></div>
+                        <h3>Personal Support</h3>
+                        <p>Contact us to ask questions and discuss your technology needs.</p>
+                    </div>
+
+                    <div class="why-card">
+                        <div class="icon"><i class="fas fa-truck" aria-hidden="true"></i></div>
+                        <h3>Delivery Options</h3>
+                        <p>Ask us about delivery and pickup availability for your order.</p>
+                    </div>
+
+                    <div class="why-card">
+                        <div class="icon"><i class="fas fa-hand-holding-dollar" aria-hidden="true"></i></div>
+                        <h3>Clear Pricing</h3>
+                        <p>Ask for a quote before proceeding with a purchase or repair.</p>
+                    </div>
+
+                    <div class="why-card">
+                        <div class="icon"><i class="fas fa-arrows-rotate" aria-hidden="true"></i></div>
+                        <h3>Device Upgrades</h3>
+                        <p>Ask about suitable RAM, SSD and other compatible upgrades.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to action -->
+        <section class="section cta-section">
+            <div class="container">
+                <h2>Ready to Get Started?</h2>
                 <p>
-                    Buy quality phones and laptops, book professional repairs,
-                    and trade in your devices — all at Genera Tech Hub.
+                    Whether you're buying a device, arranging a repair or exploring
+                    an upgrade, Genera Tech Hub is here to help.
                 </p>
 
-                <div class="hero-buttons">
-                    <a href="/src/pagesproducts.html" class="btn btn-primary btn-lg">
-                        <i class="fas fa-shopping-bag"></i>
-                        Shop Now
+                <div class="cta-buttons">
+                    <a href="products.html" class="btn btn-primary">
+                        <i class="fas fa-shopping-bag" aria-hidden="true"></i>
+                        Shop Products
                     </a>
-                    <a href="/src/pagesrepair.html" class="btn btn-secondary btn-lg">
-                        <i class="fas fa-tools"></i>
-                        Book Repair
+
+                    <a
+                        href="https://wa.me/2348081302228"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn btn-whatsapp">
+                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                        Chat with Us
                     </a>
-                    <a href="https://wa.me/2348081302228" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-lg">
-                        <i class="fab fa-whatsapp"></i>
-                        Chat on WhatsApp
-                    </a>
-                </div>
-
-                <div class="hero-stats">
-                    <div class="stat">
-                        <div class="number counter" data-target="100">0+</div>
-                        <div class="label">Devices Serviced</div>
-                    </div>
-                    <div class="stat">
-                        <div class="number counter" data-target="50">0+</div>
-                        <div class="label">Products Available</div>
-                    </div>
-                    <div class="stat">
-                        <div class="number">4.9</div>
-                        <div class="label">⭐ Customer Rating</div>
-                    </div>
-                    <div class="stat">
-                        <div class="number">24/7</div>
-                        <div class="label">WhatsApp Support</div>
-                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- ============================================================
-         SERVICES SECTION
-         ============================================================ -->
-    <section class="section">
-        <div class="container">
-            <div class="text-center mb-3">
-                <h2>Our <span class="text-gold">Services</span></h2>
-                <p class="text-muted" style="max-width: 600px; margin: 0.5rem auto 0;">
-                    Everything you need for your devices — under one roof.
-                </p>
-            </div>
-
-            <div class="services-grid-home">
-                <a href="/src/pagesproducts.html" class="service-card-home fade-in">
-                    <div class="icon-box">🛍️</div>
-                    <h3>Buy Devices</h3>
-                    <p>Quality phones, laptops, tablets, and accessories at competitive prices.</p>
-                    <span class="link">Browse Products <i class="fas fa-arrow-right"></i></span>
-                </a>
-
-                <a href="/src/pagesrepair.html" class="service-card-home fade-in">
-                    <div class="icon-box">🔧</div>
-                    <h3>Repair Services</h3>
-                    <p>Expert repairs for phones and laptops — screens, batteries, software, and more.</p>
-                    <span class="link">Book Repair <i class="fas fa-arrow-right"></i></span>
-                </a>
-
-                <a href="/src/pagesswap.html" class="service-card-home fade-in">
-                    <div class="icon-box">🔄</div>
-                    <h3>Trade-in &amp; Swap</h3>
-                    <p>Trade in your old device for cash, or upgrade to something new.</p>
-                    <span class="link">Get a Quote <i class="fas fa-arrow-right"></i></span>
-                </a>
-
-                <a href="/src/pagescontact.html" class="service-card-home fade-in">
-                    <div class="icon-box">💬</div>
-                    <h3>Customer Support</h3>
-                    <p>Questions? We're here to help — reach us anytime on WhatsApp.</p>
-                    <span class="link">Contact Us <i class="fas fa-arrow-right"></i></span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-         FEATURED PRODUCTS
-         ============================================================ -->
-    <section class="section featured-section">
-        <div class="container">
-            <div class="text-center mb-3">
-                <h2>Featured <span class="text-gold">Products</span></h2>
-                <p class="text-muted" style="max-width: 600px; margin: 0.5rem auto 0;">
-                    Our latest devices and accessories.
-                </p>
-            </div>
-
-            <div class="products-grid" id="featuredProducts">
-                <div class="text-center" style="grid-column: 1/-1; padding: 3rem;">
-                    <div class="loading"></div>
-                    <p class="text-muted mt-2">Loading products...</p>
-                </div>
-            </div>
-
-            <div class="text-center mt-3">
-                <a href="/src/pagesproducts.html" class="btn btn-primary">
-                    <i class="fas fa-th-large"></i>
-                    View All Products
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-         WHY CHOOSE US
-         ============================================================ -->
-    <section class="section">
-        <div class="container">
-            <div class="text-center mb-3">
-                <h2>Why Choose <span class="text-gold">Genera Tech Hub</span></h2>
-                <p class="text-muted" style="max-width: 620px; margin: 0.5rem auto 0;">
-                    We're committed to quality service and honest business.
-                </p>
-            </div>
-
-            <div class="why-grid">
-                <div class="why-card fade-in">
-                    <div class="icon">✅</div>
-                    <h3>Quality Products</h3>
-                    <p>All devices are inspected and verified before sale.</p>
-                </div>
-
-                <div class="why-card fade-in">
-                    <div class="icon">🔧</div>
-                    <h3>Expert Technicians</h3>
-                    <p>Repairs performed by experienced technicians using quality parts.</p>
-                </div>
-
-                <div class="why-card fade-in">
-                    <div class="icon">💬</div>
-                    <h3>Fast WhatsApp Support</h3>
-                    <p>Get quick answers and personal service on WhatsApp.</p>
-                </div>
-
-                <div class="why-card fade-in">
-                    <div class="icon">🚗</div>
-                    <h3>Delivery &amp; Pickup</h3>
-                    <p>Convenient delivery and pickup options available.</p>
-                </div>
-
-                <div class="why-card fade-in">
-                    <div class="icon">💰</div>
-                    <h3>Fair Pricing</h3>
-                    <p>Transparent pricing — no hidden charges.</p>
-                </div>
-
-                <div class="why-card fade-in">
-                    <div class="icon">🔄</div>
-                    <h3>Trade-in Program</h3>
-                    <p>Turn your old devices into value with our trade-in service.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-         CTA SECTION
-         ============================================================ -->
-    <section class="section cta-section">
-        <div class="container">
-            <h2>Ready to Get Started?</h2>
-            <p>
-                Whether you're buying, repairing, or trading — we're here for you.
-            </p>
-            <div class="cta-buttons">
-                <a href="products.html" class="btn btn-primary btn-lg">
-                    <i class="fas fa-shopping-bag"></i>
-                    Shop Products
-                </a>
-                <a href="https://wa.me/2348081302228" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-lg">
-                    <i class="fab fa-whatsapp"></i>
-                    Chat with Us
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer (loaded via fetch) -->
+    <!-- Footer file must be in the repository root -->
     <div id="footer-placeholder"></div>
 
-    <!-- ============================================================
-         SCRIPTS
-         ============================================================ -->
+    <!-- Floating icon-only customer assistant shortcut -->
+    <a
+        class="assistant-float"
+        href="https://wa.me/2348081302228"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat with Genera Tech Hub assistant"
+        title="Chat with Genera Tech Hub">
+        <i class="fas fa-comment-dots" aria-hidden="true"></i>
+    </a>
 
-    <!-- Load header & footer -->
+    <!-- Load shared header and footer -->
     <script>
-        fetch('header.html')
-            .then(r => r.text())
-            .then(d => { document.getElementById('header-placeholder').innerHTML = d; })
-            .catch(() => console.warn('Header not loaded'));
+        (async function () {
+            const basePath = window.location.pathname.endsWith("/")
+                ? window.location.pathname
+                : window.location.pathname.substring(
+                    0,
+                    window.location.pathname.lastIndexOf("/") + 1
+                );
 
-        fetch('footer.html')
-            .then(r => r.text())
-            .then(d => { document.getElementById('footer-placeholder').innerHTML = d; })
-            .catch(() => console.warn('Footer not loaded'));
-    </script>
+            async function loadPartial(fileName, placeholderId) {
+                const placeholder = document.getElementById(placeholderId);
 
-    <!-- Load app scripts (sequential) -->
-    <script>
-        (function () {
-            function loadScript(src) {
-                return new Promise((resolve, reject) => {
-                    if (document.querySelector(`script[src="${src}"]`)) return resolve();
-                    const s = document.createElement('script');
-                    s.src = src;
-                    s.async = false;
-                    s.onload = resolve;
-                    s.onerror = () => reject(new Error(`Could not load ${src}`));
-                    document.head.appendChild(s);
-                });
+                try {
+                    const response = await fetch(basePath + fileName);
+
+                    if (!response.ok) {
+                        throw new Error(fileName + " returned HTTP " + response.status);
+                    }
+
+                    placeholder.innerHTML = await response.text();
+                } catch (error) {
+                    console.error("Could not load " + fileName + ":", error);
+                }
             }
 
-            (async function () {
-                try {
-                    await loadScript('public/js/supabase.js');
-                    await loadScript('public/js/auth.js');
-                    await loadScript('public/js/main.js');
-                    console.log('✅ Homepage scripts loaded');
-
-                    // Load featured products
-                    if (typeof getProducts === 'function') {
-                        loadFeaturedProducts();
-                    }
-                } catch (err) {
-                    console.error('❌ Script load error:', err);
-                }
-            })();
+            await loadPartial("header.html", "header-placeholder");
+            await loadPartial("footer.html", "footer-placeholder");
         })();
     </script>
 
-    <!-- Featured products logic -->
+    <!-- Load application scripts using the GitHub Pages project path -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
-        async function loadFeaturedProducts() {
-            const container = document.getElementById('featuredProducts');
-            if (!container) return;
+        (function () {
+            const basePath = window.location.pathname.endsWith("/")
+                ? window.location.pathname
+                : window.location.pathname.substring(
+                    0,
+                    window.location.pathname.lastIndexOf("/") + 1
+                );
 
-            try {
-                const result = await getProducts();
-
-                if (!result.success || !result.products || result.products.length === 0) {
-                    container.innerHTML = `
-                        <div class="text-center" style="grid-column: 1/-1; padding: 3rem 1rem;">
-                            <div style="font-size: 3rem; margin-bottom: 1rem;">🛍️</div>
-                            <h3 style="margin-bottom: 0.5rem;">Products Coming Soon</h3>
-                            <p class="text-muted" style="margin-bottom: 1.5rem;">
-                                We're updating our catalog. Check back soon!
-                            </p>
-                            <a href="https://wa.me/2348081302228" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
-                                <i class="fab fa-whatsapp"></i>
-                                Ask on WhatsApp
-                            </a>
-                        </div>
-                    `;
-                    return;
-                }
-
-                // Show first 4 products
-                const products = result.products.slice(0, 4);
-
-                container.innerHTML = products.map(product => {
-                    const price = new Intl.NumberFormat('en-NG', {
-                        style: 'currency',
-                        currency: 'NGN',
-                        minimumFractionDigits: 0
-                    }).format(product.price);
-
-                    const img = product.image_urls && product.image_urls.length > 0
-                        ? product.image_urls[0]
-                        : 'https://placehold.co/400x300/1A2D4A/FFD700?text=Genera+Tech';
-
-                    const waMsg = encodeURIComponent(
-                        `Hi Genera Tech Hub! I'm interested in ${product.name} - ${price}. Is it available?`
-                    );
-
-                    const inStock = product.stock_quantity > 0;
-
-                    return `
-                        <div class="product-card fade-in">
-                            <div class="product-image">
-                                <img src="${img}"
-                                     alt="${escapeHtml(product.name)}"
-                                     loading="lazy"
-                                     onerror="this.src='https://placehold.co/400x300/1A2D4A/FFD700?text=Genera+Tech'">
-                            </div>
-                            <div class="product-info">
-                                <div class="product-category">${escapeHtml(product.category || 'Device')}</div>
-                                <h3 class="product-name">${escapeHtml(product.name)}</h3>
-                                <div class="product-price">${price}</div>
-                                <div class="stock-status ${inStock ? 'stock-in' : 'stock-out'}">
-                                    <span class="stock-dot"></span>
-                                    <span>${inStock ? 'In Stock' : 'Out of Stock'}</span>
-                                </div>
-                                <div class="product-actions">
-                                    <a href="/src/pagesproduct-detail.html?id=${product.id}" class="btn btn-outline btn-sm">
-                                        View
-                                    </a>
-                                    <a href="https://wa.me/2348081302228?text=${waMsg}"
-                                       target="_blank"
-                                       rel="noopener noreferrer"
-                                       class="btn btn-whatsapp btn-sm">
-                                        <i class="fab fa-whatsapp"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-
-                // Re-trigger animations
-                if (typeof initAnimations === 'function') {
-                    setTimeout(initAnimations, 100);
-                }
-            } catch (error) {
-                console.error('Featured products error:', error);
-                container.innerHTML = `
-                    <div class="text-center" style="grid-column: 1/-1; padding: 3rem 1rem;">
-                        <p class="text-muted">Could not load products. Please refresh.</p>
-                    </div>
-                `;
+            function loadScript(path) {
+                return new Promise(function (resolve, reject) {
+                    const script = document.createElement("script");
+                    script.src = basePath + path;
+                    script.onload = resolve;
+                    script.onerror = function () {
+                        reject(new Error("Could not load " + script.src));
+                    };
+                    document.body.appendChild(script);
+                });
             }
-        }
-    </script>
 
+            async function startApp() {
+                try {
+                    await loadScript("public/js/supabase.js");
+                    await loadScript("public/js/auth.js");
+                    await loadScript("public/js/main.js");
+
+                    if (typeof window.getProducts === "function") {
+                        loadFeaturedProducts();
+                    } else {
+                        showProductsUnavailable();
+                    }
+                } catch (error) {
+                    console.error("Application script error:", error);
+                    showProductsUnavailable();
+                }
+            }
+
+            function showProductsUnavailable() {
+                const container = document.getElementById("featuredProducts");
+
+                if (container) {
+                    container.innerHTML =
+                        '<div style="grid-column:1/-1;text-align:center;padding:30px 12px;">' +
+                        '<p class="text-muted">Our product catalog is temporarily unavailable.</p>' +
+                        '<a class="btn btn-whatsapp" href="https://wa.me/2348081302228" target="_blank" rel="noopener noreferrer">' +
+                        '<i class="fab fa-whatsapp" aria-hidden="true"></i> Ask us on WhatsApp' +
+                        '</a></div>';
+                }
+            }
+
+            async function loadFeaturedProducts() {
+                const container = document.getElementById("featuredProducts");
+                if (!container) return;
+
+                try {
+                    const result = await window.getProducts();
+
+                    if (!result || !result.success ||
+                        !Array.isArray(result.products) ||
+                        result.products.length === 0) {
+                        showProductsUnavailable();
+                        return;
+                    }
+
+                    function escapeText(value) {
+                        return String(value == null ? "" : value).replace(/[&<>"']/g, function (char) {
+                            return {
+                                "&": "&amp;",
+                                "<": "&lt;",
+                                ">": "&gt;",
+                                '"': "&quot;",
+                                "'": "&#39;"
+                            }[char];
+                        });
+                    }
+
+                    const products = result.products.slice(0, 4);
+
+                    container.innerHTML = products.map(function (product) {
+                        const name = escapeText(product.name || "Device");
+                        const category = escapeText(product.category || "Device");
+                        const priceNumber = Number(product.price);
+                        const price = Number.isFinite(priceNumber)
+                            ? new Intl.NumberFormat("en-NG", {
+                                style: "currency",
+                                currency: "NGN",
+                                maximumFractionDigits: 0
+                            }).format(priceNumber)
+                            : "Contact us for price";
+
+                        const imageUrl = product.image_urls &&
+                            product.image_urls.length > 0
+                            ? escapeText(product.image_urls[0])
+                            : "https://placehold.co/400x300/1A2D4A/FFD700?text=Genera+Tech";
+
+                        const available = Number(product.stock_quantity) > 0;
+                        const stockText = available ? "In Stock" : "Check Availability";
+                        const detailUrl = basePath +
+                            "product-detail.html?id=" +
+                            encodeURIComponent(String(product.id || ""));
+
+                        const message = encodeURIComponent(
+                            "Hello Genera Tech Hub, I am interested in " +
+                            (product.name || "this product") + ". Is it available?"
+                        );
+
+                        return `
+                            <article class="product-card">
+                                <div class="product-image">
+                                    <img
+                                        src="${imageUrl}"
+                                        alt="${name}"
+                                        loading="lazy"
+                                        onerror="this.onerror=null;this.src='https://placehold.co/400x300/1A2D4A/FFD700?text=Genera+Tech'">
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-category">${category}</div>
+                                    <h3 class="product-name">${name}</h3>
+                                    <div class="product-price">${price}</div>
+                                    <div class="stock-status ${available ? "stock-in" : "stock-out"}">
+                                        ${stockText}
+                                    </div>
+                                    <div class="product-actions">
+                                        <a href="${detailUrl}" class="btn btn-outline btn-sm">View</a>
+                                        <a
+                                            href="https://wa.me/2348081302228?text=${message}"
+                                            class="btn btn-whatsapp btn-sm"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            aria-label="Ask about ${name}">
+                                            <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </article>
+                        `;
+                    }).join("");
+                } catch (error) {
+                    console.error("Featured products error:", error);
+                    showProductsUnavailable();
+                }
+            }
+
+            startApp();
+        })();
+    </script>
 </body>
 </html>
