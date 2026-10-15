@@ -292,12 +292,12 @@
     <div id="footer-placeholder"></div>
 
     <script>
-        fetch('/src/components/header.html')
+        fetch('header.html')
             .then(r => r.text())
             .then(d => { document.getElementById('header-placeholder').innerHTML = d; })
             .catch(() => console.warn('Header not loaded'));
 
-        fetch('/src/components/footer.html')
+        fetch('footer.html')
             .then(r => r.text())
             .then(d => { document.getElementById('footer-placeholder').innerHTML = d; })
             .catch(() => console.warn('Footer not loaded'));
