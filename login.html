@@ -3,702 +3,443 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0A1628">
+  <title>Login / Sign Up — Genera Tech Hub</title>
+  <meta name="description" content="Access your Genera Tech Hub account.">
 
-  <title>Login / Sign Up | Genera Tech Hub</title>
-  <meta name="description" content="Sign in or create your Genera Tech Hub account.">
-  <meta name="robots" content="noindex, follow">
+  <link rel="icon" href="public/images/favicon.ico">
+  <link rel="stylesheet" href="public/css/style.css">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <link rel="icon" href="./public/images/favicon.ico">
-  <link rel="stylesheet" href="./public/css/style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  <!-- Load the Supabase SDK before initializing the client -->
+  <!-- Load the Supabase SDK before the application scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: #0a1628;
-      color: #f5f7fb;
-      font-family: Inter, Arial, sans-serif;
-    }
-
     .auth-page {
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 32px 16px;
+      display: grid;
+      place-items: center;
+      padding: 2rem 1rem;
+      background: #0A1628;
     }
-
-    .auth-card {
+    .auth-container {
       width: 100%;
       max-width: 460px;
-      padding: 32px;
-      border-radius: 18px;
-      background: #142640;
-      border: 1px solid rgba(255, 215, 0, .2);
-      box-shadow: 0 18px 55px rgba(0, 0, 0, .25);
+      padding: 2rem;
+      border-radius: 14px;
+      background: #1A2D4A;
+      color: #fff;
+      border: 1px solid rgba(255,215,0,.2);
     }
-
-    .brand {
+    .auth-logo, .auth-footer-note, .trust-footer {
       text-align: center;
-      margin-bottom: 26px;
     }
-
-    .brand-icon {
-      display: inline-flex;
-      width: 56px;
-      height: 56px;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background: #ffd700;
-      color: #0a1628;
-      font-size: 24px;
-      margin-bottom: 12px;
+    .auth-logo h1 { color: #FFD700; }
+    .auth-logo h1 span { color: #fff; }
+    .auth-logo p, .subtitle { color: #cbd5e1; }
+    .auth-tabs { display: flex; margin: 1.5rem 0; }
+    .auth-tab {
+      flex: 1; padding: .8rem; cursor: pointer;
+      border: 1px solid #43536b; background: transparent; color: white;
     }
-
-    .brand h1 {
-      margin: 0 0 8px;
-      font-size: 24px;
-      color: #ffd700;
+    .auth-tab.active { color: #FFD700; border-color: #FFD700; }
+    .auth-form { display: none; }
+    .auth-form.active { display: block; }
+    .auth-form h2 { margin-bottom: .4rem; }
+    .form-group { margin: 1rem 0; }
+    .form-group label { display: block; margin-bottom: .4rem; }
+    .form-control {
+      width: 100%; box-sizing: border-box; padding: .8rem;
+      border: 1px solid #65748b; border-radius: 6px;
     }
-
-    .brand h1 span { color: #fff; }
-
-    .brand p {
-      margin: 0;
-      color: #b8c4d6;
-      font-size: 13px;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 24px;
-    }
-
-    .tab {
-      flex: 1;
-      padding: 12px;
-      border: 1px solid #354760;
-      border-radius: 8px;
-      background: transparent;
-      color: #d5dce7;
-      cursor: pointer;
-      font: inherit;
-    }
-
-    .tab.active {
-      color: #ffd700;
-      border-color: #ffd700;
-      background: rgba(255, 215, 0, .07);
-    }
-
-    .panel { display: none; }
-    .panel.active { display: block; }
-
-    .panel h2 {
-      margin: 0 0 8px;
-      font-size: 21px;
-    }
-
-    .subtitle {
-      margin: 0 0 22px;
-      color: #b8c4d6;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .field { margin-bottom: 16px; }
-
-    .field label {
-      display: block;
-      margin-bottom: 7px;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .field input {
-      display: block;
-      width: 100%;
-      min-height: 46px;
-      padding: 12px;
-      border: 1px solid #40516b;
-      border-radius: 8px;
-      background: #0d1b30;
-      color: white;
-      font: inherit;
-    }
-
-    .field input:focus {
-      outline: 2px solid #ffd700;
-      outline-offset: 1px;
-    }
-
-    .password-wrap { position: relative; }
-
-    .password-wrap input { padding-right: 48px; }
-
+    .input-wrapper { position: relative; }
+    .input-wrapper .form-control { padding-right: 3rem; }
     .toggle-password {
-      position: absolute;
-      top: 50%;
-      right: 8px;
-      transform: translateY(-50%);
-      padding: 8px;
-      border: 0;
-      background: transparent;
-      color: #ffd700;
-      cursor: pointer;
+      position: absolute; right: .7rem; top: 50%;
+      transform: translateY(-50%); cursor: pointer;
+      border: 0; background: transparent; color: #fff;
     }
-
-    .options {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin: 12px 0 20px;
-      font-size: 13px;
+    .auth-options {
+      display: flex; justify-content: space-between;
+      gap: .75rem; flex-wrap: wrap; margin: 1rem 0;
     }
-
-    .options label {
-      display: flex;
-      gap: 7px;
-      align-items: center;
+    .terms-check { display: flex; gap: .6rem; margin: 1rem 0; }
+    .terms-check a, .forgot-link, .auth-footer-note a { color: #FFD700; }
+    .alert {
+      display: none; padding: .8rem; margin: 1rem 0;
+      border-radius: 6px; overflow-wrap: anywhere;
     }
-
-    a { color: #ffd700; }
-
-    .primary-btn {
-      width: 100%;
-      min-height: 48px;
-      padding: 12px;
-      border: 0;
-      border-radius: 8px;
-      background: #ffd700;
-      color: #0a1628;
-      font: inherit;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .primary-btn:disabled {
-      opacity: .65;
-      cursor: wait;
-    }
-
-    .message {
-      display: none;
-      margin-bottom: 16px;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 13px;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
-    }
-
-    .message.show { display: block; }
-
-    .message.error {
-      color: #ffd6da;
-      background: #49202a;
-      border: 1px solid #a74454;
-    }
-
-    .message.success {
-      color: #d4ffe4;
-      background: #153d30;
-      border: 1px solid #31785d;
-    }
-
-    .message.info {
-      color: #fff0a8;
-      background: #3c3518;
-      border: 1px solid #827128;
-    }
-
-    .bottom-note {
-      margin: 22px 0 0;
-      text-align: center;
-      color: #b8c4d6;
-      font-size: 13px;
-      line-height: 1.8;
-    }
-
-    .footer-note {
-      margin-top: 24px;
-      padding-top: 18px;
-      border-top: 1px solid #354760;
-      text-align: center;
-      color: #b8c4d6;
-      font-size: 12px;
-    }
-
+    .alert.show { display: block; }
+    .alert-error { background: #4b2028; color: #ffd5db; }
+    .alert-success { background: #173f32; color: #c6ffe4; }
+    .alert-info { background: #443b1b; color: #fff0ad; }
+    .btn-block { width: 100%; }
+    .trust-footer { margin-top: 1.5rem; padding-top: 1rem; }
+    .trust-footer .tagline { color: #FFD700; }
+    button:disabled { opacity: .65; cursor: wait; }
     @media (max-width: 480px) {
-      .auth-card { padding: 24px 18px; }
-      .options { align-items: flex-start; }
+      .auth-container { padding: 1.25rem; }
     }
   </style>
 </head>
 
 <body>
-  <main class="auth-page">
-    <section class="auth-card" aria-label="Genera Tech Hub authentication">
+  <a href="#main">Skip to main content</a>
+  <div id="header-placeholder"></div>
 
-      <header class="brand">
-        <div class="brand-icon"><i class="fas fa-microchip"></i></div>
+  <main class="auth-page" id="main">
+    <section class="auth-container">
+      <div class="auth-logo">
         <h1>Genera <span>Tech Hub</span></h1>
         <p>Technology You Can Trust</p>
-      </header>
-
-      <div id="systemMessage" class="message info" role="status">
-        Connecting securely to the account service...
       </div>
 
-      <div class="tabs" role="tablist" aria-label="Account options">
-        <button class="tab active" id="loginTab" type="button"
+      <div class="auth-tabs" role="tablist">
+        <button type="button" class="auth-tab active" id="loginTab"
                 role="tab" aria-selected="true">Login</button>
-        <button class="tab" id="signupTab" type="button"
-                role="tab" aria-selected="false">Create account</button>
+        <button type="button" class="auth-tab" id="signupTab"
+                role="tab" aria-selected="false">Sign Up</button>
       </div>
 
-      <section class="panel active" id="loginPanel">
+      <div id="systemAlert" class="alert" role="status"></div>
+
+      <section class="auth-form active" id="loginForm">
         <h2>Welcome back</h2>
-        <p class="subtitle">Sign in to your Genera Tech Hub account.</p>
+        <p class="subtitle">Login to your account.</p>
+        <div class="alert" id="loginAlert" role="alert"></div>
 
-        <div id="loginMessage" class="message" role="alert"></div>
-
-        <form id="loginForm">
-          <div class="field">
+        <form id="loginFormElement">
+          <div class="form-group">
             <label for="loginEmail">Email address</label>
-            <input id="loginEmail" type="email" autocomplete="username"
-                   required maxlength="254" placeholder="you@example.com">
+            <input class="form-control" id="loginEmail" type="email"
+                   autocomplete="username" required>
           </div>
 
-          <div class="field">
+          <div class="form-group">
             <label for="loginPassword">Password</label>
-            <div class="password-wrap">
-              <input id="loginPassword" type="password"
+            <div class="input-wrapper">
+              <input class="form-control" id="loginPassword" type="password"
                      autocomplete="current-password" required>
-              <button class="toggle-password" type="button"
-                      aria-label="Show password" data-target="loginPassword">
-                <i class="fas fa-eye"></i>
-              </button>
+              <button type="button" class="toggle-password"
+                      data-target="loginPassword" aria-label="Show password">Show</button>
             </div>
           </div>
 
-          <div class="options">
-            <label>
-              <input id="rememberMe" type="checkbox">
-              Remember email
-            </label>
-            <a href="#" id="forgotPassword">Forgot password?</a>
+          <div class="auth-options">
+            <label><input type="checkbox" id="rememberMe"> Remember email</label>
+            <a href="#" class="forgot-link" id="forgotPassword">Forgot password?</a>
           </div>
 
-          <button class="primary-btn" id="loginButton" type="submit">
-            <i class="fas fa-sign-in-alt"></i> Login
-          </button>
+          <button type="submit" class="btn btn-primary btn-block"
+                  id="loginSubmitBtn">Login</button>
         </form>
 
-        <p class="bottom-note">
+        <p class="auth-footer-note">
           Don't have an account?
-          <a href="#signup" id="openSignup">Create one</a>
+          <a href="#signup" id="goSignup">Sign up</a>
         </p>
       </section>
 
-      <section class="panel" id="signupPanel">
-        <h2>Create your account</h2>
+      <section class="auth-form" id="signupForm">
+        <h2>Create an account</h2>
         <p class="subtitle">Join Genera Tech Hub.</p>
+        <div class="alert" id="signupAlert" role="alert"></div>
 
-        <div id="signupMessage" class="message" role="alert"></div>
-
-        <form id="signupForm">
-          <div class="field">
+        <form id="signupFormElement">
+          <div class="form-group">
             <label for="signupName">Full name</label>
-            <input id="signupName" type="text" autocomplete="name"
-                   required maxlength="100">
+            <input class="form-control" id="signupName" required
+                   autocomplete="name">
           </div>
-
-          <div class="field">
+          <div class="form-group">
             <label for="signupEmail">Email address</label>
-            <input id="signupEmail" type="email" autocomplete="email"
-                   required maxlength="254">
+            <input class="form-control" id="signupEmail" type="email"
+                   required autocomplete="email">
           </div>
-
-          <div class="field">
+          <div class="form-group">
             <label for="signupPhone">Phone number</label>
-            <input id="signupPhone" type="tel" autocomplete="tel"
-                   required maxlength="25" placeholder="e.g. 08012345678">
+            <input class="form-control" id="signupPhone" type="tel"
+                   required autocomplete="tel">
           </div>
-
-          <div class="field">
-            <label for="signupPassword">Password</label>
-            <div class="password-wrap">
-              <input id="signupPassword" type="password"
-                     autocomplete="new-password" required minlength="8">
-              <button class="toggle-password" type="button"
-                      aria-label="Show password" data-target="signupPassword">
-                <i class="fas fa-eye"></i>
-              </button>
+          <div class="form-group">
+            <label for="signupPassword">Password (at least 8 characters)</label>
+            <div class="input-wrapper">
+              <input class="form-control" id="signupPassword" type="password"
+                     minlength="8" autocomplete="new-password" required>
+              <button type="button" class="toggle-password"
+                      data-target="signupPassword" aria-label="Show password">Show</button>
             </div>
           </div>
-
-          <div class="field">
-            <label for="confirmPassword">Confirm password</label>
-            <input id="confirmPassword" type="password"
-                   autocomplete="new-password" required minlength="8">
+          <div class="form-group">
+            <label for="signupConfirmPassword">Confirm password</label>
+            <input class="form-control" id="signupConfirmPassword"
+                   type="password" minlength="8"
+                   autocomplete="new-password" required>
           </div>
 
-          <div class="options">
-            <label>
-              <input id="acceptTerms" type="checkbox" required>
-              I agree to the <a href="./terms.html" target="_blank"
-                 rel="noopener">Terms</a> and
-              <a href="./privacy.html" target="_blank"
-                 rel="noopener">Privacy Policy</a>
-            </label>
-          </div>
+          <label class="terms-check">
+            <input type="checkbox" id="termsCheck" required>
+            <span>I agree to the
+              <a href="terms.html" target="_blank" rel="noopener">Terms</a>
+              and
+              <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.
+            </span>
+          </label>
 
-          <button class="primary-btn" id="signupButton" type="submit">
-            <i class="fas fa-user-plus"></i> Create account
-          </button>
+          <button type="submit" class="btn btn-primary btn-block"
+                  id="signupSubmitBtn">Create Account</button>
         </form>
 
-        <p class="bottom-note">
-          Already registered? <a href="#login" id="openLogin">Login</a>
+        <p class="auth-footer-note">
+          Already registered? <a href="#login" id="goLogin">Login</a>
         </p>
       </section>
 
-      <footer class="footer-note">
-        <strong>Genera Tech Hub</strong><br>
-        Technology You Can Trust
-        <p><a href="./index.html">Return to homepage</a></p>
-      </footer>
+      <div class="trust-footer">
+        <div class="tagline">Genera Tech Hub</div>
+        <div>Technology You Can Trust</div>
+      </div>
     </section>
   </main>
 
+  <div id="footer-placeholder"></div>
+
+  <script>
+    // These paths assume login.html is in the repository root.
+    fetch("header.html")
+      .then(r => {
+        if (!r.ok) throw new Error("Header file not found");
+        return r.text();
+      })
+      .then(html => {
+        document.getElementById("header-placeholder").innerHTML = html;
+      })
+      .catch(err => console.warn("Header not loaded:", err.message));
+
+    fetch("footer.html")
+      .then(r => {
+        if (!r.ok) throw new Error("Footer file not found");
+        return r.text();
+      })
+      .then(html => {
+        document.getElementById("footer-placeholder").innerHTML = html;
+      })
+      .catch(err => console.warn("Footer not loaded:", err.message));
+  </script>
+
+  <script src="public/js/supabase.js"></script>
+  <script src="public/js/auth.js"></script>
+
   <script>
     (() => {
-      'use strict';
+      "use strict";
 
-      const SUPABASE_URL =
-        'https://ofrvakghmlyidtelenib.supabase.co';
+      const $ = id => document.getElementById(id);
 
-      // Use your project's PUBLIC anon/publishable key only.
-      const SUPABASE_ANON_KEY =
-        'PASTE_YOUR_SUPABASE_ANON_KEY_HERE';
-
-      const CEO_EMAIL = 'mudasirumukthar@gmail.com';
-
-      let client = null;
-
-      const $ = (id) => document.getElementById(id);
-
-      function showMessage(id, message, type = 'info') {
-        const element = $(id);
-        if (!element) return;
-        element.textContent = message;
-        element.className = `message show ${type}`;
+      function showAlert(id, message, type = "info") {
+        const el = $(id);
+        if (!el) return;
+        el.textContent = message;
+        el.className = "alert alert-" + type + " show";
       }
 
-      function clearMessage(id) {
-        const element = $(id);
-        if (!element) return;
-        element.textContent = '';
-        element.className = 'message';
-      }
-
-      function setBusy(button, busy, text) {
-        button.disabled = busy;
-        if (busy) {
-          button.dataset.originalText = button.textContent.trim();
-          button.textContent = text;
-        } else {
-          button.textContent = button.dataset.originalText || text;
-        }
+      function clearAlerts() {
+        ["loginAlert", "signupAlert", "systemAlert"].forEach(id => {
+          const el = $(id);
+          if (el) {
+            el.textContent = "";
+            el.className = "alert";
+          }
+        });
       }
 
       function switchTab(tab) {
-        const signup = tab === 'signup';
-
-        $('loginTab').classList.toggle('active', !signup);
-        $('signupTab').classList.toggle('active', signup);
-        $('loginTab').setAttribute('aria-selected', String(!signup));
-        $('signupTab').setAttribute('aria-selected', String(signup));
-        $('loginPanel').classList.toggle('active', !signup);
-        $('signupPanel').classList.toggle('active', signup);
-
-        clearMessage('loginMessage');
-        clearMessage('signupMessage');
-
-        if (location.hash !== (signup ? '#signup' : '#login')) {
-          history.replaceState(null, '', signup ? '#signup' : '#login');
-        }
+        const signup = tab === "signup";
+        $("loginTab").classList.toggle("active", !signup);
+        $("signupTab").classList.toggle("active", signup);
+        $("loginTab").setAttribute("aria-selected", String(!signup));
+        $("signupTab").setAttribute("aria-selected", String(signup));
+        $("loginForm").classList.toggle("active", !signup);
+        $("signupForm").classList.toggle("active", signup);
+        clearAlerts();
       }
 
-      function initClient() {
-        if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+      function getClient() {
+        const client = window.supabaseClient;
+        if (!client || !client.auth) {
           throw new Error(
-            'The Supabase SDK did not load. Check your internet connection or CDN access, then refresh.'
+            "Supabase is not initialized. Check the SDK and public/js/supabase.js."
           );
         }
-
-        if (
-          !SUPABASE_ANON_KEY ||
-          SUPABASE_ANON_KEY === 'PASTE_YOUR_SUPABASE_ANON_KEY_HERE'
-        ) {
-          throw new Error(
-            'Setup required: add your Supabase anon/publishable key in login.html.'
-          );
-        }
-
-        client = window.supabase.createClient(
-          SUPABASE_URL,
-          SUPABASE_ANON_KEY,
-          {
-            auth: {
-              persistSession: true,
-              autoRefreshToken: true,
-              detectSessionInUrl: true
-            }
-          }
-        );
-
-        $('systemMessage').className = 'message';
+        return client;
       }
 
-      async function handleLogin(event) {
-        event.preventDefault();
-        clearMessage('loginMessage');
+      $("loginTab").addEventListener("click", () => switchTab("login"));
+      $("signupTab").addEventListener("click", () => switchTab("signup"));
+      $("goSignup").addEventListener("click", e => {
+        e.preventDefault();
+        switchTab("signup");
+      });
+      $("goLogin").addEventListener("click", e => {
+        e.preventDefault();
+        switchTab("login");
+      });
 
-        if (!client) {
-          showMessage('loginMessage',
-            'Account service is not configured. Check the setup message above.',
-            'error');
-          return;
-        }
+      document.querySelectorAll(".toggle-password").forEach(button => {
+        button.addEventListener("click", () => {
+          const input = $(button.dataset.target);
+          if (!input) return;
+          input.type = input.type === "password" ? "text" : "password";
+          button.textContent = input.type === "password" ? "Show" : "Hide";
+        });
+      });
 
-        const email = $('loginEmail').value.trim().toLowerCase();
-        const password = $('loginPassword').value;
-        const button = $('loginButton');
+      $("loginFormElement").addEventListener("submit", async e => {
+        e.preventDefault();
+        clearAlerts();
+
+        const email = $("loginEmail").value.trim().toLowerCase();
+        const password = $("loginPassword").value;
+        const button = $("loginSubmitBtn");
 
         if (!email || !password) {
-          showMessage('loginMessage', 'Enter your email and password.', 'error');
-          return;
+          return showAlert("loginAlert", "Enter your email and password.", "error");
         }
 
-        setBusy(button, true, 'Signing in...');
+        const oldText = button.textContent;
+        button.disabled = true;
+        button.textContent = "Logging in...";
 
         try {
+          const client = getClient();
           const { data, error } = await client.auth.signInWithPassword({
-            email,
-            password
+            email, password
           });
-
           if (error) throw error;
 
-          if (!data.user) {
-            throw new Error('Login completed without a user account. Please try again.');
-          }
-
-          if ($('rememberMe').checked) {
-            localStorage.setItem('gth_remember_email', email);
+          if ($("rememberMe").checked) {
+            localStorage.setItem("gth_remember_email", email);
           } else {
-            localStorage.removeItem('gth_remember_email');
+            localStorage.removeItem("gth_remember_email");
           }
 
-          showMessage('loginMessage', 'Login successful. Opening your page...', 'success');
+          showAlert("loginAlert", "Login successful. Redirecting...", "success");
 
-          // This is only navigation. Protect admin data with database RLS too.
-          const destination =
-            data.user.email?.toLowerCase() === CEO_EMAIL
-              ? './admin.html'
-              : './index.html';
+          // This is a navigation convenience, NOT an authorization check.
+          // admin.html must separately verify the authenticated user's role.
+          const isCeo = data.user?.email?.toLowerCase() ===
+            "mudasirumukthar@gmail.com";
 
-          setTimeout(() => {
-            window.location.assign(destination);
-          }, 700);
-
+          window.location.assign(isCeo ? "admin.html" : "index.html");
         } catch (error) {
-          console.error('Login failed:', error);
-          showMessage(
-            'loginMessage',
-            error.message || 'Login failed. Please try again.',
-            'error'
-          );
-          setBusy(button, false, 'Login');
+          console.error("Login error:", error);
+          showAlert("loginAlert", error.message || "Login failed.", "error");
+          button.disabled = false;
+          button.textContent = oldText;
         }
-      }
+      });
 
-      async function handleSignup(event) {
-        event.preventDefault();
-        clearMessage('signupMessage');
+      $("signupFormElement").addEventListener("submit", async e => {
+        e.preventDefault();
+        clearAlerts();
 
-        if (!client) {
-          showMessage('signupMessage',
-            'Account service is not configured. Check the setup message above.',
-            'error');
-          return;
-        }
-
-        const fullName = $('signupName').value.trim();
-        const email = $('signupEmail').value.trim().toLowerCase();
-        const phone = $('signupPhone').value.trim();
-        const password = $('signupPassword').value;
-        const confirm = $('confirmPassword').value;
+        const fullName = $("signupName").value.trim();
+        const email = $("signupEmail").value.trim().toLowerCase();
+        const phone = $("signupPhone").value.trim();
+        const password = $("signupPassword").value;
+        const confirmPassword = $("signupConfirmPassword").value;
+        const button = $("signupSubmitBtn");
 
         if (password.length < 8) {
-          showMessage('signupMessage',
-            'Use a password with at least 8 characters.',
-            'error');
-          return;
+          return showAlert("signupAlert", "Use at least 8 characters for your password.", "error");
+        }
+        if (password !== confirmPassword) {
+          return showAlert("signupAlert", "Passwords do not match.", "error");
+        }
+        if (!$("termsCheck").checked) {
+          return showAlert("signupAlert", "Please accept the Terms and Privacy Policy.", "error");
         }
 
-        if (password !== confirm) {
-          showMessage('signupMessage', 'The passwords do not match.', 'error');
-          return;
-        }
-
-        if (!$('acceptTerms').checked) {
-          showMessage('signupMessage',
-            'Please accept the Terms and Privacy Policy.',
-            'error');
-          return;
-        }
-
-        const button = $('signupButton');
-        setBusy(button, true, 'Creating account...');
+        const oldText = button.textContent;
+        button.disabled = true;
+        button.textContent = "Creating account...";
 
         try {
+          const client = getClient();
           const { data, error } = await client.auth.signUp({
             email,
             password,
             options: {
-              emailRedirectTo: `${location.origin}${location.pathname}`,
-              data: {
-                full_name: fullName,
-                phone,
-                role: 'customer'
-              }
+              emailRedirectTo: window.location.href.split("#")[0],
+              data: { full_name: fullName, phone, role: "customer" }
             }
           });
 
           if (error) throw error;
 
-          if (data.session) {
-            showMessage('signupMessage',
-              'Your account has been created. You can now log in.',
-              'success');
-          } else {
-            showMessage('signupMessage',
-              'Account request submitted. Check your email for a verification link before logging in.',
-              'success');
-          }
-
-          $('loginEmail').value = email;
-          $('loginPassword').value = '';
-          setTimeout(() => switchTab('login'), 1600);
-
+          showAlert(
+            "signupAlert",
+            data.session
+              ? "Account created. You can now log in."
+              : "Account created. Check your email to verify it before logging in.",
+            "success"
+          );
         } catch (error) {
-          console.error('Signup failed:', error);
-          showMessage('signupMessage',
-            error.message || 'Account creation failed. Please try again.',
-            'error');
+          console.error("Signup error:", error);
+          showAlert("signupAlert", error.message || "Account creation failed.", "error");
         } finally {
-          setBusy(button, false, 'Create account');
+          button.disabled = false;
+          button.textContent = oldText;
         }
-      }
+      });
 
-      async function handleForgotPassword(event) {
-        event.preventDefault();
-        clearMessage('loginMessage');
+      $("forgotPassword").addEventListener("click", async e => {
+        e.preventDefault();
+        clearAlerts();
 
-        if (!client) {
-          showMessage('loginMessage',
-            'The account service is not ready. Check the setup message above.',
-            'error');
-          return;
-        }
-
-        const email = $('loginEmail').value.trim().toLowerCase();
-
+        const email = $("loginEmail").value.trim().toLowerCase();
         if (!email) {
-          showMessage('loginMessage',
-            'Enter your email address first, then select Forgot password.',
-            'info');
-          return;
+          return showAlert("loginAlert", "Enter your email address first.", "error");
         }
 
         try {
+          const client = getClient();
           const { error } = await client.auth.resetPasswordForEmail(email, {
-            redirectTo: `${location.origin}${location.pathname}`
+            redirectTo: window.location.href.split("#")[0]
           });
-
           if (error) throw error;
-
-          showMessage('loginMessage',
-            'If this email is registered, a password-reset email will be sent. Check your inbox.',
-            'success');
+          showAlert("loginAlert", "If the account exists, a reset email will be sent.", "success");
         } catch (error) {
-          console.error('Password reset failed:', error);
-          showMessage('loginMessage',
-            error.message || 'Could not request a password reset.',
-            'error');
+          console.error("Password reset error:", error);
+          showAlert("loginAlert", error.message || "Could not request password reset.", "error");
         }
+      });
+
+      const rememberedEmail = localStorage.getItem("gth_remember_email");
+      if (rememberedEmail) {
+        $("loginEmail").value = rememberedEmail;
+        $("rememberMe").checked = true;
       }
 
-      document.addEventListener('DOMContentLoaded', () => {
-        $('loginTab').addEventListener('click', () => switchTab('login'));
-        $('signupTab').addEventListener('click', () => switchTab('signup'));
-        $('openSignup').addEventListener('click', (e) => {
-          e.preventDefault();
-          switchTab('signup');
-        });
-        $('openLogin').addEventListener('click', (e) => {
-          e.preventDefault();
-          switchTab('login');
-        });
+      if (window.location.hash === "#signup") switchTab("signup");
 
-        $('loginForm').addEventListener('submit', handleLogin);
-        $('signupForm').addEventListener('submit', handleSignup);
-        $('forgotPassword').addEventListener('click', handleForgotPassword);
-
-        document.querySelectorAll('.toggle-password').forEach((button) => {
-          button.addEventListener('click', () => {
-            const input = $(button.dataset.target);
-            const show = input.type === 'password';
-            input.type = show ? 'text' : 'password';
-            button.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
-            button.innerHTML = show
-              ? '<i class="fas fa-eye-slash"></i>'
-              : '<i class="fas fa-eye"></i>';
-          });
-        });
-
-        const remembered = localStorage.getItem('gth_remember_email');
-        if (remembered) {
-          $('loginEmail').value = remembered;
-          $('rememberMe').checked = true;
+      // Diagnose initialization without endless retry loops.
+      window.addEventListener("load", () => {
+        if (!window.supabase || typeof window.supabase.createClient !== "function") {
+          showAlert("systemAlert",
+            "The Supabase SDK did not load. Check your internet connection or CDN request.",
+            "error");
+          console.error("Supabase SDK unavailable: window.supabase is missing.");
+        } else if (!window.supabaseClient) {
+          showAlert("systemAlert",
+            "Supabase client is not ready. Check the URL and anon/publishable key in public/js/supabase.js.",
+            "error");
+          console.error("Supabase SDK loaded, but window.supabaseClient is missing.");
+        } else {
+          console.log("Genera Tech Hub login: Supabase client detected.");
         }
-
-        try {
-          initClient();
-          console.log('Genera Tech Hub: Supabase login client initialized.');
-        } catch (error) {
-          console.error('Supabase setup error:', error);
-          showMessage('systemMessage', error.message, 'error');
-        }
-
-        if (location.hash === '#signup') switchTab('signup');
       });
     })();
   </script>
