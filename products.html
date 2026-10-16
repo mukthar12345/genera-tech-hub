@@ -14,8 +14,8 @@
     <meta property="og:description" content="Browse quality phones, laptops, and accessories.">
     <meta property="og:type" content="website">
 
-    <!-- FIXED: Removed /public/ and leading slash -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <!-- FIXED: Points to public/images/ -->
+    <link rel="icon" type="image/x-icon" href="public/images/favicon.ico">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,8 +23,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- FIXED: Removed /public/css/ and leading slash -->
-    <link rel="stylesheet" href="style.css">
+    <!-- FIXED: Points to public/css/ -->
+    <link rel="stylesheet" href="public/css/style.css">
 
     <style>
         /* ============================================================
@@ -371,7 +371,7 @@
 
     <div id="footer-placeholder"></div>
 
-    <!-- Load header/footer -->
+    <!-- Load header/footer (They are in the ROOT folder) -->
     <script>
         fetch('header.html')
             .then(r => r.text())
@@ -384,7 +384,7 @@
             .catch(() => console.warn('Footer not loaded'));
     </script>
 
-    <!-- Load app scripts -->
+    <!-- Load app scripts (FIXED: Points to public/js/) -->
     <script>
         (function () {
             function loadScript(src) {
@@ -401,9 +401,9 @@
 
             (async function () {
                 try {
-                    await loadScript('supabase.js');
-                    await loadScript('auth.js');
-                    await loadScript('main.js');
+                    await loadScript('public/js/supabase.js');
+                    await loadScript('public/js/auth.js');
+                    await loadScript('public/js/main.js');
                     console.log('✅ Products page scripts loaded');
                     initProductsPage();
                 } catch (err) {
@@ -525,7 +525,7 @@
                                 <span>${inStock ? 'In Stock' : 'Out of Stock'}</span>
                             </div>
                             <div class="product-actions">
-                                <!-- FIXED: Removed src/pages/ from the link -->
+                                <!-- FIXED: product-detail.html is now in the root -->
                                 <a href="product-detail.html?id=${product.id}" class="btn btn-outline btn-sm">
                                     <i class="fas fa-eye"></i> View
                                 </a>
