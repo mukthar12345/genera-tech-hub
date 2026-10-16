@@ -640,9 +640,9 @@
                 setTimeout(() => {
                     const isCeo = email === 'mudasirumukthar@gmail.com';
                     if (isCeo) {
-                        window.location.href = '/src/pages/admin.html';
+                        window.location.href = 'admin.html';
                     } else {
-                        window.location.href = '/src/pagesindex.html';
+                        window.location.href = 'index.html';
                     }
                 }, 900);
 
@@ -733,7 +733,7 @@
                     email: email,
                     password: password,
                     options: {
-                        emailRedirectTo: `${window.location.origin}/src/pageslogin.html`,
+                        emailRedirectTo: `${window.location.origin}login.html`,
                         data: {
                             full_name: fullName,
                             phone: phone,
@@ -794,7 +794,7 @@
 
             try {
                 const { error } = await window.supabaseClient.auth.resetPasswordForEmail(email, {
-                    redirectTo: `${window.location.origin}/src/pageslogin.html`
+                    redirectTo: `${window.location.origin}login.html`
                 });
 
                 if (error) throw error;
