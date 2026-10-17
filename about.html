@@ -22,11 +22,8 @@
     <link rel="stylesheet" href="public/css/style.css">
 
     <style>
-        /* ============================================================
-           ABOUT PAGE SPECIFIC
-           ============================================================ */
+        /* ABOUT PAGE STYLES */
 
-        /* Story section */
         .story-grid {
             display: grid;
             grid-template-columns: 1.2fr 1fr;
@@ -34,8 +31,13 @@
             align-items: center;
         }
 
-        .story-content h2 { margin-bottom: 1.25rem; }
-        .story-content h2 .highlight { color: var(--gold); }
+        .story-content h2 {
+            margin-bottom: 1.25rem;
+        }
+
+        .story-content h2 .highlight {
+            color: var(--gold);
+        }
 
         .story-content p {
             color: var(--text-light);
@@ -96,7 +98,8 @@
             font-size: 0.95rem;
         }
 
-        /* Mission & Vision */
+        /* Mission and Vision */
+
         .mission-vision-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -138,6 +141,7 @@
         }
 
         /* Values */
+
         .values-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -177,7 +181,8 @@
             line-height: 1.6;
         }
 
-        /* CEO section */
+        /* Founder */
+
         .ceo-card {
             display: grid;
             grid-template-columns: 200px 1fr;
@@ -236,7 +241,8 @@
             border-left: 3px solid var(--gold);
         }
 
-        /* Timeline */
+        /* Journey timeline */
+
         .timeline {
             position: relative;
             padding-left: 2rem;
@@ -262,7 +268,9 @@
             padding-left: 1.75rem;
         }
 
-        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
 
         .timeline-item::before {
             content: '';
@@ -292,7 +300,8 @@
             line-height: 1.6;
         }
 
-        /* CTA */
+        /* Call to action */
+
         .about-cta {
             text-align: center;
             padding: 3rem 2rem;
@@ -302,7 +311,10 @@
             margin-top: 2rem;
         }
 
-        .about-cta h2 { margin-bottom: 0.75rem; }
+        .about-cta h2 {
+            margin-bottom: 0.75rem;
+        }
+
         .about-cta p {
             color: var(--text-light);
             font-size: 1.05rem;
@@ -317,27 +329,52 @@
             flex-wrap: wrap;
         }
 
-        /* Responsive */
+        /* Responsive layout */
+
         @media (max-width: 900px) {
-            .story-grid { grid-template-columns: 1fr; gap: 2rem; }
-            .story-image { aspect-ratio: 16 / 9; }
-            .mission-vision-grid { grid-template-columns: 1fr; }
-            .ceo-card { grid-template-columns: 1fr; text-align: center; padding: 1.75rem; }
-            .ceo-info .quote { text-align: left; }
+            .story-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .story-image {
+                aspect-ratio: 16 / 9;
+            }
+
+            .mission-vision-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ceo-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 1.75rem;
+            }
+
+            .ceo-info .quote {
+                text-align: left;
+            }
         }
 
         @media (max-width: 640px) {
-            .about-cta .buttons { flex-direction: column; }
-            .about-cta .buttons .btn { width: 100%; }
+            .about-cta .buttons {
+                flex-direction: column;
+            }
+
+            .about-cta .buttons .btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
+
 <body id="main-content">
 
     <a href="#main" class="skip-link">Skip to main content</a>
 
     <div id="header-placeholder"></div>
 
+    <!-- Page heading -->
     <section class="page-header">
         <div class="container">
             <h1>About <span class="text-gold">Genera Tech Hub</span></h1>
@@ -351,17 +388,20 @@
         <section class="section">
             <div class="container">
                 <div class="story-grid">
+
                     <div class="story-content">
                         <h2>Our <span class="highlight">Story</span></h2>
+
                         <p>
                             <strong>Genera Tech Hub</strong> was founded with a clear purpose — to bring honest, reliable, and professional technology services to Nigerian customers.
                         </p>
+
                         <p>
                             We saw that many people were struggling to find trustworthy places for phone and laptop repairs, quality devices, and fair trade-in offers. We decided to change that.
                         </p>
-                        <p>
-                            Today, we serve customers with:
-                        </p>
+
+                        <p>Today, we serve customers with:</p>
+
                         <ul class="feature-list">
                             <li>Quality phone and laptop sales</li>
                             <li>Expert repair services</li>
@@ -380,13 +420,15 @@
                             📍 Nigeria
                         </p>
                     </div>
+
                 </div>
             </div>
         </section>
 
-        <!-- MISSION & VISION -->
+        <!-- MISSION AND VISION -->
         <section class="section" style="background: rgba(26, 45, 74, 0.15);">
             <div class="container">
+
                 <div class="text-center mb-3">
                     <h2>Our <span class="text-gold">Mission &amp; Vision</span></h2>
                     <p class="text-muted" style="max-width: 620px; margin: 0.5rem auto 0;">
@@ -395,6 +437,7 @@
                 </div>
 
                 <div class="mission-vision-grid">
+
                     <div class="mv-card">
                         <span class="mv-icon">🎯</span>
                         <h3>Our Mission</h3>
@@ -410,6 +453,7 @@
                             To become a trusted name in technology services across Nigeria — known for integrity, quality, and exceptional customer care.
                         </p>
                     </div>
+
                 </div>
             </div>
         </section>
@@ -417,6 +461,7 @@
         <!-- OUR VALUES -->
         <section class="section">
             <div class="container">
+
                 <div class="text-center mb-3">
                     <h2>Our <span class="text-gold">Values</span></h2>
                     <p class="text-muted" style="max-width: 620px; margin: 0.5rem auto 0;">
@@ -425,6 +470,7 @@
                 </div>
 
                 <div class="values-grid">
+
                     <div class="value-item">
                         <span class="value-icon">💎</span>
                         <h4>Integrity</h4>
@@ -460,13 +506,15 @@
                         <h4>Community</h4>
                         <p>Supporting the local tech community and Nigerian innovation.</p>
                     </div>
+
                 </div>
             </div>
         </section>
 
-        <!-- CEO SECTION -->
+        <!-- FOUNDER -->
         <section class="section" style="background: rgba(26, 45, 74, 0.15);">
             <div class="container">
+
                 <div class="text-center mb-3">
                     <h2>Meet the <span class="text-gold">Founder</span></h2>
                     <p class="text-muted" style="max-width: 620px; margin: 0.5rem auto 0;">
@@ -476,23 +524,28 @@
 
                 <div class="ceo-card">
                     <div class="ceo-avatar">MM</div>
+
                     <div class="ceo-info">
                         <h3>Mudasiru Mukthar</h3>
                         <div class="role">👑 Founder &amp; CEO</div>
+
                         <p class="bio">
                             A passionate technologist with a clear vision — to build a trusted technology hub where customers are treated with honesty and respect.
                         </p>
+
                         <p class="quote">
                             "Technology You Can Trust — that's not just a tagline, it's our promise to every customer."
                         </p>
                     </div>
                 </div>
+
             </div>
         </section>
 
-        <!-- TIMELINE -->
+        <!-- JOURNEY -->
         <section class="section">
             <div class="container">
+
                 <div class="text-center mb-3">
                     <h2>Our <span class="text-gold">Journey</span></h2>
                     <p class="text-muted" style="max-width: 620px; margin: 0.5rem auto 0;">
@@ -501,54 +554,67 @@
                 </div>
 
                 <div class="timeline">
+
                     <div class="timeline-item">
                         <span class="year">2026</span>
                         <div class="event">🏢 Founded Genera Tech Hub with a vision for trustworthy technology services</div>
                     </div>
+
                     <div class="timeline-item">
                         <span class="year">2026</span>
                         <div class="event">🔧 Launched expert repair services for phones and laptops</div>
                     </div>
+
                     <div class="timeline-item">
                         <span class="year">2026</span>
                         <div class="event">📱 Started offering quality new and refurbished devices</div>
                     </div>
+
                     <div class="timeline-item">
                         <span class="year">2026</span>
                         <div class="event">🔄 Introduced trade-in and swap services for customers</div>
                     </div>
+
                     <div class="timeline-item">
                         <span class="year">2026</span>
                         <div class="event">🌐 Launched our online presence with WhatsApp-first support</div>
                     </div>
+
                     <div class="timeline-item">
                         <span class="year">Coming soon</span>
                         <div class="event">🚀 Expanding our services and reach across Nigeria</div>
                     </div>
+
                 </div>
             </div>
         </section>
 
-        <!-- CTA -->
+        <!-- CALL TO ACTION -->
         <section class="section">
             <div class="container">
+
                 <div class="about-cta">
                     <h2>Ready to Work With <span class="text-gold">Genera Tech Hub?</span></h2>
+
                     <p>
                         Buy, repair, upgrade, or trade — we're here for you.
                     </p>
+
                     <div class="buttons">
-                        <a href="/src/pagesproducts.html" class="btn btn-primary">
+                        <a href="products.html" class="btn btn-primary">
                             <i class="fas fa-shopping-bag"></i> Shop Products
                         </a>
-                        <a href="/src/pagesrepair.html" class="btn btn-secondary">
+
+                        <a href="repair.html" class="btn btn-secondary">
                             <i class="fas fa-tools"></i> Book Repair
                         </a>
+
                         <a href="https://wa.me/2348081302228" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
                             <i class="fab fa-whatsapp"></i> Chat with Us
                         </a>
                     </div>
                 </div>
+
             </div>
         </section>
 
@@ -556,46 +622,42 @@
 
     <div id="footer-placeholder"></div>
 
-    <!-- Load header/footer -->
+    <!-- Load shared header and footer -->
     <script>
         fetch('header.html')
-            .then(r => r.text())
-            .then(d => { document.getElementById('header-placeholder').innerHTML = d; })
-            .catch(() => console.warn('Header not loaded'));
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Header request failed');
+                }
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById('header-placeholder').innerHTML = html;
+            })
+            .catch(error => {
+                console.warn('Header could not be loaded:', error);
+            });
 
         fetch('footer.html')
-            .then(r => r.text())
-            .then(d => { document.getElementById('footer-placeholder').innerHTML = d; })
-            .catch(() => console.warn('Footer not loaded'));
-    </script>
-
-    <!-- Load app scripts -->
-    <script>
-        (function () {
-            function loadScript(src) {
-                return new Promise((resolve, reject) => {
-                    if (document.querySelector(`script[src="${src}"]`)) return resolve();
-                    const s = document.createElement('script');
-                    s.src = src;
-                    s.async = false;
-                    s.onload = resolve;
-                    s.onerror = () => reject(new Error(`Could not load ${src}`));
-                    document.head.appendChild(s);
-                });
-            }
-
-            (async function () {
-                try {
-                    await loadScript('public/js/supabase.js');
-                    await loadScript('public/js/auth.js');
-                    await loadScript('public/js/main.js');
-                    console.log('✅ About page scripts loaded');
-                } catch (err) {
-                    console.error('❌ Script load error:', err);
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Footer request failed');
                 }
-            })();
-        })();
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById('footer-placeholder').innerHTML = html;
+            })
+            .catch(error => {
+                console.warn('Footer could not be loaded:', error);
+            });
     </script>
+
+    <!-- Load Supabase SDK first, then the project scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="public/js/supabase.js"></script>
+    <script src="public/js/auth.js"></script>
+    <script src="public/js/main.js"></script>
 
 </body>
 </html>
