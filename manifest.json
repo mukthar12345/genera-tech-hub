@@ -1,0 +1,20 @@
+
+{
+  "id": "/",
+  "name": "Genera Tech Hub",
+  "short_name": "Genera",
+  "description": "Technology You Can Trust. Shop devices, book repairs, and explore technology services.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#081426",
+  "theme_color": "#081426",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/public/images/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
+}
