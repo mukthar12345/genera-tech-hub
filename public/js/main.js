@@ -1238,33 +1238,50 @@ window.initializeMain = initializeMain;
 
 console.log('✅ Genera Tech Hub: main.js loaded successfully!');
 
+
 /* Genera Tech Hub — PWA setup */
 (() => {
-  // Connect the web app manifest automatically.
-  if (!document.querySelector('link[rel="manifest"]')) {
-    const manifest = document.createElement("link");
+  // Support GitHub Pages and root-domain hosting.
+  const appBase = location.hostname.endsWith("github.io")
+    ? "/genera-tech-hub/"
+    : "/";
+
+  // Connect the web app manifest.
+  let manifest = document.querySelector('link[rel="manifest"]');
+
+  if (!manifest) {
+    manifest = document.createElement("link");
     manifest.rel = "manifest";
-    manifest.href = "/manifest.json";
     document.head.appendChild(manifest);
   }
 
-  // Set the browser's theme colour.
-  if (!document.querySelector('meta[name="theme-color"]')) {
-    const theme = document.createElement("meta");
+  manifest.href = appBase + "manifest.json";
+
+  // Set the browser theme colour.
+  let theme = document.querySelector('meta[name="theme-color"]');
+
+  if (!theme) {
+    theme = document.createElement("meta");
     theme.name = "theme-color";
-    theme.content = "#102a43";
     document.head.appendChild(theme);
   }
 
+  theme.content = "#102a43";
+
   // Register the service worker.
-  if ("serviceWorker" in navigator && location.protocol === "https:") {
+  if ("serviceWorker" in navigator &&
+      location.protocol === "https:") {
     window.addEventListener("load", () => {
       navigator.serviceWorker
-        .register("/service-worker.js")
+        .register(appBase + "service-worker.js", {
+          scope: appBase
+        })
         .catch((error) => {
-          console.error("Genera PWA registration failed:", error);
+          console.error(
+            "Genera PWA registration failed:",
+            error
+          );
         });
     });
   }
 })();
-
