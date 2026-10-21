@@ -10,6 +10,6 @@ Disallow: admin.html
 Disallow: login.html
 
 # Sitemap location
-Sitemap: https://genera-tech-hub.netlify.app/sitemap.xml
+Sitemap: https://genera-tech-hub.vercel.app/sitemap.xml
 
 # ============================================================
