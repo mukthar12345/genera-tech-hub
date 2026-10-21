@@ -1,15 +1,5 @@
-# ============================================================
-# GENERA TECH HUB — ROBOTS.TXT
-# ============================================================
 
 User-agent: *
 Allow: /
 
-# Block admin and login pages from being indexed
-Disallow: admin.html
-Disallow: login.html
-
-# Sitemap location
 Sitemap: https://genera-tech-hub.vercel.app/sitemap.xml
-
-# ============================================================
